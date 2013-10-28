@@ -1,0 +1,14 @@
+<?xml version="1.0"?>
+<!-- The COPYRIGHT file at the top level of this repository contains the full
+     copyright notices and license terms. -->
+<tree string="Prescriptions">
+    <field name="reference"/>
+    <field name="date"/>
+    <field name="farm"/>
+    <field name="delivery_date"/>
+    <field name="feed_product"/>
+    <field name="quantity"/>
+    <field name="veterinarian"/>
+    <field name="feed_lot"/>
+    <field name="state"/>
+</tree>

@@ -1,0 +1,176 @@
+<?xml version="1.0" encoding="utf-8"?>
+<tryton>
+    <data>
+        <!-- groups -->
+        <record model="res.group" id="group_prescription">
+            <field name="name">Farm / Prescriptions</field>
+        </record>
+        <record model="res.user-res.group" id="user_admin_group_prescriptions">
+            <field name="user" ref="res.user_admin"/>
+            <field name="group" ref="group_prescription"/>
+        </record>
+        <record model="res.user-res.group" id="user_trigger_group_prescriptions">
+            <field name="user" ref="res.user_trigger"/>
+            <field name="group" ref="group_prescription"/>
+        </record>
+
+        <!-- farm.prescription -->
+        <record model="ir.ui.view" id="prescription_view_form">
+            <field name="model">farm.prescription</field>
+            <field name="type">form</field>
+            <field name="name">prescription_form</field>
+        </record>
+
+        <record model="ir.ui.view" id="prescription_view_list">
+            <field name="model">farm.prescription</field>
+            <field name="type">tree</field>
+            <field name="name">prescription_list</field>
+        </record>
+
+        <record model="ir.action.act_window" id="act_prescription">
+            <field name="name">Prescription</field>
+            <field name="res_model">farm.prescription</field>
+        </record>
+        <record model="ir.action.act_window.view" id="act_prescription_view1">
+            <field name="sequence" eval="10"/>
+            <field name="view" ref="prescription_view_list"/>
+            <field name="act_window" ref="act_prescription"/>
+        </record>
+        <record model="ir.action.act_window.view" id="act_prescription_view2">
+            <field name="sequence" eval="20"/>
+            <field name="view" ref="prescription_view_form"/>
+            <field name="act_window" ref="act_prescription"/>
+        </record>
+
+        <record model="ir.model.access" id="access_prescription">
+            <field name="model"
+                search="[('model', '=', 'farm.prescription')]"/>
+            <field name="perm_read" eval="True"/>
+            <field name="perm_write" eval="False"/>
+            <field name="perm_create" eval="False"/>
+            <field name="perm_delete" eval="False"/>
+        </record>
+        <record model="ir.model.access"
+            id="access_prescription_group_prescription">
+            <field name="model"
+                search="[('model', '=', 'farm.prescription')]"/>
+            <field name="group" ref="group_prescription"/>
+            <field name="perm_read" eval="True"/>
+            <field name="perm_write" eval="True"/>
+            <field name="perm_create" eval="True"/>
+            <field name="perm_delete" eval="True"/>
+        </record>
+
+        <!-- farm.prescription.line -->
+        <record model="ir.ui.view" id="prescription_line_view_form">
+            <field name="model">farm.prescription.line</field>
+            <field name="type">form</field>
+            <field name="name">prescription_line_form</field>
+        </record>
+
+        <record model="ir.ui.view" id="prescription_line_view_list">
+            <field name="model">farm.prescription.line</field>
+            <field name="type">tree</field>
+            <field name="name">prescription_line_list</field>
+        </record>
+
+        <record model="ir.action.act_window" id="act_prescption_line">
+            <field name="name">Prescription Line</field>
+            <field name="res_model">farm.prescription.line</field>
+        </record>
+        <record model="ir.action.act_window.view"
+                id="act_prescption_line_view1">
+            <field name="sequence" eval="10"/>
+            <field name="view" ref="prescription_line_view_list"/>
+            <field name="act_window" ref="act_prescption_line"/>
+        </record>
+        <record model="ir.action.act_window.view"
+                id="act_prescption_line_view2">
+            <field name="sequence" eval="20"/>
+            <field name="view" ref="prescription_line_view_form"/>
+            <field name="act_window" ref="act_prescption_line"/>
+        </record>
+
+        <record model="ir.model.access" id="access_prescription_line">
+            <field name="model"
+                search="[('model', '=', 'farm.prescription.line')]"/>
+            <field name="perm_read" eval="True"/>
+            <field name="perm_write" eval="False"/>
+            <field name="perm_create" eval="False"/>
+            <field name="perm_delete" eval="False"/>
+        </record>
+        <record model="ir.model.access"
+            id="access_prescription_line_group_prescription">
+            <field name="model"
+                search="[('model', '=', 'farm.prescription.line')]"/>
+            <field name="group" ref="group_prescription"/>
+            <field name="perm_read" eval="True"/>
+            <field name="perm_write" eval="True"/>
+            <field name="perm_create" eval="True"/>
+            <field name="perm_delete" eval="True"/>
+        </record>
+
+        <!-- party.party -->
+        <record model="ir.ui.view" id="party_view_form">
+            <field name="model">party.party</field>
+            <field name="type">form</field>
+            <field name="inherit" ref="party.party_view_form"/>
+            <field name="name">party_form</field>
+        </record>
+
+        <record model="ir.ui.view" id="party_view_list">
+            <field name="model">party.party</field>
+            <field name="type">form</field>
+            <field name="type">tree</field>
+            <field name="inherit" ref="party.party_view_tree"/>
+            <field name="name">party_list</field>
+        </record>
+
+        <!-- product.template -->
+        <record model="ir.ui.view" id="product_template_view_form">
+            <field name="model">product.template</field>
+            <field name="type">form</field>
+            <field name="inherit" ref="product.template_view_form"/>
+            <field name="name">product_template_form</field>
+        </record>
+
+        <!-- stock.move -->
+        <record model="ir.ui.view" id="stock_move_view_form">
+            <field name="model">stock.move</field>
+            <field name="type">form</field>
+            <field name="inherit" ref="stock.move_view_form"/>
+            <field name="name">stock_move_form</field>
+        </record>
+
+        <!-- reports -->
+        <record model="ir.action.report" id="act_report_prescription">
+            <field name="name">Prescription</field>
+            <field name="model">farm.prescription</field>
+            <field name="report_name">farm.prescription.report</field>
+            <field name="report">farm_prescription/prescription.jrxml</field>
+        </record>
+
+        <!-- wizards -->
+        <record model="ir.action.wizard" id="print_prescription">
+            <field name="name">Print Prescription</field>
+            <field name="wiz_name">farm.prescription.print</field>
+            <field name="model">farm.prescription</field>
+        </record>
+        <record model="ir.action.keyword" id="print_prescription_keyword">
+            <field name="keyword">form_print</field>
+            <field name="model">farm.prescription,-1</field>
+            <field name="action" ref="print_prescription"/>
+        </record>
+
+        <!-- sequences -->
+        <record model="ir.sequence.type" id="sequence_type_prescription">
+            <field name="name">Prescription</field>
+            <field name="code">farm.prescription</field>
+        </record>
+        <record model="ir.sequence.type-res.group"
+            id="sequence_type_prescription_group_prescription">
+            <field name="sequence_type" ref="sequence_type_prescription"/>
+            <field name="group" ref="group_prescription"/>
+        </record>
+    </data>
+</tryton>

@@ -1,0 +1,51 @@
+<?xml version="1.0"?>
+<!-- The COPYRIGHT file at the top level of this repository contains the full
+     copyright notices and license terms. -->
+<form string="Prescription">
+    <label name="reference"/>
+    <field name="reference"/>
+    <label name="date"/>
+    <field name="date"/>
+    <label name="farm"/>
+    <field name="farm"/>
+    <label name="delivery_date"/>
+    <field name="delivery_date"/>
+    <label name="feed_product"/>
+    <field name="feed_product"/>
+    <group id="quantity_unit" colspan="2" col="4">
+        <label name="quantity"/>
+        <field name="quantity"/>
+        <label name="unit"/>
+        <field name="unit"/>
+    </group>
+    <label name="veterinarian"/>
+    <field name="veterinarian"/>
+    <label name="feed_lot"/>
+    <field name="feed_lot"/>
+    <notebook>
+        <page string="General" id="general">
+            <label name="afection"/>
+            <field name="afection"/>
+            <label name="retention_period"/>
+            <field name="retention_period"/>
+            <label name="waiting_period"/>
+            <field name="waiting_period"/>
+            <label name="dosage"/>
+            <field name="dosage"/>
+            <field name="lines" colspan="4"/>
+        </page>
+        <page string="Target Animals" id="target_animals">
+            <field name="animals" colspan="2"/>
+            <field name="animal_groups" colspan="2"/>
+        </page>
+        <page name="note">
+            <field name="note" colspan="4"/>
+        </page>
+    </notebook>
+    <group id="buttons" colspan="4">
+        <label name="state"/>
+        <field name="state"/>
+        <button name="confirm" string="Confirm" icon="tryton-go-next"/>
+        <button name="done" string="Done" icon="tryton-go-next"/>
+    </group>
+</form>

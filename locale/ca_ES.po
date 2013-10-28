@@ -1,0 +1,331 @@
+# 
+msgid ""
+msgstr "Content-Type: text/plain; charset=utf-8\n"
+
+msgctxt "error:farm.prescription:"
+msgid "Lot is required to mark prescription %s as done"
+msgstr "Es necessita un lot per a marcar la recepta %s com a realitzada"
+
+msgctxt "error:stock.move:"
+msgid "Move \"%s\" needs a confirmed prescription"
+msgstr "El moviment \"%s\" necessita una recepta confirmada"
+
+msgctxt "field:farm.prescription,afection:"
+msgid "Afection"
+msgstr "Afecció a tractar"
+
+msgctxt "field:farm.prescription,animal_groups:"
+msgid "Animal Groups"
+msgstr "Grups d'animals"
+
+msgctxt "field:farm.prescription,animal_lots:"
+msgid "Animals Lots"
+msgstr "Lots dels animals"
+
+msgctxt "field:farm.prescription,animals:"
+msgid "Animals"
+msgstr "Animal"
+
+msgctxt "field:farm.prescription,create_date:"
+msgid "Create Date"
+msgstr "Data creació"
+
+msgctxt "field:farm.prescription,create_uid:"
+msgid "Create User"
+msgstr "Usuari creació"
+
+msgctxt "field:farm.prescription,date:"
+msgid "Date"
+msgstr "Data"
+
+msgctxt "field:farm.prescription,delivery_date:"
+msgid "Delivery date"
+msgstr "Data d'enviament"
+
+msgctxt "field:farm.prescription,dosage:"
+msgid "Dosage"
+msgstr "Proporció/freqüencia"
+
+msgctxt "field:farm.prescription,farm:"
+msgid "Farm"
+msgstr "Granja"
+
+msgctxt "field:farm.prescription,id:"
+msgid "ID"
+msgstr "ID"
+
+msgctxt "field:farm.prescription,lines:"
+msgid "Lines"
+msgstr "Línies"
+
+msgctxt "field:farm.prescription,lot:"
+msgid "Lot"
+msgstr "Lot"
+
+msgctxt "field:farm.prescription,notes:"
+msgid "Notes"
+msgstr "Notes"
+
+msgctxt "field:farm.prescription,number:"
+msgid "Number"
+msgstr "Número"
+
+msgctxt "field:farm.prescription,quantity:"
+msgid "Quantity"
+msgstr "Quantitat"
+
+msgctxt "field:farm.prescription,rec_name:"
+msgid "Name"
+msgstr "Nom"
+
+msgctxt "field:farm.prescription,retention_period:"
+msgid "Retention period"
+msgstr "Període de retenció"
+
+msgctxt "field:farm.prescription,specie:"
+msgid "Specie"
+msgstr "Especie"
+
+msgctxt "field:farm.prescription,state:"
+msgid "State"
+msgstr "Estat"
+
+msgctxt "field:farm.prescription,veterinarian:"
+msgid "Veterinarian"
+msgstr "Veterinari"
+
+msgctxt "field:farm.prescription,waiting_period:"
+msgid "Waiting period"
+msgstr "Plaç d'espera"
+
+msgctxt "field:farm.prescription,write_date:"
+msgid "Write Date"
+msgstr "Data modificació"
+
+msgctxt "field:farm.prescription,write_uid:"
+msgid "Write User"
+msgstr "Usuari modificació"
+
+msgctxt "field:farm.prescription-animal,animal:"
+msgid "Animal"
+msgstr "Animal"
+
+msgctxt "field:farm.prescription-animal,create_date:"
+msgid "Create Date"
+msgstr "Data creació"
+
+msgctxt "field:farm.prescription-animal,create_uid:"
+msgid "Create User"
+msgstr "Usuari creació"
+
+msgctxt "field:farm.prescription-animal,id:"
+msgid "ID"
+msgstr "ID"
+
+msgctxt "field:farm.prescription-animal,prescription:"
+msgid "Prescription"
+msgstr "Recepta"
+
+msgctxt "field:farm.prescription-animal,rec_name:"
+msgid "Name"
+msgstr "Nom"
+
+msgctxt "field:farm.prescription-animal,write_date:"
+msgid "Write Date"
+msgstr "Data modificació"
+
+msgctxt "field:farm.prescription-animal,write_uid:"
+msgid "Write User"
+msgstr "Usuari modificació"
+
+msgctxt "field:farm.prescription-animal.group,create_date:"
+msgid "Create Date"
+msgstr "Data creació"
+
+msgctxt "field:farm.prescription-animal.group,create_uid:"
+msgid "Create User"
+msgstr "Usuari creació"
+
+msgctxt "field:farm.prescription-animal.group,group:"
+msgid "Animal Group"
+msgstr "Grup d'animals"
+
+msgctxt "field:farm.prescription-animal.group,id:"
+msgid "ID"
+msgstr "ID"
+
+msgctxt "field:farm.prescription-animal.group,prescription:"
+msgid "Prescription"
+msgstr "Recepta"
+
+msgctxt "field:farm.prescription-animal.group,rec_name:"
+msgid "Name"
+msgstr "Nom"
+
+msgctxt "field:farm.prescription-animal.group,write_date:"
+msgid "Write Date"
+msgstr "Data modificació"
+
+msgctxt "field:farm.prescription-animal.group,write_uid:"
+msgid "Write User"
+msgstr "Usuari modificació"
+
+msgctxt "field:farm.prescription.line,create_date:"
+msgid "Create Date"
+msgstr "Data creació"
+
+msgctxt "field:farm.prescription.line,create_uid:"
+msgid "Create User"
+msgstr "Usuari creació"
+
+msgctxt "field:farm.prescription.line,id:"
+msgid "ID"
+msgstr "ID"
+
+msgctxt "field:farm.prescription.line,prescription:"
+msgid "Prescription"
+msgstr "Recepta"
+
+msgctxt "field:farm.prescription.line,product:"
+msgid "Product"
+msgstr "Producte"
+
+msgctxt "field:farm.prescription.line,product_uom_category:"
+msgid "Product Uom Category"
+msgstr "Categoria UdM del producte"
+
+msgctxt "field:farm.prescription.line,quantity:"
+msgid "Quantity"
+msgstr "Quantitat"
+
+msgctxt "field:farm.prescription.line,rec_name:"
+msgid "Name"
+msgstr "Nom"
+
+msgctxt "field:farm.prescription.line,unit:"
+msgid "Unit"
+msgstr "Unitat"
+
+msgctxt "field:farm.prescription.line,unit_digits:"
+msgid "Unit Digits"
+msgstr "Dígits de la unitat"
+
+msgctxt "field:farm.prescription.line,write_date:"
+msgid "Write Date"
+msgstr "Data modificació"
+
+msgctxt "field:farm.prescription.line,write_uid:"
+msgid "Write User"
+msgstr "Usuari modificació"
+
+msgctxt "field:farm.specie,prescription_enabled:"
+msgid "Prescriptions Enabled"
+msgstr "Receptes activades"
+
+msgctxt "field:farm.specie,prescription_sequence:"
+msgid "Recipt Reference Sequence"
+msgstr "Seqûencia de les receptes"
+
+msgctxt "field:party.party,colegiate_number:"
+msgid "Colegiate number"
+msgstr "Número de colegiat"
+
+msgctxt "field:party.party,veterinarian:"
+msgid "Veterinarian"
+msgstr "Veterinari"
+
+msgctxt "field:product.template,prescription_required:"
+msgid "Prescription required"
+msgstr "Necessita recepta"
+
+msgctxt "field:stock.move,prescription:"
+msgid "Prescription"
+msgstr "Recepta"
+
+msgctxt "help:farm.specie,prescription_enabled:"
+msgid "This specie uses prescriptions."
+msgstr "Aquesta especie utiliza receptes."
+
+msgctxt "help:farm.specie,prescription_sequence:"
+msgid "Sequence used for prescriptions."
+msgstr "Seqüencia utilitzada per les receptes."
+
+msgctxt "model:farm.prescription,name:"
+msgid "Prescription"
+msgstr "Recepta"
+
+msgctxt "model:farm.prescription-animal,name:"
+msgid "Prescription Animal Relation"
+msgstr "Relació Receptes animals"
+
+msgctxt "model:farm.prescription-animal.group,name:"
+msgid "Prescription Animal Group Relation"
+msgstr "Relació Receptes Grup d'animals"
+
+msgctxt "model:farm.prescription.line,name:"
+msgid "Prescription Line"
+msgstr "Línia recepta"
+
+msgctxt "model:ir.action,name:act_prescption_lines"
+msgid "Prescription Line"
+msgstr "Línia recepta"
+
+msgctxt "model:ir.action,name:act_prescription"
+msgid "Prescription"
+msgstr "Recepta"
+
+msgctxt "model:ir.action,name:act_report_prescription"
+msgid "Prescription"
+msgstr "Recepta"
+
+msgctxt "model:ir.action,name:print_prescription"
+msgid "Prescription"
+msgstr "Recepta"
+
+msgctxt "model:ir.sequence.strict,name:sequence_prescription"
+msgid "Prescriptions sequence"
+msgstr "Seqüència receptes"
+
+msgctxt "model:ir.sequence.type,name:sequence_type_prescription"
+msgid "Prescription"
+msgstr "Recepta"
+
+msgctxt "model:res.group,name:group_prescription"
+msgid "Prescriptions"
+msgstr "Receptes"
+
+msgctxt "selection:farm.prescription,state:"
+msgid "Confirmed"
+msgstr "Confirmat"
+
+msgctxt "selection:farm.prescription,state:"
+msgid "Done"
+msgstr "Realitzat"
+
+msgctxt "selection:farm.prescription,state:"
+msgid "Draft"
+msgstr "Esborrany"
+
+msgctxt "view:farm.prescription.line:"
+msgid "Prescription Line"
+msgstr "Línia recepta"
+
+msgctxt "view:farm.prescription:"
+msgid "Confirm"
+msgstr "Confirma"
+
+msgctxt "view:farm.prescription:"
+msgid "Done"
+msgstr "Realitzat"
+
+msgctxt "view:farm.prescription:"
+msgid "General"
+msgstr "General"
+
+msgctxt "view:farm.prescription:"
+msgid "Notes"
+msgstr "Notes"
+
+msgctxt "view:farm.prescription:"
+msgid "Prescription"
+msgstr "Recepta"

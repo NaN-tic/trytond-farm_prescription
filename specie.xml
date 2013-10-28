@@ -1,0 +1,20 @@
+<?xml version="1.0"?>
+<!-- The COPYRIGHT file at the top level of this repository contains the full
+     copyright notices and license terms. -->
+<tryton>
+    <data>
+        <record model="ir.ui.view" id="farm_specie_form_view">
+            <field name="model">farm.specie</field>
+            <field name="type">form</field>
+            <field name="name">farm_specie_form</field>
+            <field name="inherit" ref="farm.farm_specie_form_view"/>
+        </record>
+
+        <record model="ir.ui.view" id="farm_specie_list_view">
+            <field name="model">farm.specie</field>
+            <field name="type">tree</field>
+            <field name="name">farm_specie_list</field>
+            <field name="inherit" ref="farm.farm_specie_list_view"/>
+        </record>
+    </data>
+</tryton>

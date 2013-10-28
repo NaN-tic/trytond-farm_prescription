@@ -1,0 +1,11 @@
+<?xml version="1.0"?>
+<!-- The COPYRIGHT file at the top level of this repository contains the full
+     copyright notices and license terms. -->
+<data>
+    <xpath expr="//field[@name='group_enabled']" position="after">
+        <label name="prescription_sequence"/>
+        <field name="prescription_sequence"/>
+        <label name="prescription_enabled"/>
+        <field name="prescription_enabled"/>
+    </xpath>
+</data>
