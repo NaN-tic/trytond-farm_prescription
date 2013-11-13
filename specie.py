@@ -16,7 +16,7 @@ class Specie:
     prescription_enabled = fields.Boolean('Prescriptions Enabled',
         help="This specie uses prescriptions.")
     prescription_sequence = fields.Many2One('ir.sequence.strict',
-        'Recipt Reference Sequence', domain=[
+        'Prescription Reference Sequence', domain=[
             ('code', '=', 'farm.prescription'),
         ], states={
             'readonly': Not(Bool(Eval('prescription_enabled'))),

@@ -5,7 +5,7 @@ import datetime
 from trytond.model import ModelView, ModelSQL, Workflow, fields
 from trytond.pool import Pool, PoolMeta
 from trytond.transaction import Transaction
-from trytond.pyson import Bool, Equal, Eval, If, Not
+from trytond.pyson import And, Bool, Equal, Eval, If, Not
 from trytond.wizard import Wizard, StateAction, StateTransition
 from trytond.modules.jasper_reports.jasper import JasperReport
 
@@ -90,7 +90,8 @@ class Prescription(Workflow, ModelSQL, ModelView):
                 ()),
             ],
         states={
-            'required': Not(Bool(Eval('animal_groups'))),
+            'required': And(Eval('state') == 'confirmed',
+                Not(Bool(Eval('animal_groups')))),
             'readonly': Eval('state') != 'draft',
             }, depends=_DEPENDS + ['specie', 'farm', 'animal_groups'])
     animal_groups = fields.Many2Many('farm.prescription-animal.group',
@@ -101,7 +102,8 @@ class Prescription(Workflow, ModelSQL, ModelView):
                 ()),
             ],
         states={
-            'required': Not(Bool(Eval('animals'))),
+            'required': And(Eval('state') == 'confirmed',
+                Not(Bool(Eval('animals')))),
             'readonly': Eval('state') != 'draft',
             }, depends=_DEPENDS + ['specie', 'farm', 'animals'])
     animal_lots = fields.Function(fields.Many2Many('stock.lot', None, None,
@@ -123,6 +125,8 @@ class Prescription(Workflow, ModelSQL, ModelView):
         ('confirmed', 'Confirmed'),
         ('done', 'Done'),
         ], 'State', readonly=True, required=True, select=True)
+    origin = fields.Reference('Origin', selection='get_origin',
+        states=_STATES, depends=_DEPENDS)
 
     @classmethod
     def __setup__(cls):
@@ -176,6 +180,21 @@ class Prescription(Workflow, ModelSQL, ModelView):
 
     def get_animal_lots(self, name):
         return [a.lot.id for a in self.animals + self.animal_groups]
+
+    @classmethod
+    def _get_origin(cls):
+        'Return list of Model names for origin Reference'
+        return []
+
+    @classmethod
+    def get_origin(cls):
+        pool = Pool()
+        Model = pool.get('ir.model')
+        models = cls._get_origin()
+        models = Model.search([
+                ('model', 'in', models),
+                ])
+        return [('', '')] + [(m.model, m.name) for m in models]
 
     @classmethod
     @ModelView.button
@@ -299,6 +318,10 @@ class PrescriptionLine(ModelSQL, ModelView):
             return self.unit.digits
         return 2
 
+    def compute_quantity(self, factor):
+        Uom = Pool().get('product.uom')
+        return Uom.round(self.quantity * factor, self.unit.rounding)
+
 
 class PrescriptionReport(JasperReport):
     'Prescription'
@@ -324,10 +347,7 @@ class PrintPrescription(Wizard):
 class Move:
     __name__ = 'stock.move'
 
-    prescription = fields.Many2One('farm.prescription', 'Prescription',
-        domain=[
-            ('farm', '=', Eval('to_location', {}.get('warehouse'))),
-            ], depends=['to_location'])
+    prescription = fields.Many2One('farm.prescription', 'Prescription')
 
     @classmethod
     def __setup__(cls):
