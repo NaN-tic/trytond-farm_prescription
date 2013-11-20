@@ -355,14 +355,18 @@ class Move:
         cls._error_messages.update({
                 'need_prescription': ('Move "%s" needs a confirmed '
                     'prescription'),
+                'conf_prescription': ('Prescription "%s" of move "%s" must be '
+                    'confirmed before assigning the move'),
                 })
 
     @classmethod
-    def do(cls, moves):
+    def assign(cls, moves):
         for move in moves:
-            if move.product.prescription_required:
+            if move.product.prescription_required or move.prescription:
                 prescription = move.prescription
-                if not prescription or prescription.state == 'draft':
-                    cls.raise_user_error('need_prescription',
-                        move.rec_name)
+                if not prescription:
+                    cls.raise_user_error('need_prescription', move.rec_name)
+                if prescription.state == 'draft':
+                    cls.raise_user_error('conf_prescription',
+                        (prescription.rec_name,  move.rec_name))
         super(Move, cls).do(moves)
