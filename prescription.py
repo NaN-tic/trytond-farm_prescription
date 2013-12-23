@@ -361,12 +361,16 @@ class Move:
 
     @classmethod
     def assign(cls, moves):
+        pool = Pool()
+        ShipmentOut = pool.get('stock.shipment.out')
         for move in moves:
-            if move.product.prescription_required or move.prescription:
+            if (move.prescription or move.product.prescription_required and
+                    (move.shipment and isinstance(move.shipment, ShipmentOut)
+                    or move.production_input)):
                 prescription = move.prescription
                 if not prescription:
                     cls.raise_user_error('need_prescription', move.rec_name)
                 if prescription.state == 'draft':
                     cls.raise_user_error('conf_prescription',
-                        (prescription.rec_name,  move.rec_name))
+                        (prescription.rec_name, move.rec_name))
         super(Move, cls).do(moves)
