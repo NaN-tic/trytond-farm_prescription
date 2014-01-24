@@ -373,4 +373,4 @@ class Move:
                 if prescription.state == 'draft':
                     cls.raise_user_error('conf_prescription',
                         (prescription.rec_name, move.rec_name))
-        super(Move, cls).do(moves)
+        super(Move, cls).assign(moves)
