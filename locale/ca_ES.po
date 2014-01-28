@@ -3,12 +3,26 @@ msgid ""
 msgstr "Content-Type: text/plain; charset=utf-8\n"
 
 msgctxt "error:farm.prescription:"
-msgid "Lot is required to mark prescription %s as done"
-msgstr "Es necessita un lot per a marcar la recepta %s com a realitzada"
+msgid "Lot is required to set done the prescription \"%s\"."
+msgstr ""
+
+msgctxt "error:farm.prescription:"
+msgid ""
+"The prescription \"%s\" must have at least one line in order to be "
+"confirmed."
+msgstr ""
+
+msgctxt "error:farm.prescription:"
+msgid "Veterinarian is requried to confirm the prescription \"%s\"."
+msgstr ""
 
 msgctxt "error:stock.move:"
 msgid "Move \"%s\" needs a confirmed prescription"
 msgstr "El moviment \"%s\" necessita una recepta confirmada"
+
+msgctxt "error:stock.move:"
+msgid "Prescription \"%s\" of move \"%s\" must be confirmed before assigning the move"
+msgstr ""
 
 msgctxt "field:farm.prescription,afection:"
 msgid "Afection"
@@ -50,6 +64,14 @@ msgctxt "field:farm.prescription,farm:"
 msgid "Farm"
 msgstr "Granja"
 
+msgctxt "field:farm.prescription,feed_lot:"
+msgid "Feed Lot"
+msgstr ""
+
+msgctxt "field:farm.prescription,feed_product:"
+msgid "Feed"
+msgstr ""
+
 msgctxt "field:farm.prescription,id:"
 msgid "ID"
 msgstr "ID"
@@ -58,17 +80,15 @@ msgctxt "field:farm.prescription,lines:"
 msgid "Lines"
 msgstr "Línies"
 
-msgctxt "field:farm.prescription,lot:"
-msgid "Lot"
-msgstr "Lot"
+#, fuzzy
+msgctxt "field:farm.prescription,note:"
+msgid "Note"
+msgstr "Nota"
 
-msgctxt "field:farm.prescription,notes:"
-msgid "Notes"
-msgstr "Notes"
-
-msgctxt "field:farm.prescription,number:"
-msgid "Number"
-msgstr "Número"
+#, fuzzy
+msgctxt "field:farm.prescription,origin:"
+msgid "Origin"
+msgstr "Origen"
 
 msgctxt "field:farm.prescription,quantity:"
 msgid "Quantity"
@@ -77,6 +97,11 @@ msgstr "Quantitat"
 msgctxt "field:farm.prescription,rec_name:"
 msgid "Name"
 msgstr "Nom"
+
+#, fuzzy
+msgctxt "field:farm.prescription,reference:"
+msgid "Reference"
+msgstr "Referència"
 
 msgctxt "field:farm.prescription,retention_period:"
 msgid "Retention period"
@@ -89,6 +114,16 @@ msgstr "Especie"
 msgctxt "field:farm.prescription,state:"
 msgid "State"
 msgstr "Estat"
+
+#, fuzzy
+msgctxt "field:farm.prescription,unit:"
+msgid "Unit"
+msgstr "Unitat"
+
+#, fuzzy
+msgctxt "field:farm.prescription,unit_digits:"
+msgid "Unit Digits"
+msgstr "Dígits de la unitat"
 
 msgctxt "field:farm.prescription,veterinarian:"
 msgid "Veterinarian"
@@ -223,12 +258,12 @@ msgid "Prescriptions Enabled"
 msgstr "Receptes activades"
 
 msgctxt "field:farm.specie,prescription_sequence:"
-msgid "Recipt Reference Sequence"
+msgid "Prescription Reference Sequence"
 msgstr "Seqûencia de les receptes"
 
-msgctxt "field:party.party,colegiate_number:"
-msgid "Colegiate number"
-msgstr "Número de colegiat"
+msgctxt "field:party.party,collegiate_number:"
+msgid "Collegiate Number"
+msgstr ""
 
 msgctxt "field:party.party,veterinarian:"
 msgid "Veterinarian"
@@ -242,6 +277,10 @@ msgctxt "field:stock.move,prescription:"
 msgid "Prescription"
 msgstr "Recepta"
 
+msgctxt "help:farm.prescription,feed_product:"
+msgid "The product of the base feed which should be complemented with drugs."
+msgstr ""
+
 msgctxt "help:farm.specie,prescription_enabled:"
 msgid "This specie uses prescriptions."
 msgstr "Aquesta especie utiliza receptes."
@@ -249,6 +288,75 @@ msgstr "Aquesta especie utiliza receptes."
 msgctxt "help:farm.specie,prescription_sequence:"
 msgid "Sequence used for prescriptions."
 msgstr "Seqüencia utilitzada per les receptes."
+
+#, fuzzy
+msgctxt "jasper:farm.prescription.report:"
+msgid "Afection"
+msgstr "Afecció a tractar"
+
+msgctxt "jasper:farm.prescription.report:"
+msgid "DOSIFICATION"
+msgstr ""
+
+#, fuzzy
+msgctxt "jasper:farm.prescription.report:"
+msgid "Delivery date"
+msgstr "Data d'enviament"
+
+msgctxt "jasper:farm.prescription.report:"
+msgid "Denomination of autorized medicated mixtures"
+msgstr ""
+
+msgctxt "jasper:farm.prescription.report:"
+msgid "Especial notes"
+msgstr ""
+
+msgctxt "jasper:farm.prescription.report:"
+msgid "Number e identification of the animals"
+msgstr ""
+
+#, fuzzy
+msgctxt "jasper:farm.prescription.report:"
+msgid "Quantity"
+msgstr "Quantitat"
+
+msgctxt "jasper:farm.prescription.report:"
+msgid "RECIPT"
+msgstr ""
+
+#, fuzzy
+msgctxt "jasper:farm.prescription.report:"
+msgid "Retention period"
+msgstr "Període de retenció"
+
+msgctxt "jasper:farm.prescription.report:"
+msgid "Supplier Signature"
+msgstr ""
+
+msgctxt "jasper:farm.prescription.report:"
+msgid "Surname, name and address of manufacturer or supplier"
+msgstr ""
+
+msgctxt "jasper:farm.prescription.report:"
+msgid "Surname, name and address of the party"
+msgstr ""
+
+msgctxt "jasper:farm.prescription.report:"
+msgid "Surname, name and address of veterinarian"
+msgstr ""
+
+msgctxt "jasper:farm.prescription.report:"
+msgid "THIS RECIPT CAN ONLY BE USED ONE TIME"
+msgstr ""
+
+msgctxt "jasper:farm.prescription.report:"
+msgid "Veterinarian Signature"
+msgstr ""
+
+#, fuzzy
+msgctxt "jasper:farm.prescription.report:"
+msgid "Waiting period"
+msgstr "Plaç d'espera"
 
 msgctxt "model:farm.prescription,name:"
 msgid "Prescription"
@@ -266,7 +374,8 @@ msgctxt "model:farm.prescription.line,name:"
 msgid "Prescription Line"
 msgstr "Línia recepta"
 
-msgctxt "model:ir.action,name:act_prescption_lines"
+#, fuzzy
+msgctxt "model:ir.action,name:act_prescption_line"
 msgid "Prescription Line"
 msgstr "Línia recepta"
 
@@ -279,19 +388,15 @@ msgid "Prescription"
 msgstr "Recepta"
 
 msgctxt "model:ir.action,name:print_prescription"
-msgid "Prescription"
+msgid "Print Prescription"
 msgstr "Recepta"
-
-msgctxt "model:ir.sequence.strict,name:sequence_prescription"
-msgid "Prescriptions sequence"
-msgstr "Seqüència receptes"
 
 msgctxt "model:ir.sequence.type,name:sequence_type_prescription"
 msgid "Prescription"
 msgstr "Recepta"
 
 msgctxt "model:res.group,name:group_prescription"
-msgid "Prescriptions"
+msgid "Farm / Prescriptions"
 msgstr "Receptes"
 
 msgctxt "selection:farm.prescription,state:"
@@ -323,9 +428,13 @@ msgid "General"
 msgstr "General"
 
 msgctxt "view:farm.prescription:"
-msgid "Notes"
-msgstr "Notes"
-
-msgctxt "view:farm.prescription:"
 msgid "Prescription"
 msgstr "Recepta"
+
+msgctxt "view:farm.prescription:"
+msgid "Prescriptions"
+msgstr ""
+
+msgctxt "view:farm.prescription:"
+msgid "Target Animals"
+msgstr ""

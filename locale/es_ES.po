@@ -3,12 +3,28 @@ msgid ""
 msgstr "Content-Type: text/plain; charset=utf-8\n"
 
 msgctxt "error:farm.prescription:"
-msgid "Lot is required to mark prescription %s as done"
-msgstr "Se require el lote para marcar la receta \"%s\" como realizada."
+msgid "Lot is required to set done the prescription \"%s\"."
+msgstr "El lote es requerido para poder realizar la receta \"%s\"."
+
+msgctxt "error:farm.prescription:"
+msgid ""
+"The prescription \"%s\" must have at least one line in order to be "
+"confirmed."
+msgstr "La receta \"%s\" debe tener al menos una línea para poder ser confirmada."
+
+msgctxt "error:farm.prescription:"
+msgid "Veterinarian is requried to confirm the prescription \"%s\"."
+msgstr "El veterinario es requerido para confirmar la receta \"%s\"."
 
 msgctxt "error:stock.move:"
 msgid "Move \"%s\" needs a confirmed prescription"
 msgstr "El movimiento \"%s\" necessita una receta confirmada."
+
+msgctxt "error:stock.move:"
+msgid "Prescription \"%s\" of move \"%s\" must be confirmed before assigning the move"
+msgstr ""
+"La receta \"%s\" del movimiento \"%s\" debe ser confirmada antes de asignar "
+"el movimiento."
 
 msgctxt "field:farm.prescription,afection:"
 msgid "Afection"
@@ -16,7 +32,7 @@ msgstr "Afección a tratar"
 
 msgctxt "field:farm.prescription,animal_groups:"
 msgid "Animal Groups"
-msgstr "Grupos de Animales"
+msgstr "Grupos de animales"
 
 msgctxt "field:farm.prescription,animal_lots:"
 msgid "Animals Lots"
@@ -24,7 +40,7 @@ msgstr "Lote de los animales"
 
 msgctxt "field:farm.prescription,animals:"
 msgid "Animals"
-msgstr "Animal"
+msgstr "Animales"
 
 msgctxt "field:farm.prescription,create_date:"
 msgid "Create Date"
@@ -50,6 +66,14 @@ msgctxt "field:farm.prescription,farm:"
 msgid "Farm"
 msgstr "Granja"
 
+msgctxt "field:farm.prescription,feed_lot:"
+msgid "Feed Lot"
+msgstr "Lote pienso"
+
+msgctxt "field:farm.prescription,feed_product:"
+msgid "Feed"
+msgstr "Pienso"
+
 msgctxt "field:farm.prescription,id:"
 msgid "ID"
 msgstr "ID"
@@ -58,17 +82,13 @@ msgctxt "field:farm.prescription,lines:"
 msgid "Lines"
 msgstr "Líneas"
 
-msgctxt "field:farm.prescription,lot:"
-msgid "Lot"
-msgstr "Lote"
+msgctxt "field:farm.prescription,note:"
+msgid "Note"
+msgstr "Nota"
 
-msgctxt "field:farm.prescription,notes:"
-msgid "Notes"
-msgstr "Notas"
-
-msgctxt "field:farm.prescription,number:"
-msgid "Number"
-msgstr "Número"
+msgctxt "field:farm.prescription,origin:"
+msgid "Origin"
+msgstr "Origen"
 
 msgctxt "field:farm.prescription,quantity:"
 msgid "Quantity"
@@ -77,6 +97,10 @@ msgstr "Cantidad"
 msgctxt "field:farm.prescription,rec_name:"
 msgid "Name"
 msgstr "Nombre"
+
+msgctxt "field:farm.prescription,reference:"
+msgid "Reference"
+msgstr "Referencia"
 
 msgctxt "field:farm.prescription,retention_period:"
 msgid "Retention period"
@@ -89,6 +113,14 @@ msgstr "Especie"
 msgctxt "field:farm.prescription,state:"
 msgid "State"
 msgstr "Estado"
+
+msgctxt "field:farm.prescription,unit:"
+msgid "Unit"
+msgstr "Unidad"
+
+msgctxt "field:farm.prescription,unit_digits:"
+msgid "Unit Digits"
+msgstr "Dígitos unidad"
 
 msgctxt "field:farm.prescription,veterinarian:"
 msgid "Veterinarian"
@@ -148,7 +180,7 @@ msgstr "Usuario de creación"
 
 msgctxt "field:farm.prescription-animal.group,group:"
 msgid "Animal Group"
-msgstr "Grupo de Animales"
+msgstr "Grupo de animales"
 
 msgctxt "field:farm.prescription-animal.group,id:"
 msgid "ID"
@@ -223,12 +255,12 @@ msgid "Prescriptions Enabled"
 msgstr "Recetas activadas"
 
 msgctxt "field:farm.specie,prescription_sequence:"
-msgid "Recipt Reference Sequence"
+msgid "Prescription Reference Sequence"
 msgstr "Secuencia recetas"
 
-msgctxt "field:party.party,colegiate_number:"
-msgid "Colegiate number"
-msgstr "Numero de colegiado"
+msgctxt "field:party.party,collegiate_number:"
+msgid "Collegiate Number"
+msgstr "Número de colegiado"
 
 msgctxt "field:party.party,veterinarian:"
 msgid "Veterinarian"
@@ -242,6 +274,12 @@ msgctxt "field:stock.move,prescription:"
 msgid "Prescription"
 msgstr "Receta"
 
+msgctxt "help:farm.prescription,feed_product:"
+msgid "The product of the base feed which should be complemented with drugs."
+msgstr ""
+"El producto del pienso base que debe ser complementado con productos "
+"medicamentosos."
+
 msgctxt "help:farm.specie,prescription_enabled:"
 msgid "This specie uses prescriptions."
 msgstr "Esta especie utiliza recetas."
@@ -249,6 +287,70 @@ msgstr "Esta especie utiliza recetas."
 msgctxt "help:farm.specie,prescription_sequence:"
 msgid "Sequence used for prescriptions."
 msgstr "Secuencia que se utiliza en las recetas."
+
+msgctxt "jasper:farm.prescription.report:"
+msgid "Afection"
+msgstr "Afección a tratar"
+
+msgctxt "jasper:farm.prescription.report:"
+msgid "DOSIFICATION"
+msgstr "DOSIFICACIÓN"
+
+msgctxt "jasper:farm.prescription.report:"
+msgid "Delivery date"
+msgstr "Fecha de entrega"
+
+msgctxt "jasper:farm.prescription.report:"
+msgid "Denomination of autorized medicated mixtures"
+msgstr "Denominación de las mezclas medicamentos autorizadas"
+
+msgctxt "jasper:farm.prescription.report:"
+msgid "Especial notes"
+msgstr "Notas especiales"
+
+msgctxt "jasper:farm.prescription.report:"
+msgid "Number e identification of the animals"
+msgstr "Número de identificación de los animales"
+
+msgctxt "jasper:farm.prescription.report:"
+msgid "Quantity"
+msgstr "Cantidad"
+
+msgctxt "jasper:farm.prescription.report:"
+msgid "RECIPT"
+msgstr "RECETA"
+
+msgctxt "jasper:farm.prescription.report:"
+msgid "Retention period"
+msgstr "Plazo de conservación"
+
+msgctxt "jasper:farm.prescription.report:"
+msgid "Supplier Signature"
+msgstr "Firma proveedor"
+
+msgctxt "jasper:farm.prescription.report:"
+msgid "Surname, name and address of manufacturer or supplier"
+msgstr "Apellido, nombre y dirección del fabricante o proveedor"
+
+msgctxt "jasper:farm.prescription.report:"
+msgid "Surname, name and address of the party"
+msgstr "Apellido, nombre y dirección del tercero"
+
+msgctxt "jasper:farm.prescription.report:"
+msgid "Surname, name and address of veterinarian"
+msgstr "Apellido, nombre y dirección del veterinario"
+
+msgctxt "jasper:farm.prescription.report:"
+msgid "THIS RECIPT CAN ONLY BE USED ONE TIME"
+msgstr "ESTA RECETE SOLO PUEDE SER USADA UNA VEZ"
+
+msgctxt "jasper:farm.prescription.report:"
+msgid "Veterinarian Signature"
+msgstr "Firma veterinario"
+
+msgctxt "jasper:farm.prescription.report:"
+msgid "Waiting period"
+msgstr "Plazo de espera"
 
 msgctxt "model:farm.prescription,name:"
 msgid "Prescription"
@@ -266,7 +368,7 @@ msgctxt "model:farm.prescription.line,name:"
 msgid "Prescription Line"
 msgstr "Linea Receta"
 
-msgctxt "model:ir.action,name:act_prescption_lines"
+msgctxt "model:ir.action,name:act_prescption_line"
 msgid "Prescription Line"
 msgstr "Linea Receta"
 
@@ -279,20 +381,16 @@ msgid "Prescription"
 msgstr "Receta"
 
 msgctxt "model:ir.action,name:print_prescription"
-msgid "Prescription"
-msgstr "Receta"
-
-msgctxt "model:ir.sequence.strict,name:sequence_prescription"
-msgid "Prescriptions sequence"
-msgstr "Sequencia recetas"
+msgid "Print Prescription"
+msgstr "Imprimir receta"
 
 msgctxt "model:ir.sequence.type,name:sequence_type_prescription"
 msgid "Prescription"
 msgstr "Receta"
 
 msgctxt "model:res.group,name:group_prescription"
-msgid "Prescriptions"
-msgstr "Recetas"
+msgid "Farm / Prescriptions"
+msgstr "Granja / Recetas"
 
 msgctxt "selection:farm.prescription,state:"
 msgid "Confirmed"
@@ -323,9 +421,13 @@ msgid "General"
 msgstr "General"
 
 msgctxt "view:farm.prescription:"
-msgid "Notes"
-msgstr "Notas"
-
-msgctxt "view:farm.prescription:"
 msgid "Prescription"
 msgstr "Receta"
+
+msgctxt "view:farm.prescription:"
+msgid "Prescriptions"
+msgstr "Recetas"
+
+msgctxt "view:farm.prescription:"
+msgid "Target Animals"
+msgstr "Animales objetivo"
