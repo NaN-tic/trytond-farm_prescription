@@ -5,7 +5,7 @@ import datetime
 from trytond.model import ModelView, ModelSQL, Workflow, fields
 from trytond.pool import Pool, PoolMeta
 from trytond.transaction import Transaction
-from trytond.pyson import And, Bool, Equal, Eval, If, Not
+from trytond.pyson import And, Bool, Equal, Eval, Get, If, Not, Or
 from trytond.wizard import Wizard, StateAction, StateTransition
 from trytond.modules.jasper_reports.jasper import JasperReport
 
@@ -108,17 +108,23 @@ class Prescription(Workflow, ModelSQL, ModelView):
             }, depends=_DEPENDS + ['specie', 'farm', 'animals'])
     animal_lots = fields.Function(fields.Many2Many('stock.lot', None, None,
         'Animals Lots'), 'get_animal_lots')
-    afection = fields.Char('Afection', states=_STATES, depends=_DEPENDS)
-    waiting_period = fields.Char('Waiting period', states=_STATES,
-        depends=_DEPENDS)
-    retention_period = fields.Char('Retention period', states=_STATES,
+    afection = fields.Char('Afection', required=True, states=_STATES,
         depends=_DEPENDS)
     dosage = fields.Char('Dosage', states=_STATES, depends=_DEPENDS)
+    waiting_period = fields.Integer('Waiting period', on_change_with=['lines'],
+        states={
+            'readonly': Or(Eval('n_lines', 0) > 1, Eval('state') != 'draft'),
+            }, depends=['n_lines', 'state'])
+    retention_period = fields.Integer('Retention period', states=_STATES,
+        depends=_DEPENDS)
     lines = fields.One2Many('farm.prescription.line', 'prescription', 'Lines',
         states={
             'required': Eval('state') == 'confirmed',
             'readonly': Eval('state') != 'draft',
             }, depends=_DEPENDS)
+    n_lines = fields.Function(fields.Integer('Num. of lines',
+            on_change_with=['lines']),
+        'on_change_with_n_lines')
     note = fields.Text('Note')
     state = fields.Selection([
         ('draft', 'Draft'),
@@ -161,6 +167,10 @@ class Prescription(Workflow, ModelSQL, ModelView):
         return datetime.date.today()
 
     @staticmethod
+    def default_n_lines():
+        return 0
+
+    @staticmethod
     def default_state():
         return 'draft'
 
@@ -177,6 +187,13 @@ class Prescription(Workflow, ModelSQL, ModelView):
         if self.feed_product:
             return self.feed_product.default_uom.digits
         return 2
+
+    def on_change_with_waiting_period(self):
+        if self.lines and len(self.lines) > 1:
+            return 28
+
+    def on_change_with_n_lines(self, name=None):
+        return len(self.lines) if self.lines else 0
 
     def get_animal_lots(self, name):
         return [a.lot.id for a in self.animals + self.animal_groups]

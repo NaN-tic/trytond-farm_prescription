@@ -28,10 +28,10 @@
             <field name="afection"/>
             <label name="retention_period"/>
             <field name="retention_period"/>
-            <label name="waiting_period"/>
-            <field name="waiting_period"/>
             <label name="dosage"/>
             <field name="dosage"/>
+            <label name="waiting_period"/>
+            <field name="waiting_period"/>
             <field name="lines" colspan="4"/>
         </page>
         <page string="Target Animals" id="target_animals">
