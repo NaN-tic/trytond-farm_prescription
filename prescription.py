@@ -16,7 +16,11 @@ __metaclass__ = PoolMeta
 
 _STATES = {
     'readonly': Eval('state') != 'draft',
-}
+    }
+_STATES_REQUIRED = {
+    'required': Eval('state') != 'draft',
+    'readonly': Eval('state') != 'draft',
+    }
 _DEPENDS = ['state']
 
 
@@ -40,10 +44,8 @@ class Prescription(Workflow, ModelSQL, ModelView):
     __name__ = 'farm.prescription'
     _rec_name = 'reference'
 
-    reference = fields.Char('Reference', select=True, states={
-            'required': Eval('state') == 'confirmed',
-            'readonly': Eval('state') != 'draft',
-            },
+    reference = fields.Char('Reference', select=True, states=_STATES_REQUIRED,
+        depends=_DEPENDS,
         help='If there is a real prescription; put its reference here. '
         'Otherwise, leave it blank and it will be computed automatically with '
         'the configured sequence.')
@@ -63,10 +65,7 @@ class Prescription(Workflow, ModelSQL, ModelView):
     veterinarian = fields.Many2One('party.party', 'Veterinarian', domain=[
             ('veterinarian', '=', True),
             ],
-        states={
-            'required': Eval('state') == 'confirmed',
-            'readonly': Eval('state') != 'draft',
-            }, depends=_DEPENDS)
+        states=_STATES_REQUIRED, depends=_DEPENDS)
     feed_product = fields.Many2One('product.product', 'Feed', required=True,
         states=_STATES, depends=_DEPENDS,
         help='The product of the base feed which should be complemented with '
@@ -94,7 +93,7 @@ class Prescription(Workflow, ModelSQL, ModelView):
                 ()),
             ],
         states={
-            'required': And(Eval('state') == 'confirmed',
+            'required': And(Eval('state') != 'draft',
                 Not(Bool(Eval('animal_groups')))),
             'readonly': Eval('state') != 'draft',
             }, depends=_DEPENDS + ['specie', 'farm', 'animal_groups'])
@@ -106,17 +105,18 @@ class Prescription(Workflow, ModelSQL, ModelView):
                 ()),
             ],
         states={
-            'required': And(Eval('state') == 'confirmed',
+            'required': And(Eval('state') != 'draft',
                 Not(Bool(Eval('animals')))),
             'readonly': Eval('state') != 'draft',
             }, depends=_DEPENDS + ['specie', 'farm', 'animals'])
     animal_lots = fields.Function(fields.Many2Many('stock.lot', None, None,
         'Animals Lots'), 'get_animal_lots')
-    afection = fields.Char('Afection', required=True, states=_STATES,
+    afection = fields.Char('Afection', states=_STATES_REQUIRED,
         depends=_DEPENDS)
     dosage = fields.Char('Dosage', states=_STATES, depends=_DEPENDS)
     waiting_period = fields.Integer('Waiting Period', on_change_with=['lines'],
         states={
+            'required': Eval('state') != 'draft',
             'readonly': Or(Eval('n_lines', 0) > 1, Eval('state') != 'draft'),
             }, depends=['n_lines', 'state'],
         help='The number of days that must pass since the produced feed is '
@@ -124,10 +124,7 @@ class Prescription(Workflow, ModelSQL, ModelView):
     expiry_period = fields.Integer('Expiry Period', states=_STATES,
         depends=_DEPENDS)
     lines = fields.One2Many('farm.prescription.line', 'prescription', 'Lines',
-        states={
-            'required': Eval('state') == 'confirmed',
-            'readonly': Eval('state') != 'draft',
-            }, depends=_DEPENDS)
+        states=_STATES_REQUIRED, depends=_DEPENDS)
     n_lines = fields.Function(fields.Integer('Num. of lines',
             on_change_with=['lines']),
         'on_change_with_n_lines')
