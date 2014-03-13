@@ -60,6 +60,10 @@ msgctxt "field:farm.prescription,dosage:"
 msgid "Dosage"
 msgstr "Proporció/freqüencia"
 
+msgctxt "field:farm.prescription,expiry_period:"
+msgid "Expiry Period"
+msgstr ""
+
 msgctxt "field:farm.prescription,farm:"
 msgid "Farm"
 msgstr "Granja"
@@ -79,6 +83,10 @@ msgstr "ID"
 msgctxt "field:farm.prescription,lines:"
 msgid "Lines"
 msgstr "Línies"
+
+msgctxt "field:farm.prescription,n_lines:"
+msgid "Num. of lines"
+msgstr ""
 
 #, fuzzy
 msgctxt "field:farm.prescription,note:"
@@ -103,10 +111,6 @@ msgctxt "field:farm.prescription,reference:"
 msgid "Reference"
 msgstr "Referència"
 
-msgctxt "field:farm.prescription,retention_period:"
-msgid "Retention period"
-msgstr "Període de retenció"
-
 msgctxt "field:farm.prescription,specie:"
 msgid "Specie"
 msgstr "Especie"
@@ -129,8 +133,9 @@ msgctxt "field:farm.prescription,veterinarian:"
 msgid "Veterinarian"
 msgstr "Veterinari"
 
+#, fuzzy
 msgctxt "field:farm.prescription,waiting_period:"
-msgid "Waiting period"
+msgid "Waiting Period"
 msgstr "Plaç d'espera"
 
 msgctxt "field:farm.prescription,write_date:"
@@ -281,6 +286,18 @@ msgctxt "help:farm.prescription,feed_product:"
 msgid "The product of the base feed which should be complemented with drugs."
 msgstr ""
 
+msgctxt "help:farm.prescription,reference:"
+msgid ""
+"If there is a real prescription; put its reference here. Otherwise, leave it"
+" blank and it will be computed automatically with the configured sequence."
+msgstr ""
+
+msgctxt "help:farm.prescription,waiting_period:"
+msgid ""
+"The number of days that must pass since the produced feed is given to "
+"animals and they are slaughtered."
+msgstr ""
+
 msgctxt "help:farm.specie,prescription_enabled:"
 msgid "This specie uses prescriptions."
 msgstr "Aquesta especie utiliza receptes."
@@ -398,6 +415,10 @@ msgstr "Recepta"
 msgctxt "model:res.group,name:group_prescription"
 msgid "Farm / Prescriptions"
 msgstr "Receptes"
+
+msgctxt "model:res.group,name:group_veterinarian"
+msgid "Farm / Veterinarian"
+msgstr ""
 
 msgctxt "selection:farm.prescription,state:"
 msgid "Confirmed"
