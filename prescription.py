@@ -5,7 +5,7 @@ import datetime
 from trytond.model import ModelView, ModelSQL, Workflow, fields
 from trytond.pool import Pool, PoolMeta
 from trytond.transaction import Transaction
-from trytond.pyson import And, Bool, Equal, Eval, Get, If, Not, Or
+from trytond.pyson import And, Bool, Equal, Eval, If, Not, Or
 from trytond.wizard import Wizard, StateAction, StateTransition
 from trytond.modules.jasper_reports.jasper import JasperReport
 
@@ -40,9 +40,13 @@ class Prescription(Workflow, ModelSQL, ModelView):
     __name__ = 'farm.prescription'
     _rec_name = 'reference'
 
-    reference = fields.Char('Reference', readonly=True, select=True, states={
+    reference = fields.Char('Reference', select=True, states={
             'required': Eval('state') == 'confirmed',
-            })
+            'readonly': Eval('state') != 'draft',
+            },
+        help='If there is a real prescription; put its reference here. '
+        'Otherwise, leave it blank and it will be computed automatically with '
+        'the configured sequence.')
     date = fields.Date('Date', required=True, states=_STATES, depends=_DEPENDS)
     delivery_date = fields.Date('Delivery date', required=True, states=_STATES,
         depends=_DEPENDS)
@@ -111,11 +115,13 @@ class Prescription(Workflow, ModelSQL, ModelView):
     afection = fields.Char('Afection', required=True, states=_STATES,
         depends=_DEPENDS)
     dosage = fields.Char('Dosage', states=_STATES, depends=_DEPENDS)
-    waiting_period = fields.Integer('Waiting period', on_change_with=['lines'],
+    waiting_period = fields.Integer('Waiting Period', on_change_with=['lines'],
         states={
             'readonly': Or(Eval('n_lines', 0) > 1, Eval('state') != 'draft'),
-            }, depends=['n_lines', 'state'])
-    retention_period = fields.Integer('Retention period', states=_STATES,
+            }, depends=['n_lines', 'state'],
+        help='The number of days that must pass since the produced feed is '
+        'given to animals and they are slaughtered.')
+    expiry_period = fields.Integer('Expiry Period', states=_STATES,
         depends=_DEPENDS)
     lines = fields.One2Many('farm.prescription.line', 'prescription', 'Lines',
         states={
@@ -266,6 +272,8 @@ class Prescription(Workflow, ModelSQL, ModelView):
         for prescription in new_prescriptions:
             prescription.reference = Sequence.get_id(
                 prescription.specie.prescription_sequence.id)
+            prescription.save()
+        return new_prescriptions
 
 
 class PrescriptionAnimal(ModelSQL):

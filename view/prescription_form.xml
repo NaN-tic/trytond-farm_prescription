@@ -26,8 +26,8 @@
         <page string="General" id="general">
             <label name="afection"/>
             <field name="afection"/>
-            <label name="retention_period"/>
-            <field name="retention_period"/>
+            <label name="expiry_period"/>
+            <field name="expiry_period"/>
             <label name="dosage"/>
             <field name="dosage"/>
             <label name="waiting_period"/>

@@ -97,8 +97,8 @@
 	<field name="waiting_period" class="java.lang.String">
 		<fieldDescription><![CDATA[waiting_period-waiting_period]]></fieldDescription>
 	</field>
-	<field name="retention_period" class="java.lang.String">
-		<fieldDescription><![CDATA[retention_period-retention_period]]></fieldDescription>
+	<field name="expiry_period" class="java.lang.String">
+		<fieldDescription><![CDATA[expiry_period]]></fieldDescription>
 	</field>
 	<field name="date" class="java.util.Date">
 		<fieldDescription><![CDATA[date-date]]></fieldDescription>
@@ -362,7 +362,7 @@
 				<textElement verticalAlignment="Bottom">
 					<font size="7"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{note}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{expiry_period}]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
 				<reportElement uuid="539bca6a-bccc-4934-9db5-be7bb6451e98" x="104" y="72" width="335" height="13"/>
