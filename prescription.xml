@@ -14,6 +14,10 @@
             <field name="group" ref="group_prescription"/>
         </record>
 
+        <record model="res.group" id="group_veterinarian">
+            <field name="name">Farm / Veterinarian</field>
+        </record>
+
         <!-- farm.prescription -->
         <record model="ir.ui.view" id="prescription_view_form">
             <field name="model">farm.prescription</field>
@@ -59,6 +63,17 @@
             <field name="perm_write" eval="True"/>
             <field name="perm_create" eval="True"/>
             <field name="perm_delete" eval="True"/>
+        </record>
+
+        <record model="ir.model.button" id="prescription_confirm_button">
+            <field name="name">confirm</field>
+            <field name="model"
+                search="[('model', '=', 'farm.prescription')]"/>
+        </record>
+        <record model="ir.model.button-res.group"
+                id="prescription_confirm_button_group_veterinarian">
+            <field name="button" ref="prescription_confirm_button"/>
+            <field name="group" ref="group_veterinarian"/>
         </record>
 
         <!-- farm.prescription.line -->
