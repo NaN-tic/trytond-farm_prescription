@@ -1,5 +1,5 @@
-#The COPYRIGHT file at the top level of this repository contains the full
-#copyright notices and license terms.
+# The COPYRIGHT file at the top level of this repository contains the full
+# copyright notices and license terms.
 import datetime
 
 from trytond.model import ModelView, ModelSQL, Workflow, fields
@@ -141,12 +141,12 @@ class Prescription(Workflow, ModelSQL, ModelView):
     def __setup__(cls):
         super(Prescription, cls).__setup__()
         cls._error_messages.update({
-                'lot_required_done': 'Lot is required to set done the '
-                    'prescription "%s".',
-                'veterinarian_required_confirmed': 'Veterinarian is requried '
-                    'to confirm the prescription "%s".',
-                'lines_required_confirmed': 'The prescription "%s" must have '
-                    'at least one line in order to be confirmed.',
+                'lot_required_done': ('Lot is required to set done the '
+                    'prescription "%s".'),
+                'veterinarian_required_confirmed': ('Veterinarian is requried '
+                    'to confirm the prescription "%s".'),
+                'lines_required_confirmed': ('The prescription "%s" must have '
+                    'at least one line in order to be confirmed.'),
                  })
         cls._transitions |= set((
                 ('draft', 'confirmed'),
@@ -375,24 +375,89 @@ class Move:
     def __setup__(cls):
         super(Move, cls).__setup__()
         cls._error_messages.update({
+                'from_prescription_line_invalid_prescription': (
+                    'The Stock Move "%(move)s" has the Prescription Line '
+                    '"%(origin)s" as origin, but it isn\'t related to a '
+                    'Prescription or it isn\'t the origin\'s prescription.'),
+                'from_prescription_line_invalid_product_quantity': (
+                    'The Stock Move "%(move)s" has the Prescription Line '
+                    '"%(origin)s" as origin, but the product and/or quantity '
+                    'are not the same.'),
+                'prescription_invalid_product_quantity': (
+                    'The Stock Move "%(move)s" is related to Prescription '
+                    '"%(prescription)s", but the product and/or quantity are '
+                    'not the same.'),
                 'need_prescription': ('Move "%s" needs a confirmed '
                     'prescription'),
-                'conf_prescription': ('Prescription "%s" of move "%s" must be '
-                    'confirmed before assigning the move'),
+                'unconfirmed_prescription': ('Prescription "%s" of move "%s" '
+                    'must be confirmed before assigning the move'),
                 })
 
     @classmethod
+    def _get_origin(cls):
+        models = super(Move, cls)._get_origin()
+        models.append('farm.prescription.line')
+        return models
+
+    @classmethod
+    def validate(cls, moves):
+        super(Move, cls).validate(moves)
+        for move in moves:
+            move.check_prescription_and_origin()
+
+    def check_prescription_and_origin(self):
+        """
+        If the move is related to a prescription, it is a move of a
+        prescription line (and the lines is its origin) or it a move of the
+        prescription's product.
+        """
+        pool = Pool()
+        PrescriptionLine = pool.get('farm.prescription.line')
+        Uom = pool.get('product.uom')
+
+        if self.origin and isinstance(self.origin, PrescriptionLine):
+            if (not self.prescription or
+                    self.origin.prescription != self.prescription):
+                self.raise_user_error(
+                    'from_prescription_line_invalid_prescription', {
+                        'move': self.rec_name,
+                        'origin': self.origin.rec_name,
+                        })
+            if (self.product != self.origin.product or
+                    self.quantity != Uom.compute_qty(self.origin.unit,
+                        self.origin.quantity, self.uom)):
+                self.raise_user_error(
+                    'from_prescription_line_invalid_product_quantity', {
+                        'move': self.rec_name,
+                        'origin': self.origin.rec_name,
+                        })
+        elif self.prescription:
+            if (self.product != self.prescription.feed_product or
+                    self.quantity != Uom.compute_qty(self.prescription.unit,
+                        self.prescription.quantity, self.uom)):
+                import sys
+                print >> sys.stderr, "origin:", self.origin
+                self.raise_user_error(
+                    'prescription_invalid_product_quantity', {
+                        'move': self.rec_name,
+                        'prescription': self.prescription.rec_name,
+                        })
+
+    @classmethod
     def assign(cls, moves):
+        for move in moves:
+            move.check_prescription_required()
+        super(Move, cls).assign(moves)
+
+    def check_prescription_required(self):
         pool = Pool()
         ShipmentOut = pool.get('stock.shipment.out')
-        for move in moves:
-            if (move.prescription or move.product.prescription_required and
-                    (move.shipment and isinstance(move.shipment, ShipmentOut)
-                    or move.production_input)):
-                prescription = move.prescription
-                if not prescription:
-                    cls.raise_user_error('need_prescription', move.rec_name)
-                if prescription.state == 'draft':
-                    cls.raise_user_error('conf_prescription',
-                        (prescription.rec_name, move.rec_name))
-        super(Move, cls).assign(moves)
+        if (not self.prescription and
+                self.product.prescription_required and (
+                    self.shipment and isinstance(self.shipment, ShipmentOut)
+                    or self.production_input)):
+            self.raise_user_error('need_prescription', self.rec_name)
+        elif self.prescription:
+            if self.prescription.state == 'draft':
+                self.raise_user_error('unconfirmed_prescription',
+                    (self.prescription.rec_name, self.rec_name))

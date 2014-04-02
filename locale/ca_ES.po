@@ -24,6 +24,32 @@ msgctxt "error:stock.move:"
 msgid "Prescription \"%s\" of move \"%s\" must be confirmed before assigning the move"
 msgstr ""
 
+msgctxt "error:stock.move:"
+msgid ""
+"The Stock Move \"%(move)s\" has the Prescription Line \"%(origin)s\" as "
+"origin, but it isn't related to a Prescription or it isn't the origin's "
+"prescription."
+msgstr ""
+"El moviment d'estoc \"%(move)s\" té la línia de recepta \"%(origin)s\" com "
+"origen però no té una recepta associada o aquesta no és la recepta de "
+"l'origen."
+
+msgctxt "error:stock.move:"
+msgid ""
+"The Stock Move \"%(move)s\" has the Prescription Line \"%(origin)s\" as "
+"origin, but the product and/or quantity are not the same."
+msgstr ""
+"El moviment d'estoc \"%(move)s\" té la línia de recepta \"%(origin)s\" com "
+"origen però el producte i/o quantitat no coincideixen."
+
+msgctxt "error:stock.move:"
+msgid ""
+"The Stock Move \"%(move)s\" is related to Prescription \"%(prescription)s\","
+" but the product and/or quantity are not the same."
+msgstr ""
+"El moviment d'estoc \"%(move)s\" está associat a la recepta "
+"\"%(prescription)s\" però el producte i/o quantitat no coincideixen."
+
 msgctxt "field:farm.prescription,afection:"
 msgid "Afection"
 msgstr "Afecció a tractar"
@@ -88,12 +114,10 @@ msgctxt "field:farm.prescription,n_lines:"
 msgid "Num. of lines"
 msgstr ""
 
-#, fuzzy
 msgctxt "field:farm.prescription,note:"
 msgid "Note"
 msgstr "Nota"
 
-#, fuzzy
 msgctxt "field:farm.prescription,origin:"
 msgid "Origin"
 msgstr "Origen"
@@ -106,7 +130,6 @@ msgctxt "field:farm.prescription,rec_name:"
 msgid "Name"
 msgstr "Nom"
 
-#, fuzzy
 msgctxt "field:farm.prescription,reference:"
 msgid "Reference"
 msgstr "Referència"
@@ -119,12 +142,10 @@ msgctxt "field:farm.prescription,state:"
 msgid "State"
 msgstr "Estat"
 
-#, fuzzy
 msgctxt "field:farm.prescription,unit:"
 msgid "Unit"
 msgstr "Unitat"
 
-#, fuzzy
 msgctxt "field:farm.prescription,unit_digits:"
 msgid "Unit Digits"
 msgstr "Dígits de la unitat"
@@ -133,7 +154,6 @@ msgctxt "field:farm.prescription,veterinarian:"
 msgid "Veterinarian"
 msgstr "Veterinari"
 
-#, fuzzy
 msgctxt "field:farm.prescription,waiting_period:"
 msgid "Waiting Period"
 msgstr "Plaç d'espera"
@@ -306,23 +326,21 @@ msgctxt "help:farm.specie,prescription_sequence:"
 msgid "Sequence used for prescriptions."
 msgstr "Seqüencia utilitzada per les receptes."
 
-#, fuzzy
 msgctxt "jasper:farm.prescription.report:"
 msgid "Afection"
 msgstr "Afecció a tractar"
 
 msgctxt "jasper:farm.prescription.report:"
 msgid "DOSIFICATION"
-msgstr ""
+msgstr "DOSIFICACIÓ"
 
-#, fuzzy
 msgctxt "jasper:farm.prescription.report:"
 msgid "Delivery date"
 msgstr "Data d'enviament"
 
 msgctxt "jasper:farm.prescription.report:"
 msgid "Denomination of autorized medicated mixtures"
-msgstr ""
+msgstr "Denominació de les barreges medicamentoses autoritzades"
 
 msgctxt "jasper:farm.prescription.report:"
 msgid "Especial notes"
@@ -332,7 +350,6 @@ msgctxt "jasper:farm.prescription.report:"
 msgid "Number e identification of the animals"
 msgstr ""
 
-#, fuzzy
 msgctxt "jasper:farm.prescription.report:"
 msgid "Quantity"
 msgstr "Quantitat"
@@ -341,7 +358,6 @@ msgctxt "jasper:farm.prescription.report:"
 msgid "RECIPT"
 msgstr ""
 
-#, fuzzy
 msgctxt "jasper:farm.prescription.report:"
 msgid "Retention period"
 msgstr "Període de retenció"
@@ -370,7 +386,6 @@ msgctxt "jasper:farm.prescription.report:"
 msgid "Veterinarian Signature"
 msgstr ""
 
-#, fuzzy
 msgctxt "jasper:farm.prescription.report:"
 msgid "Waiting period"
 msgstr "Plaç d'espera"
@@ -391,7 +406,6 @@ msgctxt "model:farm.prescription.line,name:"
 msgid "Prescription Line"
 msgstr "Línia recepta"
 
-#, fuzzy
 msgctxt "model:ir.action,name:act_prescption_line"
 msgid "Prescription Line"
 msgstr "Línia recepta"
