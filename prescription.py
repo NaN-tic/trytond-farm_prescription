@@ -9,9 +9,11 @@ from trytond.pyson import And, Bool, Equal, Eval, If, Not, Or
 from trytond.wizard import Wizard, StateAction, StateTransition
 from trytond.modules.jasper_reports.jasper import JasperReport
 
-__all__ = ['Party', 'Template', 'Prescription', 'PrescriptionLine',
-    'PrescriptionAnimal', 'PrescriptionAnimalGroup', 'PrescriptionReport',
-    'PrintPrescription', 'Move']
+__all__ = ['Party', 'ProductTemplate', 'Product', 'Move',
+    'Template', 'TemplateLine',
+    'Prescription', 'PrescriptionLine',
+    'PrescriptionAnimal', 'PrescriptionAnimalGroup',
+    'PrescriptionReport', 'PrintPrescription']
 __metaclass__ = PoolMeta
 
 _STATES = {
@@ -33,50 +35,31 @@ class Party():
             })
 
 
-class Template():
+class ProductTemplate():
     __name__ = 'product.template'
 
     prescription_required = fields.Boolean('Prescription required')
 
 
-class Prescription(Workflow, ModelSQL, ModelView):
-    'Prescription'
-    __name__ = 'farm.prescription'
-    _rec_name = 'reference'
+class Product:
+    __name__ = 'product.product'
 
-    reference = fields.Char('Reference', select=True, states=_STATES_REQUIRED,
-        depends=_DEPENDS,
-        help='If there is a real prescription; put its reference here. '
-        'Otherwise, leave it blank and it will be computed automatically with '
-        'the configured sequence.')
-    date = fields.Date('Date', required=True, states=_STATES, depends=_DEPENDS)
-    delivery_date = fields.Date('Delivery date', required=True, states=_STATES,
-        depends=_DEPENDS)
+    prescription_template = fields.Many2One('farm.prescription.template',
+        'Prescription Template', domain=[
+            ('feed_product', '=', Eval('id')),
+            ], depends=['id'])
+
+
+class PrescriptionMixin:
+    '''
+    Mixin class with the shared fields and methods by Prescription and Template
+    '''
     specie = fields.Many2One('farm.specie', 'Specie', domain=[
             ('prescription_enabled', '=', True),
             ], required=True, readonly=True, select=True)
-    farm = fields.Many2One('stock.location', 'Farm', required=True,
-        states=_STATES, depends=_DEPENDS, domain=[
-            ('type', '=', 'warehouse'),
-        ],
-        context={
-            'restrict_by_specie_animal_type': True,
-        })
-    veterinarian = fields.Many2One('party.party', 'Veterinarian', domain=[
-            ('veterinarian', '=', True),
-            ],
-        states=_STATES_REQUIRED, depends=_DEPENDS)
     feed_product = fields.Many2One('product.product', 'Feed', required=True,
-        states=_STATES, depends=_DEPENDS,
         help='The product of the base feed which should be complemented with '
         'drugs.')
-    feed_lot = fields.Many2One('stock.lot', 'Feed Lot', domain=[
-            ('product', '=', Eval('feed_product')),
-            ],
-        states={
-            'required': Eval('state') == 'done',
-            'readonly': Eval('state') == 'done',
-            }, depends=_DEPENDS + ['feed_product'])
     unit = fields.Function(fields.Many2One('product.uom', 'Unit',
             on_change_with=['feed_product']),
         'on_change_with_unit')
@@ -84,7 +67,175 @@ class Prescription(Workflow, ModelSQL, ModelView):
             on_change_with=['feed_product', 'unit']),
         'on_change_with_unit_digits')
     quantity = fields.Float('Quantity', digits=(16, Eval('unit_digits', 2)),
-        required=True, states=_STATES, depends=_DEPENDS + ['unit_digits'])
+        required=True, depends=['unit_digits'])
+    afection = fields.Char('Afection')
+    dosage = fields.Char('Dosage')
+    waiting_period = fields.Integer('Waiting Period', on_change_with=['lines'],
+        states={
+            'readonly': Eval('n_lines', 0) > 1,
+            }, depends=['n_lines'],
+        help='The number of days that must pass since the produced feed is '
+        'given to animals and they are slaughtered.')
+    expiry_period = fields.Integer('Expiry Period')
+    n_lines = fields.Function(fields.Integer('Num. of lines',
+            on_change_with=['lines']),
+        'on_change_with_n_lines')
+    note = fields.Text('Note')
+
+    @staticmethod
+    def default_specie():
+        return Transaction().context.get('specie')
+
+    @staticmethod
+    def default_n_lines():
+        return 0
+
+    def on_change_with_unit(self, name=None):
+        if self.feed_product:
+            return self.feed_product.default_uom.id
+        return None
+
+    def on_change_with_unit_digits(self, name=None):
+        if self.feed_product:
+            return self.feed_product.default_uom.digits
+        return 2
+
+    def on_change_with_waiting_period(self):
+        if self.lines and len(self.lines) > 1:
+            return 28
+
+    def on_change_with_n_lines(self, name=None):
+        return len(self.lines) if self.lines else 0
+
+
+class PrescriptionLineMixin:
+    '''
+    Mixin class with the shared fields and methods by Prescription Line and
+    Template Line
+    '''
+    product = fields.Many2One('product.product', 'Product', domain=[
+            ('prescription_required', '=', True),
+            ], required=True, on_change=['product', 'unit', 'unit_digits'])
+    product_uom_category = fields.Function(
+        fields.Many2One('product.uom.category', 'Product Uom Category',
+            on_change_with=['product']),
+        'on_change_with_product_uom_category')
+    unit = fields.Many2One('product.uom', 'Unit', required=True,
+        domain=[
+            If(Bool(Eval('product_uom_category')),
+                ('category', '=', Eval('product_uom_category')),
+                ()),
+            ],
+        depends=['product_uom_category'])
+    unit_digits = fields.Function(fields.Integer('Unit Digits',
+            on_change_with=['unit']),
+        'on_change_with_unit_digits')
+    quantity = fields.Float('Quantity', digits=(16, Eval('unit_digits', 2)),
+        depends=['unit_digits'], required=True)
+
+    def on_change_product(self):
+        if not self.product:
+            return {}
+        res = {}
+        category = self.product.default_uom.category
+        if not self.unit or self.unit not in category.uoms:
+            res['unit'] = self.product.default_uom.id
+            self.unit = self.product.default_uom
+            res['unit.rec_name'] = self.product.default_uom.rec_name
+            res['unit_digits'] = self.product.default_uom.digits
+        return res
+
+    def on_change_with_product_uom_category(self, name=None):
+        if self.product:
+            return self.product.default_uom_category.id
+
+    def on_change_with_unit_digits(self, name=None):
+        if self.unit:
+            return self.unit.digits
+        return 2
+
+
+class Template(ModelSQL, ModelView, PrescriptionMixin):
+    '''Prescription Template'''
+    __name__ = 'farm.prescription.template'
+    _rec_name = 'feed_product.rec_name'
+
+    lines = fields.One2Many('farm.prescription.template.line', 'prescription',
+        'Lines')
+
+    @classmethod
+    def __setup__(cls):
+        super(Template, cls).__setup__()
+        cls._error_messages.update({
+                'template_related_to_product_or_prescription': (
+                    'You can not change the Feed Product of Prescription '
+                    'Template "%s" because there are products or '
+                    'rescriptions already related to this template.\n'
+                    'Please, create a new template.'),
+                })
+
+    @classmethod
+    def write(cls, templates, vals):
+        if vals.get('feed_product'):
+            for template in templates:
+                n_template_products = Product.search_count([
+                        ('prescription_template', '=', template.id),
+                        ])
+                n_template_prescriptions = Prescription.search_count([
+                        ('template', '=', template.id),
+                        ])
+            if n_template_products or n_template_prescriptions:
+                cls.raise_user_error(
+                    'template_related_to_product_or_prescription',
+                    (template.rec_name,))
+        super(Template, cls).write(templates, vals)
+
+
+class TemplateLine(ModelSQL, ModelView, PrescriptionLineMixin):
+    'Prescription Template Line'
+    __name__ = 'farm.prescription.template.line'
+
+    prescription = fields.Many2One('farm.prescription.template',
+        'Prescription', required=True, ondelete='CASCADE')
+
+
+class Prescription(Workflow, ModelSQL, ModelView, PrescriptionMixin):
+    'Prescription'
+    __name__ = 'farm.prescription'
+    _rec_name = 'reference'
+
+    template = fields.Many2One('quality.template', 'Template', domain=[
+            ('specie', '=', Eval('specie')),
+            ('feed_product', '=', Eval('feed_product')),
+            ],
+        on_change_with=['feed_product'], states=_STATES,
+        depends=_DEPENDS + ['specie', 'feed_product'])
+    reference = fields.Char('Reference', select=True, states=_STATES_REQUIRED,
+        depends=_DEPENDS,
+        help='If there is a real prescription; put its reference here. '
+        'Otherwise, leave it blank and it will be computed automatically with '
+        'the configured sequence.')
+    date = fields.Date('Date', required=True, states=_STATES, depends=_DEPENDS)
+    farm = fields.Many2One('stock.location', 'Farm', required=True,
+        states=_STATES, depends=_DEPENDS, domain=[
+            ('type', '=', 'warehouse'),
+        ],
+        context={
+            'restrict_by_specie_animal_type': True,
+        })
+    delivery_date = fields.Date('Delivery date', required=True, states=_STATES,
+        depends=_DEPENDS)
+    veterinarian = fields.Many2One('party.party', 'Veterinarian', domain=[
+            ('veterinarian', '=', True),
+            ],
+        states=_STATES_REQUIRED, depends=_DEPENDS)
+    feed_lot = fields.Many2One('stock.lot', 'Feed Lot', domain=[
+            ('product', '=', Eval('feed_product')),
+            ],
+        states={
+            'required': Eval('state') == 'done',
+            'readonly': Eval('state') == 'done',
+            }, depends=_DEPENDS + ['feed_product'])
     animals = fields.Many2Many('farm.prescription-animal', 'prescription',
         'animal', 'Animals', domain=[
             ('specie', '=', Eval('specie')),
@@ -111,24 +262,8 @@ class Prescription(Workflow, ModelSQL, ModelView):
             }, depends=_DEPENDS + ['specie', 'farm', 'animals'])
     animal_lots = fields.Function(fields.Many2Many('stock.lot', None, None,
         'Animals Lots'), 'get_animal_lots')
-    afection = fields.Char('Afection', states=_STATES_REQUIRED,
-        depends=_DEPENDS)
-    dosage = fields.Char('Dosage', states=_STATES, depends=_DEPENDS)
-    waiting_period = fields.Integer('Waiting Period', on_change_with=['lines'],
-        states={
-            'required': Eval('state') != 'draft',
-            'readonly': Or(Eval('n_lines', 0) > 1, Eval('state') != 'draft'),
-            }, depends=['n_lines', 'state'],
-        help='The number of days that must pass since the produced feed is '
-        'given to animals and they are slaughtered.')
-    expiry_period = fields.Integer('Expiry Period', states=_STATES,
-        depends=_DEPENDS)
     lines = fields.One2Many('farm.prescription.line', 'prescription', 'Lines',
         states=_STATES_REQUIRED, depends=_DEPENDS)
-    n_lines = fields.Function(fields.Integer('Num. of lines',
-            on_change_with=['lines']),
-        'on_change_with_n_lines')
-    note = fields.Text('Note')
     state = fields.Selection([
         ('draft', 'Draft'),
         ('confirmed', 'Confirmed'),
@@ -140,6 +275,18 @@ class Prescription(Workflow, ModelSQL, ModelView):
     @classmethod
     def __setup__(cls):
         super(Prescription, cls).__setup__()
+        for fname in ('feed_product', 'quantity', 'dosage', 'expiry_period'):
+            field = getattr(cls, fname)
+            field.states = _STATES
+            field.depends += _DEPENDS
+        cls.afection.states = _STATES_REQUIRED
+        cls.afection.depends = _DEPENDS
+        cls.waiting_period.states = {
+            'required': Eval('state') != 'draft',
+            'readonly': Or(Eval('n_lines', 0) > 1, Eval('state') != 'draft'),
+            }
+        cls.waiting_period.depends = ['n_lines', 'state']
+
         cls._error_messages.update({
                 'lot_required_done': ('Lot is required to set done the '
                     'prescription "%s".'),
@@ -153,6 +300,10 @@ class Prescription(Workflow, ModelSQL, ModelView):
                 ('confirmed', 'done'),
                 ))
         cls._buttons.update({
+                'set_template': {
+                    'invisible': Eval('state') != 'draft',
+                    'readonly': ~Bool(Eval('template', False)),
+                    },
                 'confirm': {
                     'invisible': Eval('state') != 'draft',
                     },
@@ -162,16 +313,8 @@ class Prescription(Workflow, ModelSQL, ModelView):
                  })
 
     @staticmethod
-    def default_specie():
-        return Transaction().context.get('specie')
-
-    @staticmethod
     def default_date():
         return datetime.date.today()
-
-    @staticmethod
-    def default_n_lines():
-        return 0
 
     @staticmethod
     def default_state():
@@ -181,22 +324,10 @@ class Prescription(Workflow, ModelSQL, ModelView):
         return u'%s - %s (%s)' % (self.reference,
             self.feed_product.rec_name, str(self.date))
 
-    def on_change_with_unit(self, name=None):
-        if self.feed_product:
-            return self.feed_product.default_uom.id
-        return None
-
-    def on_change_with_unit_digits(self, name=None):
-        if self.feed_product:
-            return self.feed_product.default_uom.digits
-        return 2
-
-    def on_change_with_waiting_period(self):
-        if self.lines and len(self.lines) > 1:
-            return 28
-
-    def on_change_with_n_lines(self, name=None):
-        return len(self.lines) if self.lines else 0
+    def on_change_with_template(self):
+        return (self.feed_product.prescription_template.id
+            if (self.feed_product and self.feed_product.prescription_template)
+            else None)
 
     def get_animal_lots(self, name):
         return [a.lot.id for a in self.animals + self.animal_groups]
@@ -236,6 +367,27 @@ class Prescription(Workflow, ModelSQL, ModelView):
             if not prescription.feed_lot:
                 cls.raise_user_error('lot_required_done',
                     prescription.rec_name)
+
+    @classmethod
+    @ModelView.button
+    def set_template(cls, prescriptions):
+        for prescription in prescriptions:
+            if not prescription.template:
+                continue
+            # prescription.set_template_vals()
+            vals = prescription.template._save_values
+            print "vals:", vals
+            # prescription.save()
+
+    def set_template_vals(self):
+        pool = Pool()
+        PrescriptionLine = pool.get('farm.prescription.line')
+        lines = []
+        for ql in self.template.lines:
+            line = PrescriptionLine()
+            line.set_template_line_vals(ql)
+            lines.append(line)
+        self.lines = lines
 
     @classmethod
     def create(cls, vlist):
@@ -293,52 +445,12 @@ class PrescriptionAnimalGroup(ModelSQL):
         required=True, ondelete='CASCADE')
 
 
-class PrescriptionLine(ModelSQL, ModelView):
+class PrescriptionLine(ModelSQL, ModelView, PrescriptionLineMixin):
     'Prescription Line'
     __name__ = 'farm.prescription.line'
 
     prescription = fields.Many2One('farm.prescription', 'Prescription',
         required=True, ondelete='CASCADE')
-    product = fields.Many2One('product.product', 'Product', domain=[
-            ('prescription_required', '=', True),
-            ], required=True, on_change=['product', 'unit', 'unit_digits'])
-    product_uom_category = fields.Function(
-        fields.Many2One('product.uom.category', 'Product Uom Category',
-            on_change_with=['product']),
-        'on_change_with_product_uom_category')
-    unit = fields.Many2One('product.uom', 'Unit', required=True,
-        domain=[
-            If(Bool(Eval('product_uom_category')),
-                ('category', '=', Eval('product_uom_category')),
-                ()),
-            ],
-        depends=['product_uom_category'])
-    unit_digits = fields.Function(fields.Integer('Unit Digits',
-            on_change_with=['unit']),
-        'on_change_with_unit_digits')
-    quantity = fields.Float('Quantity', digits=(16, Eval('unit_digits', 2)),
-        depends=['unit_digits'], required=True)
-
-    def on_change_product(self):
-        if not self.product:
-            return {}
-        res = {}
-        category = self.product.default_uom.category
-        if not self.unit or self.unit not in category.uoms:
-            res['unit'] = self.product.default_uom.id
-            self.unit = self.product.default_uom
-            res['unit.rec_name'] = self.product.default_uom.rec_name
-            res['unit_digits'] = self.product.default_uom.digits
-        return res
-
-    def on_change_with_product_uom_category(self, name=None):
-        if self.product:
-            return self.product.default_uom_category.id
-
-    def on_change_with_unit_digits(self, name=None):
-        if self.unit:
-            return self.unit.digits
-        return 2
 
     def compute_quantity(self, factor):
         Uom = Pool().get('product.uom')

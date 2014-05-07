@@ -35,6 +35,11 @@ class TestCase(unittest.TestCase):
         '''
         test_depends()
 
+    #def test0010set_template(self):
+    #    '''
+    #    Test Prescription.set_template() method.
+    #    '''
+
 
 def suite():
     suite = trytond.tests.test_tryton.suite()

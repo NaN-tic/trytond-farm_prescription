@@ -43,10 +43,12 @@ class Specie:
 
         act_window_prescription = ActWindow(ModelData.get_id(MODULE_NAME,
                 'act_prescription'))
+        act_window_pres_template = ActWindow(ModelData.get_id(MODULE_NAME,
+                'act_template'))
         prescription_group = Group(ModelData.get_id(MODULE_NAME,
                 'group_prescription'))
 
-        cls._create_menu_w_action(specie, [
+        prescription_menu = cls._create_menu_w_action(specie, [
                 ('specie', '=', specie.id),
                 ], {
                     'specie': specie.id,
@@ -55,3 +57,12 @@ class Specie:
             prescription_group, act_window_prescription, False, current_menus,
             current_actions)
         specie_submenu_seq += 1
+
+        cls._create_menu_w_action(specie, [
+                ('specie', '=', specie.id),
+                ], {
+                    'specie': specie.id,
+                },
+            'Prescription Templates', prescription_menu, 1, 'tryton-list',
+            prescription_group, act_window_pres_template, False, current_menus,
+            current_actions)

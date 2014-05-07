@@ -1,0 +1,29 @@
+<?xml version="1.0"?>
+<!-- The COPYRIGHT file at the top level of this repository contains the full
+     copyright notices and license terms. -->
+<form string="Prescription">
+    <label name="feed_product"/>
+    <field name="feed_product"/>
+    <group id="quantity_unit" colspan="2" col="4">
+        <label name="quantity"/>
+        <field name="quantity"/>
+        <label name="unit"/>
+        <field name="unit"/>
+    </group>
+    <notebook>
+        <page string="General" id="general">
+            <label name="afection"/>
+            <field name="afection"/>
+            <label name="expiry_period"/>
+            <field name="expiry_period"/>
+            <label name="dosage"/>
+            <field name="dosage"/>
+            <label name="waiting_period"/>
+            <field name="waiting_period"/>
+            <field name="lines" colspan="4"/>
+        </page>
+        <page name="note">
+            <field name="note" colspan="4"/>
+        </page>
+    </notebook>
+</form>
