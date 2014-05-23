@@ -27,18 +27,18 @@ class Specie:
     def default_prescription_enabled():
         return True
 
-    @classmethod
-    def _create_additional_menus(cls, specie, specie_menu, specie_submenu_seq,
-            current_menus, current_actions):
+    def _create_additional_menus(self, specie_menu, specie_submenu_seq,
+            current_menus, current_actions, current_wizards):
         pool = Pool()
         ActWindow = pool.get('ir.action.act_window')
         Group = pool.get('res.group')
         ModelData = pool.get('ir.model.data')
 
-        super(Specie, cls)._create_additional_menus(specie, specie_menu,
-                specie_submenu_seq, current_menus, current_actions)
+        specie_submenu_seq = super(Specie,
+            self)._create_additional_menus(specie_menu, specie_submenu_seq,
+                current_menus, current_actions, current_wizards)
 
-        if not specie.prescription_enabled:
+        if not self.prescription_enabled:
             return
 
         act_window_prescription = ActWindow(ModelData.get_id(MODULE_NAME,
@@ -48,21 +48,21 @@ class Specie:
         prescription_group = Group(ModelData.get_id(MODULE_NAME,
                 'group_prescription'))
 
-        prescription_menu = cls._create_menu_w_action(specie, [
-                ('specie', '=', specie.id),
+        prescription_menu = self._create_action_menu([
+                ('specie', '=', self.id),
                 ], {
-                    'specie': specie.id,
+                    'specie': self.id,
                 },
             'Prescriptions', specie_menu, specie_submenu_seq, 'tryton-list',
             prescription_group, act_window_prescription, False, current_menus,
             current_actions)
-        specie_submenu_seq += 1
 
-        cls._create_menu_w_action(specie, [
-                ('specie', '=', specie.id),
+        self._create_action_menu([
+                ('specie', '=', self.id),
                 ], {
-                    'specie': specie.id,
+                    'specie': self.id,
                 },
             'Prescription Templates', prescription_menu, 1, 'tryton-list',
             prescription_group, act_window_pres_template, False, current_menus,
             current_actions)
+        return specie_submenu_seq + 1
