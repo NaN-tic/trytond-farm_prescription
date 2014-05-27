@@ -296,5 +296,22 @@
             <field name="sequence_type" ref="sequence_type_prescription"/>
             <field name="group" ref="group_prescription"/>
         </record>
+
+        <!-- menus -->
+        <menuitem id="menu_farm_prescriptions" action="act_prescription"
+            parent="farm.menu_specie_menu_template" sequence="32"/>
+        <record model="ir.ui.menu-res.group"
+                id="menu_prescriptions_group_admin">
+            <field name="menu" ref="menu_farm_prescriptions"/>
+            <field name="group" ref="farm.group_farm_admin"/>
+        </record>
+        <record model="ir.ui.menu-res.group"
+                id="menu_prescriptions_group_prescription">
+            <field name="menu" ref="menu_farm_prescriptions"/>
+            <field name="group" ref="group_prescription"/>
+        </record>
+
+        <menuitem id="menu_farm_prescription_templates" action="act_template"
+            parent="menu_farm_prescriptions" sequence="1"/>
     </data>
 </tryton>

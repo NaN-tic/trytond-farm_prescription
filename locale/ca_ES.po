@@ -2,6 +2,12 @@
 msgid ""
 msgstr "Content-Type: text/plain; charset=utf-8\n"
 
+msgctxt "error:farm.prescription.template:"
+msgid ""
+"You can not change the Feed Product of Prescription Template \"%s\" because there are products or rescriptions already related to this template.\n"
+"Please, create a new template."
+msgstr ""
+
 msgctxt "error:farm.prescription:"
 msgid "Lot is required to set done the prescription \"%s\"."
 msgstr ""
@@ -142,6 +148,11 @@ msgctxt "field:farm.prescription,state:"
 msgid "State"
 msgstr "Estat"
 
+#, fuzzy
+msgctxt "field:farm.prescription,template:"
+msgid "Template"
+msgstr "Plantilla"
+
 msgctxt "field:farm.prescription,unit:"
 msgid "Unit"
 msgstr "Unitat"
@@ -278,6 +289,145 @@ msgctxt "field:farm.prescription.line,write_uid:"
 msgid "Write User"
 msgstr "Usuari modificació"
 
+msgctxt "field:farm.prescription.template,afection:"
+msgid "Afection"
+msgstr "Afecció a tractar"
+
+msgctxt "field:farm.prescription.template,create_date:"
+msgid "Create Date"
+msgstr "Data creació"
+
+msgctxt "field:farm.prescription.template,create_uid:"
+msgid "Create User"
+msgstr "Usuari creació"
+
+msgctxt "field:farm.prescription.template,dosage:"
+msgid "Dosage"
+msgstr "Posologia"
+
+msgctxt "field:farm.prescription.template,expiry_period:"
+msgid "Expiry Period"
+msgstr ""
+
+msgctxt "field:farm.prescription.template,feed_product:"
+msgid "Feed"
+msgstr ""
+
+msgctxt "field:farm.prescription.template,id:"
+msgid "ID"
+msgstr "Identificador"
+
+#, fuzzy
+msgctxt "field:farm.prescription.template,lines:"
+msgid "Lines"
+msgstr "Línies"
+
+msgctxt "field:farm.prescription.template,n_lines:"
+msgid "Num. of lines"
+msgstr ""
+
+#, fuzzy
+msgctxt "field:farm.prescription.template,note:"
+msgid "Note"
+msgstr "Nota"
+
+#, fuzzy
+msgctxt "field:farm.prescription.template,quantity:"
+msgid "Quantity"
+msgstr "Quantitat"
+
+#, fuzzy
+msgctxt "field:farm.prescription.template,rec_name:"
+msgid "Name"
+msgstr "Nom"
+
+#, fuzzy
+msgctxt "field:farm.prescription.template,specie:"
+msgid "Specie"
+msgstr "Espècie"
+
+#, fuzzy
+msgctxt "field:farm.prescription.template,unit:"
+msgid "Unit"
+msgstr "Unitat"
+
+#, fuzzy
+msgctxt "field:farm.prescription.template,unit_digits:"
+msgid "Unit Digits"
+msgstr "Dígits de la unitat"
+
+#, fuzzy
+msgctxt "field:farm.prescription.template,waiting_period:"
+msgid "Waiting Period"
+msgstr "Plaç d'espera"
+
+#, fuzzy
+msgctxt "field:farm.prescription.template,write_date:"
+msgid "Write Date"
+msgstr "Data modificació"
+
+#, fuzzy
+msgctxt "field:farm.prescription.template,write_uid:"
+msgid "Write User"
+msgstr "Usuari modificació"
+
+msgctxt "field:farm.prescription.template.line,create_date:"
+msgid "Create Date"
+msgstr "Data creació"
+
+msgctxt "field:farm.prescription.template.line,create_uid:"
+msgid "Create User"
+msgstr "Usuari creació"
+
+msgctxt "field:farm.prescription.template.line,id:"
+msgid "ID"
+msgstr "Identificador"
+
+#, fuzzy
+msgctxt "field:farm.prescription.template.line,prescription:"
+msgid "Prescription"
+msgstr "Recepta"
+
+#, fuzzy
+msgctxt "field:farm.prescription.template.line,product:"
+msgid "Product"
+msgstr "Productes"
+
+#, fuzzy
+msgctxt "field:farm.prescription.template.line,product_uom_category:"
+msgid "Product Uom Category"
+msgstr "Categoria UdM del producte"
+
+#, fuzzy
+msgctxt "field:farm.prescription.template.line,quantity:"
+msgid "Quantity"
+msgstr "Quantitat"
+
+#, fuzzy
+msgctxt "field:farm.prescription.template.line,rec_name:"
+msgid "Name"
+msgstr "Nom"
+
+#, fuzzy
+msgctxt "field:farm.prescription.template.line,unit:"
+msgid "Unit"
+msgstr "Unitat"
+
+#, fuzzy
+msgctxt "field:farm.prescription.template.line,unit_digits:"
+msgid "Unit Digits"
+msgstr "Dígits de la unitat"
+
+#, fuzzy
+msgctxt "field:farm.prescription.template.line,write_date:"
+msgid "Write Date"
+msgstr "Data modificació"
+
+#, fuzzy
+msgctxt "field:farm.prescription.template.line,write_uid:"
+msgid "Write User"
+msgstr "Usuari modificació"
+
 msgctxt "field:farm.specie,prescription_enabled:"
 msgid "Prescriptions Enabled"
 msgstr "Receptes activades"
@@ -293,6 +443,11 @@ msgstr ""
 msgctxt "field:party.party,veterinarian:"
 msgid "Veterinarian"
 msgstr "Veterinari"
+
+#, fuzzy
+msgctxt "field:product.product,prescription_template:"
+msgid "Prescription Template"
+msgstr "Prescription Template"
 
 msgctxt "field:product.template,prescription_required:"
 msgid "Prescription required"
@@ -313,6 +468,16 @@ msgid ""
 msgstr ""
 
 msgctxt "help:farm.prescription,waiting_period:"
+msgid ""
+"The number of days that must pass since the produced feed is given to "
+"animals and they are slaughtered."
+msgstr ""
+
+msgctxt "help:farm.prescription.template,feed_product:"
+msgid "The product of the base feed which should be complemented with drugs."
+msgstr ""
+
+msgctxt "help:farm.prescription.template,waiting_period:"
 msgid ""
 "The number of days that must pass since the produced feed is given to "
 "animals and they are slaughtered."
@@ -406,23 +571,52 @@ msgctxt "model:farm.prescription.line,name:"
 msgid "Prescription Line"
 msgstr "Línia recepta"
 
-msgctxt "model:ir.action,name:act_prescption_line"
-msgid "Prescription Line"
-msgstr "Línia recepta"
+#, fuzzy
+msgctxt "model:farm.prescription.template,name:"
+msgid "Prescription Template"
+msgstr "Prescription Template"
+
+msgctxt "model:farm.prescription.template.line,name:"
+msgid "Prescription Template Line"
+msgstr ""
 
 msgctxt "model:ir.action,name:act_prescription"
 msgid "Prescription"
 msgstr "Recepta"
 
+#, fuzzy
+msgctxt "model:ir.action,name:act_prescription_line"
+msgid "Prescription Line"
+msgstr "Línia recepta"
+
 msgctxt "model:ir.action,name:act_report_prescription"
 msgid "Prescription"
 msgstr "Recepta"
+
+#, fuzzy
+msgctxt "model:ir.action,name:act_template"
+msgid "Prescription Template"
+msgstr "Prescription Template"
+
+msgctxt "model:ir.action,name:act_template_line"
+msgid "Prescription Template Line"
+msgstr ""
 
 msgctxt "model:ir.action,name:print_prescription"
 msgid "Print Prescription"
 msgstr "Recepta"
 
 msgctxt "model:ir.sequence.type,name:sequence_type_prescription"
+msgid "Prescription"
+msgstr "Recepta"
+
+#, fuzzy
+msgctxt "model:ir.ui.menu,name:menu_farm_prescription_templates"
+msgid "Prescription Template"
+msgstr "Prescription Template"
+
+#, fuzzy
+msgctxt "model:ir.ui.menu,name:menu_farm_prescriptions"
 msgid "Prescription"
 msgstr "Recepta"
 
@@ -450,6 +644,24 @@ msgctxt "view:farm.prescription.line:"
 msgid "Prescription Line"
 msgstr "Línia recepta"
 
+#, fuzzy
+msgctxt "view:farm.prescription.template.line:"
+msgid "Prescription Line"
+msgstr "Línia recepta"
+
+msgctxt "view:farm.prescription.template:"
+msgid "General"
+msgstr "General"
+
+#, fuzzy
+msgctxt "view:farm.prescription.template:"
+msgid "Prescription"
+msgstr "Recepta"
+
+msgctxt "view:farm.prescription.template:"
+msgid "Prescriptions"
+msgstr ""
+
 msgctxt "view:farm.prescription:"
 msgid "Confirm"
 msgstr "Confirma"
@@ -468,6 +680,14 @@ msgstr "Recepta"
 
 msgctxt "view:farm.prescription:"
 msgid "Prescriptions"
+msgstr ""
+
+msgctxt "view:farm.prescription:"
+msgid "Set Template"
+msgstr ""
+
+msgctxt "view:farm.prescription:"
+msgid "Set this template? It will replace current values."
 msgstr ""
 
 msgctxt "view:farm.prescription:"

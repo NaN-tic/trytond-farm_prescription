@@ -2,6 +2,14 @@
 msgid ""
 msgstr "Content-Type: text/plain; charset=utf-8\n"
 
+msgctxt "error:farm.prescription.template:"
+msgid ""
+"You can not change the Feed Product of Prescription Template \"%s\" because there are products or rescriptions already related to this template.\n"
+"Please, create a new template."
+msgstr ""
+"No puede cambiar el producto de pienso de la plantilla de receta \"%s\" porque ya hay productos o recetas relacionadas con esta plantilla.\n"
+"Por favor, cree una nueva."
+
 msgctxt "error:farm.prescription:"
 msgid "Lot is required to set done the prescription \"%s\"."
 msgstr "El lote es requerido para poder realizar la receta \"%s\"."
@@ -62,7 +70,7 @@ msgstr "Grupos de animales"
 
 msgctxt "field:farm.prescription,animal_lots:"
 msgid "Animals Lots"
-msgstr "Lote de los animales"
+msgstr "Lotes animales"
 
 msgctxt "field:farm.prescription,animals:"
 msgid "Animals"
@@ -74,7 +82,7 @@ msgstr "Fecha de creación"
 
 msgctxt "field:farm.prescription,create_uid:"
 msgid "Create User"
-msgstr "Usuario de creación"
+msgstr "Usuario creación"
 
 msgctxt "field:farm.prescription,date:"
 msgid "Date"
@@ -86,7 +94,7 @@ msgstr "Fecha de entrega"
 
 msgctxt "field:farm.prescription,dosage:"
 msgid "Dosage"
-msgstr "Proporción/Frequencia"
+msgstr "Posología"
 
 msgctxt "field:farm.prescription,expiry_period:"
 msgid "Expiry Period"
@@ -144,6 +152,10 @@ msgctxt "field:farm.prescription,state:"
 msgid "State"
 msgstr "Estado"
 
+msgctxt "field:farm.prescription,template:"
+msgid "Template"
+msgstr "Plantilla"
+
 msgctxt "field:farm.prescription,unit:"
 msgid "Unit"
 msgstr "Unidad"
@@ -178,7 +190,7 @@ msgstr "Fecha de creación"
 
 msgctxt "field:farm.prescription-animal,create_uid:"
 msgid "Create User"
-msgstr "Usuario de creación"
+msgstr "Usuario creación"
 
 msgctxt "field:farm.prescription-animal,id:"
 msgid "ID"
@@ -206,7 +218,7 @@ msgstr "Fecha de creación"
 
 msgctxt "field:farm.prescription-animal.group,create_uid:"
 msgid "Create User"
-msgstr "Usuario de creación"
+msgstr "Usuario creación"
 
 msgctxt "field:farm.prescription-animal.group,group:"
 msgid "Animal Group"
@@ -238,7 +250,7 @@ msgstr "Fecha de creación"
 
 msgctxt "field:farm.prescription.line,create_uid:"
 msgid "Create User"
-msgstr "Usuario de creación"
+msgstr "Usuario creación"
 
 msgctxt "field:farm.prescription.line,id:"
 msgid "ID"
@@ -280,6 +292,126 @@ msgctxt "field:farm.prescription.line,write_uid:"
 msgid "Write User"
 msgstr "Usuario modificación"
 
+msgctxt "field:farm.prescription.template,afection:"
+msgid "Afection"
+msgstr "Afección a tratar"
+
+msgctxt "field:farm.prescription.template,create_date:"
+msgid "Create Date"
+msgstr "Fecha de creación"
+
+msgctxt "field:farm.prescription.template,create_uid:"
+msgid "Create User"
+msgstr "Usuario creación"
+
+msgctxt "field:farm.prescription.template,dosage:"
+msgid "Dosage"
+msgstr "Posología"
+
+msgctxt "field:farm.prescription.template,expiry_period:"
+msgid "Expiry Period"
+msgstr "Periodo de retención"
+
+msgctxt "field:farm.prescription.template,feed_product:"
+msgid "Feed"
+msgstr "Pienso"
+
+msgctxt "field:farm.prescription.template,id:"
+msgid "ID"
+msgstr "Identificador"
+
+msgctxt "field:farm.prescription.template,lines:"
+msgid "Lines"
+msgstr "Líneas"
+
+msgctxt "field:farm.prescription.template,n_lines:"
+msgid "Num. of lines"
+msgstr "Núm. líneas"
+
+msgctxt "field:farm.prescription.template,note:"
+msgid "Note"
+msgstr "Nota"
+
+msgctxt "field:farm.prescription.template,quantity:"
+msgid "Quantity"
+msgstr "Cantidad"
+
+msgctxt "field:farm.prescription.template,rec_name:"
+msgid "Name"
+msgstr "Nombre"
+
+msgctxt "field:farm.prescription.template,specie:"
+msgid "Specie"
+msgstr "Especie"
+
+msgctxt "field:farm.prescription.template,unit:"
+msgid "Unit"
+msgstr "Unidad"
+
+msgctxt "field:farm.prescription.template,unit_digits:"
+msgid "Unit Digits"
+msgstr "Dígitos unidad"
+
+msgctxt "field:farm.prescription.template,waiting_period:"
+msgid "Waiting Period"
+msgstr "Plazo de espera"
+
+msgctxt "field:farm.prescription.template,write_date:"
+msgid "Write Date"
+msgstr "Fecha modificación"
+
+msgctxt "field:farm.prescription.template,write_uid:"
+msgid "Write User"
+msgstr "Usuario modificación"
+
+msgctxt "field:farm.prescription.template.line,create_date:"
+msgid "Create Date"
+msgstr "Fecha de creación"
+
+msgctxt "field:farm.prescription.template.line,create_uid:"
+msgid "Create User"
+msgstr "Usuario creación"
+
+msgctxt "field:farm.prescription.template.line,id:"
+msgid "ID"
+msgstr "Identificador"
+
+msgctxt "field:farm.prescription.template.line,prescription:"
+msgid "Prescription"
+msgstr "Receta"
+
+msgctxt "field:farm.prescription.template.line,product:"
+msgid "Product"
+msgstr "Producto"
+
+msgctxt "field:farm.prescription.template.line,product_uom_category:"
+msgid "Product Uom Category"
+msgstr "Categoría UdM del producto"
+
+msgctxt "field:farm.prescription.template.line,quantity:"
+msgid "Quantity"
+msgstr "Cantidad"
+
+msgctxt "field:farm.prescription.template.line,rec_name:"
+msgid "Name"
+msgstr "Nombre"
+
+msgctxt "field:farm.prescription.template.line,unit:"
+msgid "Unit"
+msgstr "Unidad"
+
+msgctxt "field:farm.prescription.template.line,unit_digits:"
+msgid "Unit Digits"
+msgstr "Dígitos unidad"
+
+msgctxt "field:farm.prescription.template.line,write_date:"
+msgid "Write Date"
+msgstr "Fecha modificación"
+
+msgctxt "field:farm.prescription.template.line,write_uid:"
+msgid "Write User"
+msgstr "Usuario modificación"
+
 msgctxt "field:farm.specie,prescription_enabled:"
 msgid "Prescriptions Enabled"
 msgstr "Recetas activadas"
@@ -296,9 +428,13 @@ msgctxt "field:party.party,veterinarian:"
 msgid "Veterinarian"
 msgstr "Veterinario"
 
+msgctxt "field:product.product,prescription_template:"
+msgid "Prescription Template"
+msgstr "Plantilla receta"
+
 msgctxt "field:product.template,prescription_required:"
 msgid "Prescription required"
-msgstr "Necesita receta"
+msgstr "Requiere receta"
 
 msgctxt "field:stock.move,prescription:"
 msgid "Prescription"
@@ -326,6 +462,20 @@ msgstr ""
 "El número de días que deben pasar desde que se da el pienso producido a los "
 "animales y éstos son enviados al matadero."
 
+msgctxt "help:farm.prescription.template,feed_product:"
+msgid "The product of the base feed which should be complemented with drugs."
+msgstr ""
+"El producto del pienso base que debe ser complementado con productos "
+"medicamentosos."
+
+msgctxt "help:farm.prescription.template,waiting_period:"
+msgid ""
+"The number of days that must pass since the produced feed is given to "
+"animals and they are slaughtered."
+msgstr ""
+"El número de días que deben pasar desde que se da el pienso producido a los "
+"animales y éstos son enviados al matadero."
+
 msgctxt "help:farm.specie,prescription_enabled:"
 msgid "This specie uses prescriptions."
 msgstr "Esta especie utiliza recetas."
@@ -340,7 +490,7 @@ msgstr "Afección a tratar"
 
 msgctxt "jasper:farm.prescription.report:"
 msgid "DOSIFICATION"
-msgstr "DOSIFICACIÓN"
+msgstr "POSOLOGÍA"
 
 msgctxt "jasper:farm.prescription.report:"
 msgid "Delivery date"
@@ -414,23 +564,47 @@ msgctxt "model:farm.prescription.line,name:"
 msgid "Prescription Line"
 msgstr "Linea Receta"
 
-msgctxt "model:ir.action,name:act_prescption_line"
-msgid "Prescription Line"
-msgstr "Linea Receta"
+msgctxt "model:farm.prescription.template,name:"
+msgid "Prescription Template"
+msgstr "Plantilla receta"
+
+msgctxt "model:farm.prescription.template.line,name:"
+msgid "Prescription Template Line"
+msgstr "Plantilla de línea de receta"
 
 msgctxt "model:ir.action,name:act_prescription"
 msgid "Prescription"
 msgstr "Receta"
 
+msgctxt "model:ir.action,name:act_prescription_line"
+msgid "Prescription Line"
+msgstr "Linea receta"
+
 msgctxt "model:ir.action,name:act_report_prescription"
 msgid "Prescription"
 msgstr "Receta"
+
+msgctxt "model:ir.action,name:act_template"
+msgid "Prescription Template"
+msgstr "Plantilla receta"
+
+msgctxt "model:ir.action,name:act_template_line"
+msgid "Prescription Template Line"
+msgstr "Plantilla de línea de receta"
 
 msgctxt "model:ir.action,name:print_prescription"
 msgid "Print Prescription"
 msgstr "Imprimir receta"
 
 msgctxt "model:ir.sequence.type,name:sequence_type_prescription"
+msgid "Prescription"
+msgstr "Receta"
+
+msgctxt "model:ir.ui.menu,name:menu_farm_prescription_templates"
+msgid "Prescription Template"
+msgstr "Plantilla receta"
+
+msgctxt "model:ir.ui.menu,name:menu_farm_prescriptions"
 msgid "Prescription"
 msgstr "Receta"
 
@@ -458,6 +632,22 @@ msgctxt "view:farm.prescription.line:"
 msgid "Prescription Line"
 msgstr "Linea Receta"
 
+msgctxt "view:farm.prescription.template.line:"
+msgid "Prescription Line"
+msgstr "Linea receta"
+
+msgctxt "view:farm.prescription.template:"
+msgid "General"
+msgstr "General"
+
+msgctxt "view:farm.prescription.template:"
+msgid "Prescription"
+msgstr "Receta"
+
+msgctxt "view:farm.prescription.template:"
+msgid "Prescriptions"
+msgstr "Recetas"
+
 msgctxt "view:farm.prescription:"
 msgid "Confirm"
 msgstr "Confirmar"
@@ -477,6 +667,14 @@ msgstr "Receta"
 msgctxt "view:farm.prescription:"
 msgid "Prescriptions"
 msgstr "Recetas"
+
+msgctxt "view:farm.prescription:"
+msgid "Set Template"
+msgstr "Aplicar plantilla"
+
+msgctxt "view:farm.prescription:"
+msgid "Set this template? It will replace current values."
+msgstr "¿Aplicar esta plantilla? Se reemplazarán los valores actuales."
 
 msgctxt "view:farm.prescription:"
 msgid "Target Animals"

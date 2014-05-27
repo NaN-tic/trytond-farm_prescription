@@ -30,39 +30,33 @@ class Specie:
     def _create_additional_menus(self, specie_menu, specie_submenu_seq,
             current_menus, current_actions, current_wizards):
         pool = Pool()
-        ActWindow = pool.get('ir.action.act_window')
-        Group = pool.get('res.group')
+        Menu = pool.get('ir.ui.menu')
         ModelData = pool.get('ir.model.data')
-
-        specie_submenu_seq = super(Specie,
-            self)._create_additional_menus(specie_menu, specie_submenu_seq,
-                current_menus, current_actions, current_wizards)
 
         if not self.prescription_enabled:
             return
 
-        act_window_prescription = ActWindow(ModelData.get_id(MODULE_NAME,
-                'act_prescription'))
-        act_window_pres_template = ActWindow(ModelData.get_id(MODULE_NAME,
-                'act_template'))
-        prescription_group = Group(ModelData.get_id(MODULE_NAME,
-                'group_prescription'))
+        specie_submenu_seq = super(Specie,
+            self)._create_additional_menus(specie_menu, specie_submenu_seq,
+            current_menus, current_actions, current_wizards)
 
-        prescription_menu = self._create_action_menu([
-                ('specie', '=', self.id),
-                ], {
-                    'specie': self.id,
-                },
-            'Prescriptions', specie_menu, specie_submenu_seq, 'tryton-list',
-            prescription_group, act_window_prescription, False, current_menus,
-            current_actions)
+        prescriptions_menu = Menu(ModelData.get_id('farm_prescription',
+                'menu_farm_prescriptions'))
+        prescription_templates_menu = Menu(
+            ModelData.get_id('farm_prescription',
+                'menu_farm_prescription_templates'))
 
-        self._create_action_menu([
-                ('specie', '=', self.id),
-                ], {
-                    'specie': self.id,
-                },
-            'Prescription Templates', prescription_menu, 1, 'tryton-list',
-            prescription_group, act_window_pres_template, False, current_menus,
-            current_actions)
+        new_domain = [
+            ('specie', '=', self.id),
+            ]
+        new_context = {
+            'specie': self.id,
+            }
+        menu = self._duplicate_menu(prescriptions_menu, specie_menu,
+            specie_submenu_seq, current_menus, current_actions,
+            current_wizards, new_domain=new_domain, new_context=new_context)
+
+        self._duplicate_menu(prescription_templates_menu, menu, 1,
+            current_menus, current_actions, current_wizards,
+            new_domain=new_domain, new_context=new_context)
         return specie_submenu_seq + 1

@@ -547,8 +547,6 @@ class Move:
             if (self.product != self.prescription.feed_product or
                     self.quantity != Uom.compute_qty(self.prescription.unit,
                         self.prescription.quantity, self.uom)):
-                import sys
-                print >> sys.stderr, "origin:", self.origin
                 self.raise_user_error(
                     'prescription_invalid_product_quantity', {
                         'move': self.rec_name,
