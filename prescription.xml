@@ -46,9 +46,10 @@
             <field name="act_window" ref="act_template"/>
         </record>
 
-        <record model="ir.model.access" id="access_template">
+        <record model="ir.model.access" id="access_template_farm">
             <field name="model"
                 search="[('model', '=', 'farm.prescription.template')]"/>
+            <field name="group" ref="farm.group_farm"/>
             <field name="perm_read" eval="True"/>
             <field name="perm_write" eval="False"/>
             <field name="perm_create" eval="False"/>
@@ -98,6 +99,7 @@
         <record model="ir.model.access" id="access_template_line">
             <field name="model"
                 search="[('model', '=', 'farm.prescription.template.line')]"/>
+            <field name="group" ref="farm.group_farm"/>
             <field name="perm_read" eval="True"/>
             <field name="perm_write" eval="False"/>
             <field name="perm_create" eval="False"/>
@@ -145,6 +147,7 @@
         <record model="ir.model.access" id="access_prescription">
             <field name="model"
                 search="[('model', '=', 'farm.prescription')]"/>
+            <field name="group" ref="farm.group_farm"/>
             <field name="perm_read" eval="True"/>
             <field name="perm_write" eval="False"/>
             <field name="perm_create" eval="False"/>
@@ -205,6 +208,7 @@
         <record model="ir.model.access" id="access_prescription_line">
             <field name="model"
                 search="[('model', '=', 'farm.prescription.line')]"/>
+            <field name="group" ref="farm.group_farm"/>
             <field name="perm_read" eval="True"/>
             <field name="perm_write" eval="False"/>
             <field name="perm_create" eval="False"/>
