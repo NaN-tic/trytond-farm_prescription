@@ -204,7 +204,7 @@ class Prescription(Workflow, ModelSQL, ModelView, PrescriptionMixin):
     __name__ = 'farm.prescription'
     _rec_name = 'reference'
 
-    template = fields.Many2One('quality.template', 'Template', domain=[
+    template = fields.Many2One('farm.prescription.template', 'Template', domain=[
             ('specie', '=', Eval('specie')),
             ('feed_product', '=', Eval('feed_product')),
             ],
