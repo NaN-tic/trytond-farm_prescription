@@ -60,25 +60,21 @@ class PrescriptionMixin:
     feed_product = fields.Many2One('product.product', 'Feed', required=True,
         help='The product of the base feed which should be complemented with '
         'drugs.')
-    unit = fields.Function(fields.Many2One('product.uom', 'Unit',
-            on_change_with=['feed_product']),
+    unit = fields.Function(fields.Many2One('product.uom', 'Unit'),
         'on_change_with_unit')
-    unit_digits = fields.Function(fields.Integer('Unit Digits',
-            on_change_with=['feed_product', 'unit']),
+    unit_digits = fields.Function(fields.Integer('Unit Digits'),
         'on_change_with_unit_digits')
     quantity = fields.Float('Quantity', digits=(16, Eval('unit_digits', 2)),
         required=True, depends=['unit_digits'])
     afection = fields.Char('Afection')
     dosage = fields.Char('Dosage')
-    waiting_period = fields.Integer('Waiting Period', on_change_with=['lines'],
-        states={
+    waiting_period = fields.Integer('Waiting Period', states={
             'readonly': Eval('n_lines', 0) > 1,
             }, depends=['n_lines'],
         help='The number of days that must pass since the produced feed is '
         'given to animals and they are slaughtered.')
     expiry_period = fields.Integer('Expiry Period')
-    n_lines = fields.Function(fields.Integer('Num. of lines',
-            on_change_with=['lines']),
+    n_lines = fields.Function(fields.Integer('Num. of lines'),
         'on_change_with_n_lines')
     note = fields.Text('Note')
 
@@ -90,20 +86,24 @@ class PrescriptionMixin:
     def default_n_lines():
         return 0
 
+    @fields.depends('feed_product')
     def on_change_with_unit(self, name=None):
         if self.feed_product:
             return self.feed_product.default_uom.id
         return None
 
+    @fields.depends('feed_product')
     def on_change_with_unit_digits(self, name=None):
         if self.feed_product:
             return self.feed_product.default_uom.digits
         return 2
 
+    @fields.depends('lines')
     def on_change_with_waiting_period(self):
         if self.lines and len(self.lines) > 1:
             return 28
 
+    @fields.depends('lines')
     def on_change_with_n_lines(self, name=None):
         return len(self.lines) if self.lines else 0
 
@@ -115,10 +115,9 @@ class PrescriptionLineMixin:
     '''
     product = fields.Many2One('product.product', 'Product', domain=[
             ('prescription_required', '=', True),
-            ], required=True, on_change=['product', 'unit', 'unit_digits'])
+            ], required=True)
     product_uom_category = fields.Function(
-        fields.Many2One('product.uom.category', 'Product Uom Category',
-            on_change_with=['product']),
+        fields.Many2One('product.uom.category', 'Product Uom Category'),
         'on_change_with_product_uom_category')
     unit = fields.Many2One('product.uom', 'Unit', required=True,
         domain=[
@@ -127,12 +126,12 @@ class PrescriptionLineMixin:
                 ()),
             ],
         depends=['product_uom_category'])
-    unit_digits = fields.Function(fields.Integer('Unit Digits',
-            on_change_with=['unit']),
+    unit_digits = fields.Function(fields.Integer('Unit Digits'),
         'on_change_with_unit_digits')
     quantity = fields.Float('Quantity', digits=(16, Eval('unit_digits', 2)),
         depends=['unit_digits'], required=True)
 
+    @fields.depends('product', 'unit', 'unit_digits')
     def on_change_product(self):
         if not self.product:
             return {}
@@ -145,10 +144,12 @@ class PrescriptionLineMixin:
             res['unit_digits'] = self.product.default_uom.digits
         return res
 
+    @fields.depends('product')
     def on_change_with_product_uom_category(self, name=None):
         if self.product:
             return self.product.default_uom_category.id
 
+    @fields.depends('unit')
     def on_change_with_unit_digits(self, name=None):
         if self.unit:
             return self.unit.digits
@@ -175,20 +176,26 @@ class Template(ModelSQL, ModelView, PrescriptionMixin):
                 })
 
     @classmethod
-    def write(cls, templates, vals):
-        if vals.get('feed_product'):
-            for template in templates:
-                n_template_products = Product.search_count([
-                        ('prescription_template', '=', template.id),
-                        ])
-                n_template_prescriptions = Prescription.search_count([
-                        ('template', '=', template.id),
-                        ])
-            if n_template_products or n_template_prescriptions:
-                cls.raise_user_error(
-                    'template_related_to_product_or_prescription',
-                    (template.rec_name,))
-        super(Template, cls).write(templates, vals)
+    def write(cls, *args):
+        pool = Pool()
+        Prescription = pool.get('farm.prescription')
+        Product = pool.get('product.product')
+
+        actions = iter(args)
+        for templates, values in zip(actions, actions):
+            if values.get('feed_product'):
+                for template in templates:
+                    n_template_products = Product.search_count([
+                            ('prescription_template', '=', template.id),
+                            ])
+                    n_template_prescriptions = Prescription.search_count([
+                            ('template', '=', template.id),
+                            ])
+                    if n_template_products or n_template_prescriptions:
+                        cls.raise_user_error(
+                            'template_related_to_product_or_prescription',
+                            (template.rec_name,))
+        super(Template, cls).write(*args)
 
 
 class TemplateLine(ModelSQL, ModelView, PrescriptionLineMixin):
@@ -208,8 +215,7 @@ class Prescription(Workflow, ModelSQL, ModelView, PrescriptionMixin):
             ('specie', '=', Eval('specie')),
             ('feed_product', '=', Eval('feed_product')),
             ],
-        on_change_with=['feed_product'], states=_STATES,
-        depends=_DEPENDS + ['specie', 'feed_product'])
+        states=_STATES, depends=_DEPENDS + ['specie', 'feed_product'])
     reference = fields.Char('Reference', select=True, states=_STATES_REQUIRED,
         depends=_DEPENDS,
         help='If there is a real prescription; put its reference here. '
@@ -324,6 +330,7 @@ class Prescription(Workflow, ModelSQL, ModelView, PrescriptionMixin):
         return u'%s - %s (%s)' % (self.reference,
             self.feed_product.rec_name, str(self.date))
 
+    @fields.depends('feed_product')
     def on_change_with_template(self):
         return (self.feed_product.prescription_template.id
             if (self.feed_product and self.feed_product.prescription_template)
