@@ -107,6 +107,17 @@ class PrescriptionMixin:
     def on_change_with_n_lines(self, name=None):
         return len(self.lines) if self.lines else 0
 
+    def get_factor_change_quantity_unit(self, new_quantity, new_uom):
+        Uom = Pool().get('product.uom')
+
+        if new_uom != self.unit:
+            new_quantity = Uom.compute_qty(new_uom, new_quantity,
+                self.unit)
+        if new_quantity != self.quantity:
+            # quantity have chaned
+            return new_quantity / self.quantity
+        return None
+
 
 class PrescriptionLineMixin:
     '''
@@ -211,7 +222,8 @@ class Prescription(Workflow, ModelSQL, ModelView, PrescriptionMixin):
     __name__ = 'farm.prescription'
     _rec_name = 'reference'
 
-    template = fields.Many2One('quality.template', 'Template', domain=[
+    template = fields.Many2One('farm.prescription.template', 'Template',
+        domain=[
             ('specie', '=', Eval('specie')),
             ('feed_product', '=', Eval('feed_product')),
             ],
@@ -294,6 +306,8 @@ class Prescription(Workflow, ModelSQL, ModelView, PrescriptionMixin):
         cls.waiting_period.depends = ['n_lines', 'state']
 
         cls._error_messages.update({
+                'lines_will_be_replaced': (
+                    'Current values of prescription "%s" will be replaced.'),
                 'lot_required_done': ('Lot is required to set done the '
                     'prescription "%s".'),
                 'veterinarian_required_confirmed': ('Veterinarian is requried '
@@ -381,20 +395,37 @@ class Prescription(Workflow, ModelSQL, ModelView, PrescriptionMixin):
         for prescription in prescriptions:
             if not prescription.template:
                 continue
-            # prescription.set_template_vals()
-            vals = prescription.template._save_values
-            print "vals:", vals
-            # prescription.save()
+
+            cls.raise_user_warning('replace_lines', 'lines_will_be_replaced',
+                prescription.rec_name)
+
+            prescription.set_template_vals()
+            prescription.save()
 
     def set_template_vals(self):
         pool = Pool()
         PrescriptionLine = pool.get('farm.prescription.line')
+
+        if not self.template:
+            return
+
+        if self.lines:
+            PrescriptionLine.delete(self.lines)
+
+        self.afection = self.template.afection
+        self.dosage = self.template.dosage
+        self.waiting_period = self.template.waiting_period
+        self.expiry_period = self.template.expiry_period
+
+        rate = self.get_factor_change_quantity_unit(self.template.quantity,
+            self.template.unit)
         lines = []
-        for ql in self.template.lines:
+        for line_template in self.template.lines:
             line = PrescriptionLine()
-            line.set_template_line_vals(ql)
+            line.set_template_line_vals(line_template, rate)
             lines.append(line)
         self.lines = lines
+        self.note = self.template.note
 
     @classmethod
     def create(cls, vlist):
@@ -462,6 +493,12 @@ class PrescriptionLine(ModelSQL, ModelView, PrescriptionLineMixin):
     def compute_quantity(self, factor):
         Uom = Pool().get('product.uom')
         return Uom.round(self.quantity * factor, self.unit.rounding)
+
+    def set_template_line_vals(self, template, rate):
+        self.product = template.product
+        self.unit = template.unit
+        self.quantity = ((template.quantity / rate)
+            if rate else template_quantity)
 
 
 class PrescriptionReport(JasperReport):

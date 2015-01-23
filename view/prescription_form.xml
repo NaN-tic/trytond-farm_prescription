@@ -10,10 +10,6 @@
     <field name="farm"/>
     <label name="delivery_date"/>
     <field name="delivery_date"/>
-    <label name="template"/>
-    <field name="template"/>
-    <button name="set_template" string="Set Template" icon="tryton-list-add"
-        confirm="Set this template? It will replace current values." colspan="2"/>
     <label name="feed_product"/>
     <field name="feed_product"/>
     <group id="quantity_unit" colspan="2" col="4">
@@ -22,6 +18,10 @@
         <label name="unit"/>
         <field name="unit"/>
     </group>
+    <label name="template"/>
+    <field name="template"/>
+    <button name="set_template" string="Set Template" icon="tryton-list-add"
+        colspan="2"/>
     <label name="veterinarian"/>
     <field name="veterinarian"/>
     <label name="feed_lot"/>
