@@ -9,6 +9,10 @@ msgid ""
 msgstr ""
 
 msgctxt "error:farm.prescription:"
+msgid "Current values of prescription \"%s\" will be replaced."
+msgstr ""
+
+msgctxt "error:farm.prescription:"
 msgid "Lot is required to set done the prescription \"%s\"."
 msgstr ""
 
@@ -100,14 +104,6 @@ msgctxt "field:farm.prescription,farm:"
 msgid "Farm"
 msgstr "Granja"
 
-msgctxt "field:farm.prescription,feed_lot:"
-msgid "Feed Lot"
-msgstr ""
-
-msgctxt "field:farm.prescription,feed_product:"
-msgid "Feed"
-msgstr ""
-
 msgctxt "field:farm.prescription,id:"
 msgid "ID"
 msgstr "ID"
@@ -115,6 +111,11 @@ msgstr "ID"
 msgctxt "field:farm.prescription,lines:"
 msgid "Lines"
 msgstr "Línies"
+
+#, fuzzy
+msgctxt "field:farm.prescription,lot:"
+msgid "Lot"
+msgstr "Lot"
 
 msgctxt "field:farm.prescription,n_lines:"
 msgid "Num. of lines"
@@ -127,6 +128,11 @@ msgstr "Nota"
 msgctxt "field:farm.prescription,origin:"
 msgid "Origin"
 msgstr "Origen"
+
+#, fuzzy
+msgctxt "field:farm.prescription,product:"
+msgid "Product"
+msgstr "Productes"
 
 msgctxt "field:farm.prescription,quantity:"
 msgid "Quantity"
@@ -309,10 +315,6 @@ msgctxt "field:farm.prescription.template,expiry_period:"
 msgid "Expiry Period"
 msgstr ""
 
-msgctxt "field:farm.prescription.template,feed_product:"
-msgid "Feed"
-msgstr ""
-
 msgctxt "field:farm.prescription.template,id:"
 msgid "ID"
 msgstr "Identificador"
@@ -330,6 +332,11 @@ msgstr ""
 msgctxt "field:farm.prescription.template,note:"
 msgid "Note"
 msgstr "Nota"
+
+#, fuzzy
+msgctxt "field:farm.prescription.template,product:"
+msgid "Product"
+msgstr "Productes"
 
 #, fuzzy
 msgctxt "field:farm.prescription.template,quantity:"
@@ -457,8 +464,11 @@ msgctxt "field:stock.move,prescription:"
 msgid "Prescription"
 msgstr "Recepta"
 
-msgctxt "help:farm.prescription,feed_product:"
-msgid "The product of the base feed which should be complemented with drugs."
+msgctxt "help:farm.prescription,product:"
+msgid ""
+"The product for which this recipe is made. This can be a drug or a feed to "
+"which are added the additives or medications defined in the lines of this "
+"recipe."
 msgstr ""
 
 msgctxt "help:farm.prescription,reference:"
@@ -473,8 +483,11 @@ msgid ""
 "animals and they are slaughtered."
 msgstr ""
 
-msgctxt "help:farm.prescription.template,feed_product:"
-msgid "The product of the base feed which should be complemented with drugs."
+msgctxt "help:farm.prescription.template,product:"
+msgid ""
+"The product for which this recipe is made. This can be a drug or a feed to "
+"which are added the additives or medications defined in the lines of this "
+"recipe."
 msgstr ""
 
 msgctxt "help:farm.prescription.template,waiting_period:"
@@ -682,13 +695,10 @@ msgctxt "view:farm.prescription:"
 msgid "Prescriptions"
 msgstr ""
 
+#, fuzzy
 msgctxt "view:farm.prescription:"
 msgid "Set Template"
-msgstr ""
-
-msgctxt "view:farm.prescription:"
-msgid "Set this template? It will replace current values."
-msgstr ""
+msgstr "Estableix plantilla"
 
 msgctxt "view:farm.prescription:"
 msgid "Target Animals"

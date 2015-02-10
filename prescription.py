@@ -46,8 +46,11 @@ class Product:
 
     prescription_template = fields.Many2One('farm.prescription.template',
         'Prescription Template', domain=[
-            ('feed_product', '=', Eval('id')),
-            ], depends=['id'])
+            ('product', '=', Eval('id')),
+            ],
+        states={
+            'invisible': ~Eval('prescription_required', False),
+            }, depends=['id', 'prescription_required'])
 
 
 class PrescriptionMixin:
@@ -57,9 +60,12 @@ class PrescriptionMixin:
     specie = fields.Many2One('farm.specie', 'Specie', domain=[
             ('prescription_enabled', '=', True),
             ], required=True, readonly=True, select=True)
-    feed_product = fields.Many2One('product.product', 'Feed', required=True,
-        help='The product of the base feed which should be complemented with '
-        'drugs.')
+    product = fields.Many2One('product.product', 'Product', domain=[
+            ('prescription_required', '=', True),
+            ], required=True,
+        help='The product for which this recipe is made. This can be a drug '
+        'or a feed to which are added the additives or medications defined in '
+        'the lines of this recipe.')
     unit = fields.Function(fields.Many2One('product.uom', 'Unit'),
         'on_change_with_unit')
     unit_digits = fields.Function(fields.Integer('Unit Digits'),
@@ -86,16 +92,16 @@ class PrescriptionMixin:
     def default_n_lines():
         return 0
 
-    @fields.depends('feed_product')
+    @fields.depends('product')
     def on_change_with_unit(self, name=None):
-        if self.feed_product:
-            return self.feed_product.default_uom.id
+        if self.product:
+            return self.product.default_uom.id
         return None
 
-    @fields.depends('feed_product')
+    @fields.depends('product')
     def on_change_with_unit_digits(self, name=None):
-        if self.feed_product:
-            return self.feed_product.default_uom.digits
+        if self.product:
+            return self.product.default_uom.digits
         return 2
 
     @fields.depends('lines')
@@ -170,7 +176,7 @@ class PrescriptionLineMixin:
 class Template(ModelSQL, ModelView, PrescriptionMixin):
     '''Prescription Template'''
     __name__ = 'farm.prescription.template'
-    _rec_name = 'feed_product.rec_name'
+    _rec_name = 'product.rec_name'
 
     lines = fields.One2Many('farm.prescription.template.line', 'prescription',
         'Lines')
@@ -194,7 +200,7 @@ class Template(ModelSQL, ModelView, PrescriptionMixin):
 
         actions = iter(args)
         for templates, values in zip(actions, actions):
-            if values.get('feed_product'):
+            if values.get('product'):
                 for template in templates:
                     n_template_products = Product.search_count([
                             ('prescription_template', '=', template.id),
@@ -225,9 +231,9 @@ class Prescription(Workflow, ModelSQL, ModelView, PrescriptionMixin):
     template = fields.Many2One('farm.prescription.template', 'Template',
         domain=[
             ('specie', '=', Eval('specie')),
-            ('feed_product', '=', Eval('feed_product')),
+            ('product', '=', Eval('product')),
             ],
-        states=_STATES, depends=_DEPENDS + ['specie', 'feed_product'])
+        states=_STATES, depends=_DEPENDS + ['specie', 'product'])
     reference = fields.Char('Reference', select=True, states=_STATES_REQUIRED,
         depends=_DEPENDS,
         help='If there is a real prescription; put its reference here. '
@@ -247,13 +253,13 @@ class Prescription(Workflow, ModelSQL, ModelView, PrescriptionMixin):
             ('veterinarian', '=', True),
             ],
         states=_STATES_REQUIRED, depends=_DEPENDS)
-    feed_lot = fields.Many2One('stock.lot', 'Feed Lot', domain=[
-            ('product', '=', Eval('feed_product')),
+    lot = fields.Many2One('stock.lot', 'Lot', domain=[
+            ('product', '=', Eval('product')),
             ],
         states={
             'required': Eval('state') == 'done',
             'readonly': Eval('state') == 'done',
-            }, depends=_DEPENDS + ['feed_product'])
+            }, depends=_DEPENDS + ['product'])
     animals = fields.Many2Many('farm.prescription-animal', 'prescription',
         'animal', 'Animals', domain=[
             ('specie', '=', Eval('specie')),
@@ -293,7 +299,7 @@ class Prescription(Workflow, ModelSQL, ModelView, PrescriptionMixin):
     @classmethod
     def __setup__(cls):
         super(Prescription, cls).__setup__()
-        for fname in ('feed_product', 'quantity', 'dosage', 'expiry_period'):
+        for fname in ('product', 'quantity', 'dosage', 'expiry_period'):
             field = getattr(cls, fname)
             field.states = _STATES
             field.depends += _DEPENDS
@@ -342,12 +348,12 @@ class Prescription(Workflow, ModelSQL, ModelView, PrescriptionMixin):
 
     def get_rec_name(self, name):
         return u'%s - %s (%s)' % (self.reference,
-            self.feed_product.rec_name, str(self.date))
+            self.product.rec_name, str(self.date))
 
-    @fields.depends('feed_product')
+    @fields.depends('product')
     def on_change_with_template(self):
-        return (self.feed_product.prescription_template.id
-            if (self.feed_product and self.feed_product.prescription_template)
+        return (self.product.prescription_template.id
+            if (self.product and self.product.prescription_template)
             else None)
 
     def get_animal_lots(self, name):
@@ -385,7 +391,7 @@ class Prescription(Workflow, ModelSQL, ModelView, PrescriptionMixin):
     @Workflow.transition('done')
     def done(cls, prescriptions):
         for prescription in prescriptions:
-            if not prescription.feed_lot:
+            if not prescription.lot:
                 cls.raise_user_error('lot_required_done',
                     prescription.rec_name)
 
@@ -447,18 +453,15 @@ class Prescription(Workflow, ModelSQL, ModelView, PrescriptionMixin):
 
     @classmethod
     def copy(cls, prescriptions, default=None):
-        pool = Pool()
-        Sequence = pool.get('ir.sequence.strict')
-
         if default is None:
             default = {}
-        default = default.copy()
+        else:
+            default = default.copy()
+
         default['reference'] = None
-        default['feed_lot'] = None
+        default['lot'] = None
         default['state'] = 'draft'
-        new_prescriptions = super(Prescription, cls).copy(prescriptions,
-            default=default)
-        return new_prescriptions
+        return super(Prescription, cls).copy(prescriptions, default=default)
 
 
 class PrescriptionAnimal(ModelSQL):
@@ -496,7 +499,7 @@ class PrescriptionLine(ModelSQL, ModelView, PrescriptionLineMixin):
         self.product = template.product
         self.unit = template.unit
         self.quantity = ((template.quantity / rate)
-            if rate else template_quantity)
+            if rate else template.quantity)
 
 
 class PrescriptionReport(JasperReport):
@@ -586,7 +589,7 @@ class Move:
                         'origin': self.origin.rec_name,
                         })
         elif self.prescription:
-            if (self.product != self.prescription.feed_product or
+            if (self.product != self.prescription.product or
                     self.quantity != Uom.compute_qty(self.prescription.unit,
                         self.prescription.quantity, self.uom)):
                 self.raise_user_error(

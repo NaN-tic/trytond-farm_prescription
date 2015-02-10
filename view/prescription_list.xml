@@ -6,9 +6,9 @@
     <field name="date"/>
     <field name="farm"/>
     <field name="delivery_date"/>
-    <field name="feed_product"/>
+    <field name="product"/>
     <field name="quantity"/>
     <field name="veterinarian"/>
-    <field name="feed_lot"/>
+    <field name="lot"/>
     <field name="state"/>
 </tree>
