@@ -437,6 +437,8 @@ class Prescription(Workflow, ModelSQL, ModelView, PrescriptionMixin):
         default_sequence_id = (context_specie_id
             and Specie(context_specie_id).prescription_sequence.id)
         for value in vlist:
+            if value.get('reference'):
+                continue
             sequence_id = default_sequence_id
             if value.get('specie'):
                 sequence_id = Specie(value['specie']).prescription_sequence.id
@@ -456,10 +458,6 @@ class Prescription(Workflow, ModelSQL, ModelView, PrescriptionMixin):
         default['state'] = 'draft'
         new_prescriptions = super(Prescription, cls).copy(prescriptions,
             default=default)
-        for prescription in new_prescriptions:
-            prescription.reference = Sequence.get_id(
-                prescription.specie.prescription_sequence.id)
-            prescription.save()
         return new_prescriptions
 
 
