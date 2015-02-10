@@ -64,6 +64,10 @@ msgstr ""
 "El movimiento de estoc \"%(move)s\" está asociado a la receta "
 "\"%(prescription)s\" pero el producto y/o cantidad no coinciden."
 
+msgctxt "field:farm.medication.event,prescription:"
+msgid "Prescription"
+msgstr "Receta"
+
 msgctxt "field:farm.prescription,afection:"
 msgid "Afection"
 msgstr "Afección a tratar"

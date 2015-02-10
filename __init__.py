@@ -3,6 +3,7 @@
 from trytond.pool import Pool
 from .prescription import *
 from .specie import *
+from .medication_event import *
 
 
 def register():
@@ -18,6 +19,7 @@ def register():
         ProductTemplate,
         Product,
         Move,
+        MedicationEvent,
         module='farm_prescription', type_='model')
     Pool.register(
         PrescriptionReport,

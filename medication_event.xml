@@ -1,0 +1,24 @@
+<?xml version="1.0"?>
+<!-- The COPYRIGHT file at the top level of this repository contains the full
+     copyright notices and license terms. -->
+<tryton>
+    <data>
+        <record model="ir.ui.view" id="farm_medication_event_view_form">
+            <field name="model">farm.medication.event</field>
+            <field name="inherit" ref="farm.farm_medication_event_form_view"/>
+            <field name="name">farm_medication_event_form</field>
+        </record>
+
+        <record model="ir.ui.view" id="farm_medication_event_view_list">
+            <field name="model">farm.medication.event</field>
+            <field name="inherit" ref="farm.farm_medication_event_list_view"/>
+            <field name="name">farm_medication_event_list</field>
+        </record>
+
+        <record model="ir.ui.view" id="farm_medication_event_view_list_editable">
+            <field name="model">farm.medication.event</field>
+            <field name="inherit" ref="farm.farm_medication_event_list_editable_view"/>
+            <field name="name">farm_medication_event_list_editable</field>
+        </record>
+    </data>
+</tryton>
