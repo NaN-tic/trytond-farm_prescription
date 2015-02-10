@@ -605,12 +605,7 @@ class Move:
         super(Move, cls).assign(moves)
 
     def check_prescription_required(self):
-        pool = Pool()
-        ShipmentOut = pool.get('stock.shipment.out')
-        if (not self.prescription and
-                self.product.prescription_required and (
-                    self.shipment and isinstance(self.shipment, ShipmentOut)
-                    or self.production_input)):
+        if not self.prescription and self.product.prescription_required:
             self.raise_user_error('need_prescription', self.rec_name)
         elif self.prescription:
             if self.prescription.state == 'draft':
