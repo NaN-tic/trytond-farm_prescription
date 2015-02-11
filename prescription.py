@@ -605,9 +605,16 @@ class Move:
         super(Move, cls).assign(moves)
 
     def check_prescription_required(self):
-        if not self.prescription and self.product.prescription_required:
+        pool = Pool()
+        FeedEvent = pool.get('farm.feed.event')
+        ShipmentIn = pool.get('stock.shipment.in')
+
+        if (not self.prescription and self.product.prescription_required
+                and not isinstance(self.shipment, ShipmentIn)
+                and not isinstance(self.origin, FeedEvent)):
+            # Purchases don't require prescription because are made to stock
             self.raise_user_error('need_prescription', self.rec_name)
-        elif self.prescription:
+        if self.prescription:
             if self.prescription.state == 'draft':
                 self.raise_user_error('unconfirmed_prescription',
                     (self.prescription.rec_name, self.rec_name))
