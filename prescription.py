@@ -47,7 +47,8 @@ class Product:
 
     prescription_required = fields.Function(fields.Boolean(
             'Prescription required'),
-        'on_change_with_prescription_required')
+        'on_change_with_prescription_required',
+        searcher='search_prescription_required')
     prescription_template = fields.Many2One('farm.prescription.template',
         'Prescription Template',
         domain=[
@@ -63,6 +64,10 @@ class Product:
         if self.template:
             return self.template.prescription_required
         return False
+
+    @classmethod
+    def search_prescription_required(cls, name, clause):
+        return [tuple(('template.%s' % name, )) + tuple(clause[1:])]
 
 
 class PrescriptionMixin:
