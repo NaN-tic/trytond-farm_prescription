@@ -1,6 +1,7 @@
 # The COPYRIGHT file at the top level of this repository contains the full
 # copyright notices and license terms.
 import datetime
+from itertools import chain
 
 from trytond.model import ModelView, ModelSQL, Workflow, fields
 from trytond.pool import Pool, PoolMeta
@@ -26,7 +27,7 @@ _STATES_REQUIRED = {
 _DEPENDS = ['state']
 
 
-class Party():
+class Party:
     __name__ = 'party.party'
 
     veterinarian = fields.Boolean('Veterinarian')
@@ -35,7 +36,7 @@ class Party():
             })
 
 
-class ProductTemplate():
+class ProductTemplate:
     __name__ = 'product.template'
 
     prescription_required = fields.Boolean('Prescription required')
@@ -45,12 +46,15 @@ class Product:
     __name__ = 'product.product'
 
     prescription_template = fields.Many2One('farm.prescription.template',
-        'Prescription Template', domain=[
+        'Prescription Template',
+        domain=[
             ('product', '=', Eval('id')),
             ],
         states={
-            'invisible': ~Eval('prescription_required', False),
-            }, depends=['id', 'prescription_required'])
+            'invisible': ~Eval('template', {}).get(
+                'prescription_required', False),
+            },
+        depends=['id', 'template'])
 
 
 class PrescriptionMixin:
@@ -286,6 +290,8 @@ class Prescription(Workflow, ModelSQL, ModelView, PrescriptionMixin):
             }, depends=_DEPENDS + ['specie', 'farm', 'animals'])
     animal_lots = fields.Function(fields.Many2Many('stock.lot', None, None,
         'Animals Lots'), 'get_animal_lots')
+    animals_description = fields.Function(fields.Char('Animals Description'),
+        'get_animals_description')
     lines = fields.One2Many('farm.prescription.line', 'prescription', 'Lines',
         states=_STATES_REQUIRED, depends=_DEPENDS)
     state = fields.Selection([
@@ -358,6 +364,12 @@ class Prescription(Workflow, ModelSQL, ModelView, PrescriptionMixin):
 
     def get_animal_lots(self, name):
         return [a.lot.id for a in self.animals + self.animal_groups]
+
+    def get_animals_description(self, name):
+        animals = [a.rec_name for a in self.animals]
+        groups = ['%sx%s' % (g.quantity, g.rec_name)
+            for g in self.animal_groups]
+        return ','.join(chain(animals, groups))
 
     @classmethod
     def _get_origin(cls):

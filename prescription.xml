@@ -276,6 +276,7 @@
             <field name="model">farm.prescription</field>
             <field name="report_name">farm.prescription.report</field>
             <field name="report">farm_prescription/prescription.jrxml</field>
+            <field name="extension">pdf</field>
         </record>
 
         <!-- wizards -->
