@@ -45,16 +45,24 @@ class ProductTemplate:
 class Product:
     __name__ = 'product.product'
 
+    prescription_required = fields.Function(fields.Boolean(
+            'Prescription required'),
+        'on_change_with_prescription_required')
     prescription_template = fields.Many2One('farm.prescription.template',
         'Prescription Template',
         domain=[
             ('product', '=', Eval('id')),
             ],
         states={
-            'invisible': ~Eval('template', {}).get(
-                'prescription_required', False),
+            'invisible': ~Eval('prescription_required', False),
             },
-        depends=['id', 'template'])
+        depends=['id', 'prescription_required'])
+
+    @fields.depends('template')
+    def on_change_with_prescription_required(self, name=None):
+        if self.template:
+            return self.template.prescription_required
+        return False
 
 
 class PrescriptionMixin:
