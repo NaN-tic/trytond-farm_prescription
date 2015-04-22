@@ -3,11 +3,13 @@
 from trytond.model import fields
 from trytond.pool import Pool, PoolMeta
 from trytond.pyson import If, Eval
+from trytond.transaction import Transaction
+from trytond.modules.jasper_reports.jasper import JasperReport
 
 from trytond.modules.farm.events.abstract_event import (
     _STATES_WRITE_DRAFT_VALIDATED, _DEPENDS_WRITE_DRAFT_VALIDATED)
 
-__all__ = ['MedicationEvent']
+__all__ = ['MedicationEvent', 'MedicationEventReport']
 __metaclass__ = PoolMeta
 
 
@@ -28,6 +30,8 @@ class MedicationEvent:
         depends=_DEPENDS_WRITE_DRAFT_VALIDATED + ['specie', 'farm',
             'feed_product', 'feed_lot', 'animal_type', 'animal',
             'animal_group'])
+    report_copies = fields.Function(fields.Integer('Report Copies'),
+        'get_report_copies')
 
     @fields.depends('specie', 'farm', 'feed_lot', 'animal_type', 'animal',
         'animal_group')
@@ -59,3 +63,11 @@ class MedicationEvent:
         move = super(MedicationEvent, self)._get_event_move()
         move.prescription = self.prescription
         return move
+
+    def get_report_copies(self, name):
+        return Transaction().context.get('report_copies', 3)
+
+
+class MedicationEventReport(JasperReport):
+    'Medication Event Report'
+    __name__ = 'farm.medication.event.report'

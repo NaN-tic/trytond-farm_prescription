@@ -440,6 +440,10 @@ msgctxt "field:party.party,veterinarian:"
 msgid "Veterinarian"
 msgstr "Veterinario"
 
+msgctxt "field:product.product,prescription_required:"
+msgid "Prescription required"
+msgstr "Requiere receta"
+
 msgctxt "field:product.product,prescription_template:"
 msgid "Prescription Template"
 msgstr "Plantilla receta"
@@ -503,6 +507,70 @@ msgstr "Esta especie utiliza recetas."
 msgctxt "help:farm.specie,prescription_sequence:"
 msgid "Sequence used for prescriptions."
 msgstr "Secuencia que se utiliza en las recetas."
+
+msgctxt "jasper:farm.medication.event.report:"
+msgid "City"
+msgstr "Ciudad"
+
+msgctxt "jasper:farm.medication.event.report:"
+msgid "Collegiate number"
+msgstr "Número de colegiado"
+
+msgctxt "jasper:farm.medication.event.report:"
+msgid "Date"
+msgstr "Fecha"
+
+msgctxt "jasper:farm.medication.event.report:"
+msgid "Dps"
+msgstr "Dps"
+
+msgctxt "jasper:farm.medication.event.report:"
+msgid "Expires at"
+msgstr "Caduca a los"
+
+msgctxt "jasper:farm.medication.event.report:"
+msgid "Notes and use instructions"
+msgstr "Observaciones e instrucciones de uso"
+
+msgctxt "jasper:farm.medication.event.report:"
+msgid "Number of animals"
+msgstr "Número de animales"
+
+msgctxt "jasper:farm.medication.event.report:"
+msgid "Owner"
+msgstr "Titular"
+
+msgctxt "jasper:farm.medication.event.report:"
+msgid "RECIPT"
+msgstr "RECETA"
+
+msgctxt "jasper:farm.medication.event.report:"
+msgid "Signature"
+msgstr "Firma"
+
+msgctxt "jasper:farm.medication.event.report:"
+msgid "Specie"
+msgstr "Especie"
+
+msgctxt "jasper:farm.medication.event.report:"
+msgid "Street"
+msgstr "Calle"
+
+msgctxt "jasper:farm.medication.event.report:"
+msgid "VAT Number"
+msgstr "CIF/NIF"
+
+msgctxt "jasper:farm.medication.event.report:"
+msgid "Veterinarian"
+msgstr "Veterinario"
+
+msgctxt "jasper:farm.medication.event.report:"
+msgid "Waiting period"
+msgstr "Plazo de espera"
+
+msgctxt "jasper:farm.medication.event.report:"
+msgid "days"
+msgstr "días"
 
 msgctxt "jasper:farm.prescription.report:"
 msgid "Afection"
@@ -619,6 +687,10 @@ msgstr "Receta"
 msgctxt "model:ir.action,name:act_prescription_line"
 msgid "Prescription Line"
 msgstr "Linea receta"
+
+msgctxt "model:ir.action,name:act_report_event_prescription"
+msgid "Prescription"
+msgstr "Receta"
 
 msgctxt "model:ir.action,name:act_report_prescription"
 msgid "Prescription"
