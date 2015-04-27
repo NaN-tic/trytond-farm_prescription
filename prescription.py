@@ -314,6 +314,9 @@ class Prescription(Workflow, ModelSQL, ModelView, PrescriptionMixin):
         ], 'State', readonly=True, required=True, select=True)
     origin = fields.Reference('Origin', selection='get_origin',
         states=_STATES, depends=_DEPENDS)
+    report_company = fields.Function(fields.Many2One('company.company',
+            'Company'),
+        'get_report_company')
 
     @classmethod
     def __setup__(cls):
@@ -383,6 +386,11 @@ class Prescription(Workflow, ModelSQL, ModelView, PrescriptionMixin):
         groups = ['%sx%s' % (g.quantity, g.rec_name)
             for g in self.animal_groups]
         return ','.join(chain(animals, groups))
+
+    @classmethod
+    def get_report_company(cls, prescriptions, name):
+        company = Transaction().context.get('company')
+        return {}.fromkeys([p.id for p in prescriptions], company)
 
     @classmethod
     def _get_origin(cls):

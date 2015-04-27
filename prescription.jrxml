@@ -2,7 +2,7 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="recipt" pageWidth="595" pageHeight="842" columnWidth="488" leftMargin="65" rightMargin="42" topMargin="56" bottomMargin="56" uuid="a2e6542d-192c-4c06-aba2-26e19b94d2f3">
 	<property name="ireport.zoom" value="1.331000000000002"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="243"/>
+	<property name="ireport.y" value="3"/>
 	<property name="ireport.layers" value="##Tue Jun 25 17:11:49 CEST 2013\nlayer.0.name=Background\nlayer.0.visible=true\nlayer.0.id=0"/>
 	<property name="TRYTON_RELATIONS" value="[&apos;lines&apos;]"/>
 	<style name="default" isDefault="true" fontName="Serif"/>
@@ -34,16 +34,16 @@
 		<fieldDescription><![CDATA[veterinarian-veterinarian/collegiate_number-collegiate_number]]></fieldDescription>
 	</field>
 	<field name="company_name" class="java.lang.String">
-		<fieldDescription><![CDATA[company-company/party-party/name-name]]></fieldDescription>
+		<fieldDescription><![CDATA[report_company/party-party/name-name]]></fieldDescription>
 	</field>
 	<field name="company_street" class="java.lang.String">
-		<fieldDescription><![CDATA[company-company/party-party/addresses-addresses/street-street]]></fieldDescription>
+		<fieldDescription><![CDATA[report_company/party-party/addresses-addresses/street-street]]></fieldDescription>
 	</field>
 	<field name="company_city" class="java.lang.String">
-		<fieldDescription><![CDATA[company-company/party-party/addresses-addresses/city-city]]></fieldDescription>
+		<fieldDescription><![CDATA[report_company/party-party/addresses-addresses/city-city]]></fieldDescription>
 	</field>
 	<field name="company_vat_code" class="java.lang.String">
-		<fieldDescription><![CDATA[company-company/party-party/vat_code-vat_code]]></fieldDescription>
+		<fieldDescription><![CDATA[report_company/party-party/vat_code-vat_code]]></fieldDescription>
 	</field>
 	<field name="party_name" class="java.lang.String">
 		<fieldDescription><![CDATA[farm/address/party/rec_name]]></fieldDescription>
@@ -197,7 +197,7 @@
 				<textElement verticalAlignment="Middle">
 					<font size="7"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{company_street}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{company_city}]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
 				<reportElement uuid="cf6816df-657d-4b6c-ae1a-110f6370cbda" x="41" y="134" width="317" height="13"/>
@@ -324,7 +324,7 @@
 				<textElement verticalAlignment="Bottom">
 					<font size="7" isBold="true"/>
 				</textElement>
-				<textFieldExpression><![CDATA[tr($V{L},"Quantity of treated feed") ]]></textFieldExpression>
+				<textFieldExpression><![CDATA[tr($V{L},"Quantity of treated feed")]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement uuid="9471829f-4b5d-40a6-8324-18c26233896e" x="0" y="29" width="194" height="16"/>
