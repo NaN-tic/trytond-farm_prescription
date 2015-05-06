@@ -525,14 +525,17 @@ class PrescriptionLine(ModelSQL, ModelView, PrescriptionLineMixin):
         required=True, ondelete='CASCADE')
 
     def compute_quantity(self, factor):
-        Uom = Pool().get('product.uom')
+        pool = Pool()
+        Uom = pool.get('product.uom')
         return Uom.round(self.quantity * factor, self.unit.rounding)
 
     def set_template_line_vals(self, template, rate):
+        pool = Pool()
+        Uom = pool.get('product.uom')
         self.product = template.product
         self.unit = template.unit
-        self.quantity = ((template.quantity / rate)
-            if rate else template.quantity)
+        quantity = ((template.quantity / rate) if rate else template.quantity)
+        self.quantity = Uom.round(quantity, self.unit.rounding)
 
 
 class PrescriptionReport(JasperReport):
