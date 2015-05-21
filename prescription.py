@@ -103,7 +103,14 @@ class PrescriptionMixin:
 
     @staticmethod
     def default_specie():
-        return Transaction().context.get('specie')
+        pool = Pool()
+        Specie = pool.get('farm.specie')
+        specie = Transaction().context.get('specie')
+        if not specie:
+            species = Specie.search([], limit=2)
+            if len(species) == 1:
+                specie, = species
+        return specie
 
     @staticmethod
     def default_n_lines():
@@ -121,10 +128,11 @@ class PrescriptionMixin:
             return self.product.default_uom.digits
         return 2
 
-    @fields.depends('lines')
+    @fields.depends('lines', 'waiting_period')
     def on_change_with_waiting_period(self):
         if self.lines and len(self.lines) > 1:
             return 28
+        return self.waiting_period
 
     @fields.depends('lines')
     def on_change_with_n_lines(self, name=None):
@@ -193,7 +201,6 @@ class PrescriptionLineMixin:
 class Template(ModelSQL, ModelView, PrescriptionMixin):
     '''Prescription Template'''
     __name__ = 'farm.prescription.template'
-    _rec_name = 'product.rec_name'
 
     lines = fields.One2Many('farm.prescription.template.line', 'prescription',
         'Lines')
@@ -208,6 +215,13 @@ class Template(ModelSQL, ModelView, PrescriptionMixin):
                     'rescriptions already related to this template.\n'
                     'Please, create a new template.'),
                 })
+
+    def get_rec_name(self, name):
+        return self.product.rec_name
+
+    @classmethod
+    def search_rec_name(cls, name, clause):
+        return [tuple(('product.rec_name',)) + tuple(clause[1:])]
 
     @classmethod
     def write(cls, *args):
@@ -241,7 +255,7 @@ class TemplateLine(ModelSQL, ModelView, PrescriptionLineMixin):
 
 
 class Prescription(Workflow, ModelSQL, ModelView, PrescriptionMixin):
-    'Prescription'
+    'Prescrption'
     __name__ = 'farm.prescription'
     _rec_name = 'reference'
 

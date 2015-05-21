@@ -745,20 +745,20 @@ msgid "Prescription Line"
 msgstr "Linea Receta"
 
 msgctxt "view:farm.prescription.template.line:"
-msgid "Prescription Line"
-msgstr "Linea receta"
+msgid "Prescription Template Line"
+msgstr "Plantilla de línea de receta"
 
 msgctxt "view:farm.prescription.template:"
 msgid "General"
 msgstr "General"
 
 msgctxt "view:farm.prescription.template:"
-msgid "Prescription"
-msgstr "Receta"
+msgid "Prescription Template"
+msgstr "Plantilla receta"
 
 msgctxt "view:farm.prescription.template:"
-msgid "Prescriptions"
-msgstr "Recetas"
+msgid "Prescription Templates"
+msgstr "Plantillas receta"
 
 msgctxt "view:farm.prescription:"
 msgid "Confirm"
