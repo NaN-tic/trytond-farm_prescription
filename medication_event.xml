@@ -20,18 +20,5 @@
             <field name="inherit" ref="farm.farm_medication_event_list_editable_view"/>
             <field name="name">farm_medication_event_list_editable</field>
         </record>
-        <record model="ir.action.report" id="act_report_event_prescription">
-            <field name="name">Prescription</field>
-            <field name="model">farm.medication.event</field>
-            <field name="report_name">farm.medication.event.report</field>
-            <field name="report">farm_prescription/medication_event.jrxml</field>
-            <field name="extension">pdf</field>
-        </record>
-        <record model="ir.action.keyword"
-                id="act_report_event_prescription_keyword">
-            <field name="keyword">form_print</field>
-            <field name="model">farm.medication.event,-1</field>
-            <field name="action" ref="act_report_event_prescription"/>
-        </record>
     </data>
 </tryton>

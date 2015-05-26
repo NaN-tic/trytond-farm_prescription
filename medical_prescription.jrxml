@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="recipt" pageWidth="595" pageHeight="842" columnWidth="511" leftMargin="42" rightMargin="42" topMargin="14" bottomMargin="14" uuid="a2e6542d-192c-4c06-aba2-26e19b94d2f3">
-	<property name="ireport.zoom" value="1.331000000000002"/>
+	<property name="ireport.zoom" value="1.9487171000000034"/>
 	<property name="ireport.x" value="0"/>
 	<property name="ireport.y" value="0"/>
 	<property name="ireport.layers" value="##Tue Jun 25 17:11:49 CEST 2013\nlayer.0.name=Background\nlayer.0.visible=true\nlayer.0.id=0"/>
@@ -16,22 +16,22 @@
 	<parameter name="end_date" class="java.lang.String"/>
 	<parameter name="currency" class="java.lang.String"/>
 	<queryString language="xPath">
-		<![CDATA[/data/record/prescription]]>
+		<![CDATA[/data/record]]>
 	</queryString>
 	<field name="reference" class="java.lang.String">
-		<fieldDescription><![CDATA[prescription/reference-reference]]></fieldDescription>
+		<fieldDescription><![CDATA[reference-reference]]></fieldDescription>
 	</field>
 	<field name="veterinarian-name" class="java.lang.String">
-		<fieldDescription><![CDATA[prescription/veterinarian-veterinarian/name-name]]></fieldDescription>
+		<fieldDescription><![CDATA[veterinarian-veterinarian/name-name]]></fieldDescription>
 	</field>
 	<field name="veterinarian-street" class="java.lang.String">
-		<fieldDescription><![CDATA[prescription/veterinarian-veterinarian/addresses-addresses/street-street]]></fieldDescription>
+		<fieldDescription><![CDATA[veterinarian-veterinarian/addresses-addresses/street-street]]></fieldDescription>
 	</field>
 	<field name="veterinarian-city" class="java.lang.String">
-		<fieldDescription><![CDATA[prescription/veterinarian-veterinarian/addresses-addresses/city-city]]></fieldDescription>
+		<fieldDescription><![CDATA[veterinarian-veterinarian/addresses-addresses/city-city]]></fieldDescription>
 	</field>
 	<field name="collegiate_number" class="java.lang.String">
-		<fieldDescription><![CDATA[prescription/veterinarian-veterinarian/collegiate_number-collegiate_number]]></fieldDescription>
+		<fieldDescription><![CDATA[veterinarian-veterinarian/collegiate_number-collegiate_number]]></fieldDescription>
 	</field>
 	<field name="party_name" class="java.lang.String">
 		<fieldDescription><![CDATA[farm/address/party/rec_name]]></fieldDescription>
@@ -49,48 +49,61 @@
 		<fieldDescription><![CDATA[farm/address/party/vat_code-vat_code]]></fieldDescription>
 	</field>
 	<field name="afection" class="java.lang.String">
-		<fieldDescription><![CDATA[prescription/afection-afection]]></fieldDescription>
+		<fieldDescription><![CDATA[afection-afection]]></fieldDescription>
 	</field>
 	<field name="product" class="java.lang.String">
-		<fieldDescription><![CDATA[feed_product/rec_name-rec_name]]></fieldDescription>
+		<fieldDescription><![CDATA[product/rec_name-rec_name]]></fieldDescription>
 	</field>
 	<field name="unit_symbol" class="java.lang.String">
 		<fieldDescription><![CDATA[uom/symbol-symbol]]></fieldDescription>
 	</field>
 	<field name="quantity" class="java.lang.Number">
-		<fieldDescription><![CDATA[feed_quantity]]></fieldDescription>
+		<fieldDescription><![CDATA[quantity]]></fieldDescription>
 	</field>
 	<field name="waiting_period" class="java.lang.String">
-		<fieldDescription><![CDATA[prescription/waiting_period-waiting_period]]></fieldDescription>
+		<fieldDescription><![CDATA[waiting_period-waiting_period]]></fieldDescription>
 	</field>
 	<field name="expiry_period" class="java.lang.String">
-		<fieldDescription><![CDATA[prescription/expiry_period]]></fieldDescription>
+		<fieldDescription><![CDATA[expiry_period]]></fieldDescription>
 	</field>
 	<field name="date" class="java.util.Date">
-		<fieldDescription><![CDATA[prescription/date-date]]></fieldDescription>
+		<fieldDescription><![CDATA[date-date]]></fieldDescription>
 	</field>
 	<field name="delivery_date" class="java.util.Date">
-		<fieldDescription><![CDATA[prescription/delivery_date-delivery_date]]></fieldDescription>
+		<fieldDescription><![CDATA[delivery_date-delivery_date]]></fieldDescription>
 	</field>
 	<field name="note" class="java.lang.String">
-		<fieldDescription><![CDATA[prescription/note-note]]></fieldDescription>
+		<fieldDescription><![CDATA[note-note]]></fieldDescription>
 	</field>
 	<field name="dosage" class="java.lang.String">
-		<fieldDescription><![CDATA[prescription/dosage]]></fieldDescription>
+		<fieldDescription><![CDATA[dosage]]></fieldDescription>
 	</field>
 	<field name="animals_description" class="java.lang.String">
-		<fieldDescription><![CDATA[prescription/animals_description]]></fieldDescription>
+		<fieldDescription><![CDATA[animals_description]]></fieldDescription>
 	</field>
 	<field name="unit_code" class="java.lang.String">
-		<fieldDescription><![CDATA[prescription/unit/symbol]]></fieldDescription>
+		<fieldDescription><![CDATA[unit/symbol]]></fieldDescription>
 	</field>
 	<field name="specie" class="java.lang.String">
-		<fieldDescription><![CDATA[specie/rec_name]]></fieldDescription>
+		<fieldDescription><![CDATA[specie_description]]></fieldDescription>
+	</field>
+	<field name="id" class="java.lang.Long">
+		<fieldDescription><![CDATA[id]]></fieldDescription>
+	</field>
+	<field name="number_of_animals" class="java.lang.Number">
+		<fieldDescription><![CDATA[number_of_animals]]></fieldDescription>
 	</field>
 	<variable name="L" class="java.util.Locale">
 		<variableExpression><![CDATA[$P{REPORT_LOCALE}]]></variableExpression>
 		<initialValueExpression><![CDATA[$P{REPORT_LOCALE}]]></initialValueExpression>
 	</variable>
+	<variable name="copy_count" class="java.lang.Integer" resetType="Group" resetGroup="prescription" calculation="Sum">
+		<variableExpression><![CDATA[new Integer(1)]]></variableExpression>
+		<initialValueExpression><![CDATA[new Integer(1)]]></initialValueExpression>
+	</variable>
+	<group name="prescription">
+		<groupExpression><![CDATA[$F{id}]]></groupExpression>
+	</group>
 	<background>
 		<band/>
 	</background>
@@ -143,10 +156,10 @@
 			</textField>
 			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
 				<reportElement uuid="6ab35bfa-461c-45d3-aa77-568026d58f6c" x="0" y="132" width="309" height="13"/>
-				<textElement verticalAlignment="Bottom">
+				<textElement textAlignment="Center" verticalAlignment="Bottom">
 					<font size="7"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{dosage}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[tr($V{L},"As explained on prospect")]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
 				<reportElement uuid="b4e7fabe-2761-4ee7-a83f-a36c4e0390a2" x="381" y="0" width="130" height="13"/>
@@ -216,10 +229,10 @@
 				<textElement verticalAlignment="Middle">
 					<font size="7"/>
 				</textElement>
-				<textFieldExpression><![CDATA[tr($V{L}, "VAT Number")+":"]]></textFieldExpression>
+				<textFieldExpression><![CDATA[tr($V{L}, "Register Number")+":"]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-				<reportElement uuid="34a30757-3acc-43ab-9d97-ee70eb80c621" x="311" y="52" width="70" height="13"/>
+				<reportElement uuid="34a30757-3acc-43ab-9d97-ee70eb80c621" x="309" y="52" width="72" height="13"/>
 				<textElement verticalAlignment="Middle">
 					<font size="7"/>
 				</textElement>
@@ -275,7 +288,7 @@
 				<textFieldExpression><![CDATA[tr($V{L}, "Date") + ": "]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true" pattern="EEEEE dd MMMMM yyyy" isBlankWhenNull="true">
-				<reportElement uuid="9b5e943b-9d8a-41c6-96f4-b2641a5b56b6" x="309" y="221" width="202" height="13"/>
+				<reportElement uuid="9b5e943b-9d8a-41c6-96f4-b2641a5b56b6" x="309" y="218" width="202" height="13"/>
 				<textElement verticalAlignment="Bottom">
 					<font size="7"/>
 				</textElement>
@@ -335,7 +348,7 @@
 				<textElement verticalAlignment="Middle">
 					<font size="7"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{quantity}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{number_of_animals}]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
 				<reportElement uuid="acfc0293-4669-4955-9e15-213d29089065" x="381" y="65" width="130" height="13"/>
@@ -373,11 +386,20 @@
 				<textFieldExpression><![CDATA[$F{veterinarian-city}]]></textFieldExpression>
 			</textField>
 			<line>
-				<reportElement uuid="69f0c539-1571-4d91-a39f-7d50d9540017" x="2" y="242" width="509" height="1"/>
+				<reportElement uuid="69f0c539-1571-4d91-a39f-7d50d9540017" x="2" y="246" width="509" height="1"/>
 				<graphicElement>
 					<pen lineWidth="0.5" lineStyle="Dashed"/>
 				</graphicElement>
 			</line>
+			<textField isStretchWithOverflow="true" pattern="" isBlankWhenNull="true">
+				<reportElement uuid="37038d33-6d2a-43f0-a666-f00bb3cd309a" x="132" y="236" width="379" height="11"/>
+				<textElement textAlignment="Right" verticalAlignment="Bottom">
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{copy_count} == new Integer(1) ? tr($V{L}, "COPY FOR THE DISPENSER CENTER") :
+( $V{copy_count} == new Integer(2) ? tr($V{L}, "COPY FOR THE OWNER") :
+    tr($V{L}, "COPY FOR THE VETERINIAN"))]]></textFieldExpression>
+			</textField>
 		</band>
 	</detail>
 	<summary>

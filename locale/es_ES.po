@@ -136,6 +136,10 @@ msgctxt "field:farm.prescription,note:"
 msgid "Note"
 msgstr "Nota"
 
+msgctxt "field:farm.prescription,number_of_animals:"
+msgid "Number of animals"
+msgstr "Número de animales"
+
 msgctxt "field:farm.prescription,origin:"
 msgid "Origin"
 msgstr "Origen"
@@ -156,6 +160,14 @@ msgctxt "field:farm.prescription,reference:"
 msgid "Reference"
 msgstr "Referencia"
 
+msgctxt "field:farm.prescription,report_company:"
+msgid "Company"
+msgstr "Empresa"
+
+msgctxt "field:farm.prescription,report_copies:"
+msgid "Report Copies"
+msgstr "Copias de l'informe"
+
 msgctxt "field:farm.prescription,specie:"
 msgid "Specie"
 msgstr "Especie"
@@ -167,6 +179,10 @@ msgstr "Estado"
 msgctxt "field:farm.prescription,template:"
 msgid "Template"
 msgstr "Plantilla"
+
+msgctxt "field:farm.prescription,type:"
+msgid "Type"
+msgstr "Tipo"
 
 msgctxt "field:farm.prescription,unit:"
 msgid "Unit"
@@ -356,6 +372,10 @@ msgctxt "field:farm.prescription.template,specie:"
 msgid "Specie"
 msgstr "Especie"
 
+msgctxt "field:farm.prescription.template,type:"
+msgid "Type"
+msgstr "Tipo"
+
 msgctxt "field:farm.prescription.template,unit:"
 msgid "Unit"
 msgstr "Unidad"
@@ -508,67 +528,83 @@ msgctxt "help:farm.specie,prescription_sequence:"
 msgid "Sequence used for prescriptions."
 msgstr "Secuencia que se utiliza en las recetas."
 
-msgctxt "jasper:farm.medication.event.report:"
+msgctxt "jasper:farm.prescription.medical.report:"
+msgid "As explained on prospect"
+msgstr "Según prospecto"
+
+msgctxt "jasper:farm.prescription.medical.report:"
+msgid "COPY FOR THE DISPENSER CENTER"
+msgstr "COPIA PARA EL CENTRO DISPENSADOR"
+
+msgctxt "jasper:farm.prescription.medical.report:"
+msgid "COPY FOR THE OWNER"
+msgstr "COPIA PARA EL PROPIETARIO"
+
+msgctxt "jasper:farm.prescription.medical.report:"
+msgid "COPY FOR THE VETERINIAN"
+msgstr "COPIA PARA EL VETERINARIO"
+
+msgctxt "jasper:farm.prescription.medical.report:"
 msgid "City"
 msgstr "Ciudad"
 
-msgctxt "jasper:farm.medication.event.report:"
+msgctxt "jasper:farm.prescription.medical.report:"
 msgid "Collegiate number"
 msgstr "Número de colegiado"
 
-msgctxt "jasper:farm.medication.event.report:"
+msgctxt "jasper:farm.prescription.medical.report:"
 msgid "Date"
 msgstr "Fecha"
 
-msgctxt "jasper:farm.medication.event.report:"
+msgctxt "jasper:farm.prescription.medical.report:"
 msgid "Dps"
 msgstr "Dps"
 
-msgctxt "jasper:farm.medication.event.report:"
+msgctxt "jasper:farm.prescription.medical.report:"
 msgid "Expires at"
-msgstr "Caduca a los"
+msgstr "Caduca el"
 
-msgctxt "jasper:farm.medication.event.report:"
+msgctxt "jasper:farm.prescription.medical.report:"
 msgid "Notes and use instructions"
-msgstr "Observaciones e instrucciones de uso"
+msgstr "Notas y instrucciones de uso"
 
-msgctxt "jasper:farm.medication.event.report:"
+msgctxt "jasper:farm.prescription.medical.report:"
 msgid "Number of animals"
-msgstr "Número de animales"
+msgstr "Numero de animales"
 
-msgctxt "jasper:farm.medication.event.report:"
+msgctxt "jasper:farm.prescription.medical.report:"
 msgid "Owner"
-msgstr "Titular"
+msgstr "Propietario"
 
-msgctxt "jasper:farm.medication.event.report:"
+msgctxt "jasper:farm.prescription.medical.report:"
 msgid "RECIPT"
 msgstr "RECETA"
 
-msgctxt "jasper:farm.medication.event.report:"
+msgctxt "jasper:farm.prescription.medical.report:"
+msgid "Register Number"
+msgstr "Numero de registro"
+
+msgctxt "jasper:farm.prescription.medical.report:"
 msgid "Signature"
 msgstr "Firma"
 
-msgctxt "jasper:farm.medication.event.report:"
+msgctxt "jasper:farm.prescription.medical.report:"
 msgid "Specie"
 msgstr "Especie"
 
-msgctxt "jasper:farm.medication.event.report:"
+msgctxt "jasper:farm.prescription.medical.report:"
 msgid "Street"
 msgstr "Calle"
 
-msgctxt "jasper:farm.medication.event.report:"
-msgid "VAT Number"
-msgstr "CIF/NIF"
-
-msgctxt "jasper:farm.medication.event.report:"
+msgctxt "jasper:farm.prescription.medical.report:"
 msgid "Veterinarian"
 msgstr "Veterinario"
 
-msgctxt "jasper:farm.medication.event.report:"
+msgctxt "jasper:farm.prescription.medical.report:"
 msgid "Waiting period"
 msgstr "Plazo de espera"
 
-msgctxt "jasper:farm.medication.event.report:"
+msgctxt "jasper:farm.prescription.medical.report:"
 msgid "days"
 msgstr "días"
 
@@ -657,7 +693,7 @@ msgid "days"
 msgstr "días"
 
 msgctxt "model:farm.prescription,name:"
-msgid "Prescription"
+msgid "Prescrption"
 msgstr "Receta"
 
 msgctxt "model:farm.prescription-animal,name:"
@@ -680,45 +716,61 @@ msgctxt "model:farm.prescription.template.line,name:"
 msgid "Prescription Template Line"
 msgstr "Plantilla de línea de receta"
 
-msgctxt "model:ir.action,name:act_prescription"
-msgid "Prescription"
-msgstr "Receta"
+msgctxt "model:ir.action,name:act_feed_prescription"
+msgid "Feed Prescription"
+msgstr "Plantilla de pienso"
+
+msgctxt "model:ir.action,name:act_feed_template"
+msgid "Prescription Template"
+msgstr "Plantilla de receta"
+
+msgctxt "model:ir.action,name:act_medical_prescription"
+msgid "Medical Prescription"
+msgstr "Receta medica"
+
+msgctxt "model:ir.action,name:act_medical_template"
+msgid "Prescription Template"
+msgstr "Plantilla de receta"
 
 msgctxt "model:ir.action,name:act_prescription_line"
 msgid "Prescription Line"
 msgstr "Linea receta"
 
-msgctxt "model:ir.action,name:act_report_event_prescription"
-msgid "Prescription"
-msgstr "Receta"
+msgctxt "model:ir.action,name:act_report_medical_prescription"
+msgid "Medical Prescription"
+msgstr "Receta medica"
 
 msgctxt "model:ir.action,name:act_report_prescription"
-msgid "Prescription"
+msgid "Receta"
 msgstr "Receta"
-
-msgctxt "model:ir.action,name:act_template"
-msgid "Prescription Template"
-msgstr "Plantilla receta"
 
 msgctxt "model:ir.action,name:act_template_line"
 msgid "Prescription Template Line"
 msgstr "Plantilla de línea de receta"
 
-msgctxt "model:ir.action,name:print_prescription"
-msgid "Print Prescription"
-msgstr "Imprimir receta"
+msgctxt "model:ir.action,name:wizard_print_prescription"
+msgid "Prescription"
+msgstr "Receta"
 
 msgctxt "model:ir.sequence.type,name:sequence_type_prescription"
 msgid "Prescription"
 msgstr "Receta"
 
-msgctxt "model:ir.ui.menu,name:menu_farm_prescription_templates"
+msgctxt "model:ir.ui.menu,name:menu_farm_feed_prescription_templates"
 msgid "Prescription Template"
-msgstr "Plantilla receta"
+msgstr "Plantilla de receta"
 
-msgctxt "model:ir.ui.menu,name:menu_farm_prescriptions"
-msgid "Prescription"
-msgstr "Receta"
+msgctxt "model:ir.ui.menu,name:menu_farm_feed_prescriptions"
+msgid "Feed Prescription"
+msgstr "Plantilla de pienso"
+
+msgctxt "model:ir.ui.menu,name:menu_farm_medical_prescription_templates"
+msgid "Prescription Template"
+msgstr "Plantilla de receta"
+
+msgctxt "model:ir.ui.menu,name:menu_farm_medical_prescriptions"
+msgid "Medical Prescription"
+msgstr "Receta medica"
 
 msgctxt "model:res.group,name:group_prescription"
 msgid "Farm / Prescriptions"
@@ -739,6 +791,22 @@ msgstr "Realizado"
 msgctxt "selection:farm.prescription,state:"
 msgid "Draft"
 msgstr "Borrador"
+
+msgctxt "selection:farm.prescription,type:"
+msgid "Feed"
+msgstr "Pienso"
+
+msgctxt "selection:farm.prescription,type:"
+msgid "Medical"
+msgstr "Medica"
+
+msgctxt "selection:farm.prescription.template,type:"
+msgid "Feed"
+msgstr "Pienso"
+
+msgctxt "selection:farm.prescription.template,type:"
+msgid "Medical"
+msgstr "Medica"
 
 msgctxt "view:farm.prescription.line:"
 msgid "Prescription Line"

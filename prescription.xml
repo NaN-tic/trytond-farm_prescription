@@ -31,19 +31,42 @@
             <field name="name">template_list</field>
         </record>
 
-        <record model="ir.action.act_window" id="act_template">
+        <record model="ir.action.act_window" id="act_medical_template">
             <field name="name">Prescription Template</field>
             <field name="res_model">farm.prescription.template</field>
+            <field name="domain">[('type', '=', 'medical')]</field>
+            <field name="context">{'type': 'medical'}</field>
         </record>
-        <record model="ir.action.act_window.view" id="act_template_view1">
+        <record model="ir.action.act_window.view"
+                id="act_medical_template_view1">
             <field name="sequence" eval="10"/>
             <field name="view" ref="template_view_list"/>
-            <field name="act_window" ref="act_template"/>
+            <field name="act_window" ref="act_medical_template"/>
         </record>
-        <record model="ir.action.act_window.view" id="act_template_view2">
+        <record model="ir.action.act_window.view"
+                id="act_medical_template_view2">
             <field name="sequence" eval="20"/>
             <field name="view" ref="template_view_form"/>
-            <field name="act_window" ref="act_template"/>
+            <field name="act_window" ref="act_medical_template"/>
+        </record>
+
+        <record model="ir.action.act_window" id="act_feed_template">
+            <field name="name">Prescription Template</field>
+            <field name="res_model">farm.prescription.template</field>
+            <field name="domain">[('type', '=', 'feed')]</field>
+            <field name="context">{'type': 'feed'}</field>
+        </record>
+        <record model="ir.action.act_window.view"
+                id="act_feed_template_view1">
+            <field name="sequence" eval="10"/>
+            <field name="view" ref="template_view_list"/>
+            <field name="act_window" ref="act_feed_template"/>
+        </record>
+        <record model="ir.action.act_window.view"
+                id="act_feed_template_view2">
+            <field name="sequence" eval="20"/>
+            <field name="view" ref="template_view_form"/>
+            <field name="act_window" ref="act_feed_template"/>
         </record>
 
         <record model="ir.model.access" id="access_template_farm">
@@ -129,19 +152,41 @@
             <field name="name">prescription_list</field>
         </record>
 
-        <record model="ir.action.act_window" id="act_prescription">
-            <field name="name">Prescription</field>
+        <record model="ir.action.act_window" id="act_medical_prescription">
+            <field name="name">Medical Prescription</field>
             <field name="res_model">farm.prescription</field>
+            <field name="domain">[('type', '=', 'medical')]</field>
+            <field name="context">{'type': 'medical'}</field>
         </record>
-        <record model="ir.action.act_window.view" id="act_prescription_view1">
+        <record model="ir.action.act_window.view"
+                id="act_medical_prescription_view1">
             <field name="sequence" eval="10"/>
             <field name="view" ref="prescription_view_list"/>
-            <field name="act_window" ref="act_prescription"/>
+            <field name="act_window" ref="act_medical_prescription"/>
         </record>
-        <record model="ir.action.act_window.view" id="act_prescription_view2">
+        <record model="ir.action.act_window.view"
+                id="act_medical_prescription_view2">
             <field name="sequence" eval="20"/>
             <field name="view" ref="prescription_view_form"/>
-            <field name="act_window" ref="act_prescription"/>
+            <field name="act_window" ref="act_medical_prescription"/>
+        </record>
+        <record model="ir.action.act_window" id="act_feed_prescription">
+            <field name="name">Feed Prescription</field>
+            <field name="res_model">farm.prescription</field>
+            <field name="domain">[('type', '=', 'feed')]</field>
+            <field name="context">{'type': 'feed'}</field>
+        </record>
+        <record model="ir.action.act_window.view"
+                id="act_feed_prescription_view1">
+            <field name="sequence" eval="10"/>
+            <field name="view" ref="prescription_view_list"/>
+            <field name="act_window" ref="act_feed_prescription"/>
+        </record>
+        <record model="ir.action.act_window.view"
+                id="act_feed_prescription_view2">
+            <field name="sequence" eval="20"/>
+            <field name="view" ref="prescription_view_form"/>
+            <field name="act_window" ref="act_feed_prescription"/>
         </record>
 
         <record model="ir.model.access" id="access_prescription">
@@ -272,23 +317,29 @@
 
         <!-- reports -->
         <record model="ir.action.report" id="act_report_prescription">
-            <field name="name">Prescription</field>
+            <field name="name">Feed Prescription</field>
             <field name="model">farm.prescription</field>
             <field name="report_name">farm.prescription.report</field>
             <field name="report">farm_prescription/prescription.jrxml</field>
             <field name="extension">pdf</field>
         </record>
 
-        <!-- wizards -->
-        <record model="ir.action.wizard" id="print_prescription">
-            <field name="name">Print Prescription</field>
+        <record model="ir.action.report" id="act_report_medical_prescription">
+            <field name="name">Medical Prescription</field>
+            <field name="model">farm.prescription</field>
+            <field name="report_name">farm.prescription.medical.report</field>
+            <field name="report">farm_prescription/medical_prescription.jrxml</field>
+            <field name="extension">pdf</field>
+        </record>
+        <record model="ir.action.wizard" id="wizard_print_prescription">
+            <field name="name">Prescription</field>
             <field name="wiz_name">farm.prescription.print</field>
             <field name="model">farm.prescription</field>
         </record>
-        <record model="ir.action.keyword" id="print_prescription_keyword">
+        <record model="ir.action.keyword" id="act_print_prescription_keyword">
             <field name="keyword">form_print</field>
             <field name="model">farm.prescription,-1</field>
-            <field name="action" ref="print_prescription"/>
+            <field name="action" ref="wizard_print_prescription"/>
         </record>
 
         <!-- sequences -->
@@ -303,20 +354,41 @@
         </record>
 
         <!-- menus -->
-        <menuitem id="menu_farm_prescriptions" action="act_prescription"
+        <menuitem id="menu_farm_medical_prescriptions"
+            action="act_medical_prescription"
             parent="farm.menu_specie_menu_template" sequence="32"/>
         <record model="ir.ui.menu-res.group"
-                id="menu_prescriptions_group_admin">
-            <field name="menu" ref="menu_farm_prescriptions"/>
+                id="menu_medical_prescriptions_group_admin">
+            <field name="menu" ref="menu_farm_medical_prescriptions"/>
             <field name="group" ref="farm.group_farm_admin"/>
         </record>
         <record model="ir.ui.menu-res.group"
-                id="menu_prescriptions_group_prescription">
-            <field name="menu" ref="menu_farm_prescriptions"/>
+                id="menu_medical_prescriptions_group_prescription">
+            <field name="menu" ref="menu_farm_medical_prescriptions"/>
             <field name="group" ref="group_prescription"/>
         </record>
 
-        <menuitem id="menu_farm_prescription_templates" action="act_template"
-            parent="menu_farm_prescriptions" sequence="1"/>
+        <menuitem id="menu_farm_medical_prescription_templates"
+            action="act_medical_template"
+            parent="menu_farm_medical_prescriptions" sequence="1"/>
+
+        <menuitem id="menu_farm_feed_prescriptions"
+            action="act_feed_prescription"
+            parent="farm.menu_specie_menu_template" sequence="32"/>
+        <record model="ir.ui.menu-res.group"
+                id="menu_feed_prescriptions_group_admin">
+            <field name="menu" ref="menu_farm_feed_prescriptions"/>
+            <field name="group" ref="farm.group_farm_admin"/>
+        </record>
+        <record model="ir.ui.menu-res.group"
+                id="menu_feed_prescriptions_group_prescription">
+            <field name="menu" ref="menu_farm_feed_prescriptions"/>
+            <field name="group" ref="group_prescription"/>
+        </record>
+
+        <menuitem id="menu_farm_feed_prescription_templates"
+            action="act_feed_template" parent="menu_farm_feed_prescriptions"
+            sequence="1"/>
+
     </data>
 </tryton>

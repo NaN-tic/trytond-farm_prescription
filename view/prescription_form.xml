@@ -39,6 +39,9 @@
             <field name="lines" colspan="4"/>
         </page>
         <page string="Target Animals" id="target_animals">
+            <label name="number_of_animals"/>
+            <field name="number_of_animals"/>
+            <newline/>
             <field name="animals" colspan="2"/>
             <field name="animal_groups" colspan="2"/>
         </page>

@@ -23,7 +23,7 @@ def register():
         module='farm_prescription', type_='model')
     Pool.register(
         PrescriptionReport,
-        MedicationEventReport,
+        MedicalPrescriptionReport,
         module='farm_prescription', type_='report')
     Pool.register(
         PrintPrescription,

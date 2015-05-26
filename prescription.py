@@ -14,7 +14,7 @@ __all__ = ['Party', 'ProductTemplate', 'Product', 'Move',
     'Template', 'TemplateLine',
     'Prescription', 'PrescriptionLine',
     'PrescriptionAnimal', 'PrescriptionAnimalGroup',
-    'PrescriptionReport', 'PrintPrescription']
+    'PrescriptionReport', 'MedicalPrescriptionReport', 'PrintPrescription']
 __metaclass__ = PoolMeta
 
 _STATES = {
@@ -77,6 +77,10 @@ class PrescriptionMixin:
     specie = fields.Many2One('farm.specie', 'Specie', domain=[
             ('prescription_enabled', '=', True),
             ], required=True, readonly=True, select=True)
+    type = fields.Selection([
+            ('feed', 'Feed'),
+            ('medical', 'Medical'),
+            ], 'Type', required=True, readonly=True, select=True)
     product = fields.Many2One('product.product', 'Product', domain=[
             ('prescription_required', '=', True),
             ], required=True,
@@ -111,6 +115,10 @@ class PrescriptionMixin:
             if len(species) == 1:
                 specie, = species
         return specie
+
+    @staticmethod
+    def default_type():
+        return Transaction().context.get('type', 'feed')
 
     @staticmethod
     def default_n_lines():
@@ -203,7 +211,11 @@ class Template(ModelSQL, ModelView, PrescriptionMixin):
     __name__ = 'farm.prescription.template'
 
     lines = fields.One2Many('farm.prescription.template.line', 'prescription',
-        'Lines')
+        'Lines',
+        states={
+            'invisible': Eval('type') == 'medical',
+            },
+        depends=['type'])
 
     @classmethod
     def __setup__(cls):
@@ -317,10 +329,22 @@ class Prescription(Workflow, ModelSQL, ModelView, PrescriptionMixin):
             }, depends=_DEPENDS + ['specie', 'farm', 'animals'])
     animal_lots = fields.Function(fields.Many2Many('stock.lot', None, None,
         'Animals Lots'), 'get_animal_lots')
+    number_of_animals = fields.Integer('Number of animals',
+        states={
+            'readonly': Eval('state') != 'draft',
+            },
+        depends=['state'])
     animals_description = fields.Function(fields.Char('Animals Description'),
         'get_animals_description')
+    specie_description = fields.Function(fields.Char('Specie Description'),
+        'get_specie_description')
     lines = fields.One2Many('farm.prescription.line', 'prescription', 'Lines',
-        states=_STATES_REQUIRED, depends=_DEPENDS)
+        states={
+            'invisible': Eval('type') == 'medical',
+            'required': (Eval('type') != 'medical') &
+            (Eval('state') != 'draft'),
+            },
+        depends=['type', 'state'])
     state = fields.Selection([
         ('draft', 'Draft'),
         ('confirmed', 'Confirmed'),
@@ -331,6 +355,8 @@ class Prescription(Workflow, ModelSQL, ModelView, PrescriptionMixin):
     report_company = fields.Function(fields.Many2One('company.company',
             'Company'),
         'get_report_company')
+    report_copies = fields.Function(fields.Integer('Report Copies'),
+        'get_report_copies')
 
     @classmethod
     def __setup__(cls):
@@ -386,6 +412,13 @@ class Prescription(Workflow, ModelSQL, ModelView, PrescriptionMixin):
         return u'%s - %s (%s)' % (self.reference,
             self.product.rec_name, str(self.date))
 
+    @fields.depends('animals', 'animals_groups')
+    def on_change_with_number_of_animals(self):
+        animals = len(self.animals)
+        for group in self.animal_groups:
+            animals += group.quantity
+        return animals
+
     @fields.depends('product')
     def on_change_with_template(self):
         return (self.product.prescription_template.id
@@ -401,10 +434,16 @@ class Prescription(Workflow, ModelSQL, ModelView, PrescriptionMixin):
             for g in self.animal_groups]
         return ','.join(chain(animals, groups))
 
+    def get_specie_description(self, name):
+        return self.specie.rec_name
+
     @classmethod
     def get_report_company(cls, prescriptions, name):
         company = Transaction().context.get('company')
         return {}.fromkeys([p.id for p in prescriptions], company)
+
+    def get_report_copies(self, name):
+        return Transaction().context.get('report_copies', 3)
 
     @classmethod
     def _get_origin(cls):
@@ -552,27 +591,6 @@ class PrescriptionLine(ModelSQL, ModelView, PrescriptionLineMixin):
         self.quantity = Uom.round(quantity, self.unit.rounding)
 
 
-class PrescriptionReport(JasperReport):
-    'Prescription'
-    __name__ = 'farm.prescription.report'
-
-
-class PrintPrescription(Wizard):
-    'Print Prescription Report'
-    __name__ = 'farm.prescription.print'
-    start = StateTransition()
-    print_ = StateAction('farm_prescription.act_report_prescription')
-
-    def transition_start(self):
-        return 'print_'
-
-    def do_print_(self, action):
-        data = {}
-        data['id'] = Transaction().context['active_ids'].pop()
-        data['ids'] = [data['id']]
-        return action, data
-
-
 class Move:
     __name__ = 'stock.move'
 
@@ -668,3 +686,33 @@ class Move:
             if self.prescription.state == 'draft':
                 self.raise_user_error('unconfirmed_prescription',
                     (self.prescription.rec_name, self.rec_name))
+
+
+class PrescriptionReport(JasperReport):
+    'Prescription'
+    __name__ = 'farm.prescription.report'
+
+
+class MedicalPrescriptionReport(JasperReport):
+    'Medical Prescription Report'
+    __name__ = 'farm.prescription.medical.report'
+
+
+class PrintPrescription(Wizard):
+    'Print Prescription'
+    __name__ = 'farm.prescription.print'
+
+    start = StateTransition()
+    feed = StateAction('farm_prescription.act_report_prescription')
+    medical = StateAction('farm_prescription.act_report_medical_prescription')
+
+    def transition_start(self):
+        pool = Pool()
+        Prescription = pool.get('farm.prescription')
+        return Prescription(Transaction().context.get('active_id')).type
+
+    def do_feed(self, action):
+        return action, {'ids': Transaction().context.get('active_ids')}
+
+    def do_medical(self, action):
+        return action, {'ids': Transaction().context.get('active_ids')}
