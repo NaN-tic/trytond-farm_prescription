@@ -718,7 +718,7 @@ msgstr "Plantilla de línea de receta"
 
 msgctxt "model:ir.action,name:act_feed_prescription"
 msgid "Feed Prescription"
-msgstr "Plantilla de pienso"
+msgstr "Receta de pienso"
 
 msgctxt "model:ir.action,name:act_feed_template"
 msgid "Prescription Template"
@@ -762,7 +762,7 @@ msgstr "Plantilla de receta"
 
 msgctxt "model:ir.ui.menu,name:menu_farm_feed_prescriptions"
 msgid "Feed Prescription"
-msgstr "Plantilla de pienso"
+msgstr "Receta de pienso"
 
 msgctxt "model:ir.ui.menu,name:menu_farm_medical_prescription_templates"
 msgid "Prescription Template"
