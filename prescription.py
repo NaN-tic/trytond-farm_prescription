@@ -311,8 +311,8 @@ class Prescription(Workflow, ModelSQL, ModelView, PrescriptionMixin):
                 ()),
             ],
         states={
-            'required': And(Eval('state') != 'draft',
-                Not(Bool(Eval('animal_groups')))),
+            'required': ((Eval('state') != 'draft') &
+                ~(Bool(Eval('animal_groups'))) & (Eval('type') != 'medical')),
             'readonly': Eval('state') != 'draft',
             }, depends=_DEPENDS + ['specie', 'farm', 'animal_groups'])
     animal_groups = fields.Many2Many('farm.prescription-animal.group',
@@ -323,8 +323,8 @@ class Prescription(Workflow, ModelSQL, ModelView, PrescriptionMixin):
                 ()),
             ],
         states={
-            'required': And(Eval('state') != 'draft',
-                Not(Bool(Eval('animals')))),
+            'required': ((Eval('state') != 'draft') & ~(Bool(Eval('animals')))
+                & (Eval('type') != 'medical')),
             'readonly': Eval('state') != 'draft',
             }, depends=_DEPENDS + ['specie', 'farm', 'animals'])
     animal_lots = fields.Function(fields.Many2Many('stock.lot', None, None,
@@ -468,7 +468,7 @@ class Prescription(Workflow, ModelSQL, ModelView, PrescriptionMixin):
             if not prescription.veterinarian:
                 cls.raise_user_error('veterinarian_required_confirmed',
                     prescription.rec_name)
-            if not prescription.lines:
+            if prescription.type != 'medical' and not prescription.lines:
                 cls.raise_user_error('lines_required_confirmed',
                     prescription.rec_name)
 
