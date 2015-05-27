@@ -198,7 +198,7 @@ msgstr "Veterinario"
 
 msgctxt "field:farm.prescription,waiting_period:"
 msgid "Waiting Period"
-msgstr "Plazo de espera"
+msgstr "Periodo de supresión"
 
 msgctxt "field:farm.prescription,write_date:"
 msgid "Write Date"
@@ -386,7 +386,7 @@ msgstr "Dígitos unidad"
 
 msgctxt "field:farm.prescription.template,waiting_period:"
 msgid "Waiting Period"
-msgstr "Plazo de espera"
+msgstr "Periodo de supresión"
 
 msgctxt "field:farm.prescription.template,write_date:"
 msgid "Write Date"
@@ -602,7 +602,7 @@ msgstr "Veterinario"
 
 msgctxt "jasper:farm.prescription.medical.report:"
 msgid "Waiting period"
-msgstr "Plazo de espera"
+msgstr "Periodo de supresión"
 
 msgctxt "jasper:farm.prescription.medical.report:"
 msgid "days"
