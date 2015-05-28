@@ -170,6 +170,26 @@
             <field name="view" ref="prescription_view_form"/>
             <field name="act_window" ref="act_medical_prescription"/>
         </record>
+        <record model="ir.action.act_window.domain"
+                id="act_medical_prescription_draft">
+            <field name="name">Draft</field>
+            <field name="sequence" eval="10"/>
+            <field name="domain">[('state', '=', 'draft')]</field>
+            <field name="act_window" ref="act_medical_prescription"/>
+        </record>
+        <record model="ir.action.act_window.domain"
+                id="act_medical_prescription_confirmed">
+            <field name="name">Confirmed</field>
+            <field name="sequence" eval="20"/>
+            <field name="domain">[('state', '=', 'confirmed')]</field>
+            <field name="act_window" ref="act_medical_prescription"/>
+        </record>
+        <record model="ir.action.act_window.domain"
+                id="act_medical_prescription_all">
+            <field name="name">All</field>
+            <field name="sequence" eval="9999"/>
+            <field name="act_window" ref="act_medical_prescription"/>
+        </record>
         <record model="ir.action.act_window" id="act_feed_prescription">
             <field name="name">Feed Prescription</field>
             <field name="res_model">farm.prescription</field>
@@ -186,6 +206,26 @@
                 id="act_feed_prescription_view2">
             <field name="sequence" eval="20"/>
             <field name="view" ref="prescription_view_form"/>
+            <field name="act_window" ref="act_feed_prescription"/>
+        </record>
+        <record model="ir.action.act_window.domain"
+                id="act_feed_prescription_draft">
+            <field name="name">Draft</field>
+            <field name="sequence" eval="10"/>
+            <field name="domain">[('state', '=', 'draft')]</field>
+            <field name="act_window" ref="act_feed_prescription"/>
+        </record>
+        <record model="ir.action.act_window.domain"
+                id="act_feed_prescription_confirmed">
+            <field name="name">Confirmed</field>
+            <field name="sequence" eval="20"/>
+            <field name="domain">[('state', '=', 'confirmed')]</field>
+            <field name="act_window" ref="act_feed_prescription"/>
+        </record>
+        <record model="ir.action.act_window.domain"
+                id="act_feed_prescription_all">
+            <field name="name">All</field>
+            <field name="sequence" eval="9999"/>
             <field name="act_window" ref="act_feed_prescription"/>
         </record>
 

@@ -172,6 +172,10 @@ msgctxt "field:farm.prescription,specie:"
 msgid "Specie"
 msgstr "Especie"
 
+msgctxt "field:farm.prescription,specie_description:"
+msgid "Specie Description"
+msgstr "Descripción de la especie"
+
 msgctxt "field:farm.prescription,state:"
 msgid "State"
 msgstr "Estado"
@@ -740,8 +744,9 @@ msgctxt "model:ir.action,name:act_report_medical_prescription"
 msgid "Medical Prescription"
 msgstr "Receta medica"
 
+#, fuzzy
 msgctxt "model:ir.action,name:act_report_prescription"
-msgid "Receta"
+msgid "Feed Prescription"
 msgstr "Receta"
 
 msgctxt "model:ir.action,name:act_template_line"
@@ -751,6 +756,33 @@ msgstr "Plantilla de línea de receta"
 msgctxt "model:ir.action,name:wizard_print_prescription"
 msgid "Prescription"
 msgstr "Receta"
+
+msgctxt "model:ir.action.act_window.domain,name:act_feed_prescription_all"
+msgid "All"
+msgstr "Todos"
+
+msgctxt ""
+"model:ir.action.act_window.domain,name:act_feed_prescription_confirmed"
+msgid "Confirmed"
+msgstr "Confirmado"
+
+msgctxt "model:ir.action.act_window.domain,name:act_feed_prescription_draft"
+msgid "Draft"
+msgstr "Borrador"
+
+msgctxt "model:ir.action.act_window.domain,name:act_medical_prescription_all"
+msgid "All"
+msgstr "Todos"
+
+msgctxt ""
+"model:ir.action.act_window.domain,name:act_medical_prescription_confirmed"
+msgid "Confirmed"
+msgstr "Confirmado"
+
+msgctxt ""
+"model:ir.action.act_window.domain,name:act_medical_prescription_draft"
+msgid "Draft"
+msgstr "Borrador"
 
 msgctxt "model:ir.sequence.type,name:sequence_type_prescription"
 msgid "Prescription"
