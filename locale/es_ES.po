@@ -642,7 +642,7 @@ msgstr "Plazo de conservación"
 
 msgctxt "jasper:farm.prescription.report:"
 msgid "Number and identification of the animals"
-msgstr "Número i identificación de los animales"
+msgstr "Número y identificación de los animales"
 
 msgctxt "jasper:farm.prescription.report:"
 msgid ""
