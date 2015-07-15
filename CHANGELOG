@@ -1,3 +1,4 @@
+* Compatibility with stock_lot_expiry: don't allow to use expired lots
 * Diferentiate prescription type (medical or feed)
 
 Version 3.4.0 - 2015-01-22

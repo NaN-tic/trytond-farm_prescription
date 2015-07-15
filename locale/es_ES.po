@@ -19,6 +19,10 @@ msgid "Lot is required to set done the prescription \"%s\"."
 msgstr "El lote es requerido para poder realizar la receta \"%s\"."
 
 msgctxt "error:farm.prescription:"
+msgid "The lot \"%(lot)s\" used in prescription \"%(prescription)s\" has expired."
+msgstr "El lote \"%(lot)s\" usado en la receta \"%(prescription)s\" ha caducado."
+
+msgctxt "error:farm.prescription:"
 msgid ""
 "The prescription \"%s\" must have at least one line in order to be "
 "confirmed."
@@ -744,7 +748,6 @@ msgctxt "model:ir.action,name:act_report_medical_prescription"
 msgid "Medical Prescription"
 msgstr "Receta medica"
 
-#, fuzzy
 msgctxt "model:ir.action,name:act_report_prescription"
 msgid "Feed Prescription"
 msgstr "Receta"

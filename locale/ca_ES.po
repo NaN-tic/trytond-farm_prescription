@@ -19,6 +19,10 @@ msgid "Lot is required to set done the prescription \"%s\"."
 msgstr "Es requereix el lot per a realitzar la recepta \"%s\"."
 
 msgctxt "error:farm.prescription:"
+msgid "The lot \"%(lot)s\" used in prescription \"%(prescription)s\" has expired."
+msgstr "El lot \"%(lot)s\" utilitzat a la recepta \"%(prescription)s\" ha caducat."
+
+msgctxt "error:farm.prescription:"
 msgid ""
 "The prescription \"%s\" must have at least one line in order to be "
 "confirmed."

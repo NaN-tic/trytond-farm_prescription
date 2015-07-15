@@ -6,7 +6,7 @@ from itertools import chain
 from trytond.model import ModelView, ModelSQL, Workflow, fields
 from trytond.pool import Pool, PoolMeta
 from trytond.transaction import Transaction
-from trytond.pyson import And, Bool, Equal, Eval, If, Not, Or
+from trytond.pyson import Bool, Equal, Eval, If, Or
 from trytond.wizard import Wizard, StateAction, StateTransition
 from trytond.modules.jasper_reports.jasper import JasperReport
 
@@ -378,6 +378,8 @@ class Prescription(Workflow, ModelSQL, ModelView, PrescriptionMixin):
                     'Current values of prescription "%s" will be replaced.'),
                 'lot_required_done': ('Lot is required to set done the '
                     'prescription "%s".'),
+                'lot_expired': ('The lot "%(lot)s" used in prescription '
+                    '"%(prescription)s" has expired.'),
                 'veterinarian_required_confirmed': ('Veterinarian is requried '
                     'to confirm the prescription "%s".'),
                 'lines_required_confirmed': ('The prescription "%s" must have '
@@ -476,10 +478,26 @@ class Prescription(Workflow, ModelSQL, ModelView, PrescriptionMixin):
     @ModelView.button
     @Workflow.transition('done')
     def done(cls, prescriptions):
+        pool = Pool()
+        Lot = pool.get('stock.lot')
+
+        stock_move_date = Transaction().context.get('stock_move_date')
         for prescription in prescriptions:
             if not prescription.lot:
                 cls.raise_user_error('lot_required_done',
                     prescription.rec_name)
+            if hasattr(prescription.lot, 'expiry_date'):
+                prescription_date = max(prescription.date,
+                    prescription.delivery_date)
+                if stock_move_date:
+                    prescription_date = max(prescription_date, stock_move_date)
+                with Transaction().set_context(
+                        stock_move_date=prescription_date):
+                    if Lot(prescription.lot.id).expired:
+                        cls.raise_user_error('lot_expired', {
+                                'lot': prescription.lot.rec_name,
+                                'prescription': prescription.rec_name,
+                                })
 
     @classmethod
     @ModelView.button
