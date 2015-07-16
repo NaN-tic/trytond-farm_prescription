@@ -6,7 +6,7 @@ from itertools import chain
 from trytond.model import ModelView, ModelSQL, Workflow, fields
 from trytond.pool import Pool, PoolMeta
 from trytond.transaction import Transaction
-from trytond.pyson import Bool, Equal, Eval, If, Or
+from trytond.pyson import Bool, Date, Equal, Eval, If, Or
 from trytond.wizard import Wizard, StateAction, StateTransition
 from trytond.modules.jasper_reports.jasper import JasperReport
 
@@ -290,8 +290,10 @@ class Prescription(Workflow, ModelSQL, ModelView, PrescriptionMixin):
         context={
             'restrict_by_specie_animal_type': True,
         })
-    delivery_date = fields.Date('Delivery date', required=True, states=_STATES,
-        depends=_DEPENDS)
+    delivery_date = fields.Date('Delivery date', required=True, domain=[
+            ('delivery_date', '>=', Eval('date', Date())),
+            ],
+        states=_STATES, depends=_DEPENDS+['date'])
     veterinarian = fields.Many2One('party.party', 'Veterinarian', domain=[
             ('veterinarian', '=', True),
             ],
@@ -360,6 +362,9 @@ class Prescription(Workflow, ModelSQL, ModelView, PrescriptionMixin):
 
     @classmethod
     def __setup__(cls):
+        pool = Pool()
+        Lot = pool.get('stock.lot')
+
         super(Prescription, cls).__setup__()
         for fname in ('product', 'quantity', 'dosage', 'expiry_period'):
             field = getattr(cls, fname)
@@ -372,6 +377,18 @@ class Prescription(Workflow, ModelSQL, ModelView, PrescriptionMixin):
             'readonly': Or(Eval('n_lines', 0) > 1, Eval('state') != 'draft'),
             }
         cls.waiting_period.depends = ['n_lines', 'state']
+
+        if hasattr(Lot, 'expiry_date'):
+            cls.lot.domain.append(
+                If(Eval('state') != 'done',
+                    ('expired', '=', False),
+                    ()))
+            # TODO: use next context when issue4879 whas resolved
+            # cls.lot.context['stock_move_date'] = max(
+            #     Eval('context', {}).get('stock_move_date', Date()),
+            #     Eval('delivery_date', Date()))
+            cls.lot.context['stock_move_date'] = Eval('delivery_date', Date())
+            cls.lot.depends += ['delivery_date']
 
         cls._error_messages.update({
                 'lines_will_be_replaced': (
@@ -487,8 +504,7 @@ class Prescription(Workflow, ModelSQL, ModelView, PrescriptionMixin):
                 cls.raise_user_error('lot_required_done',
                     prescription.rec_name)
             if hasattr(prescription.lot, 'expiry_date'):
-                prescription_date = max(prescription.date,
-                    prescription.delivery_date)
+                prescription_date = prescription.delivery_date
                 if stock_move_date:
                     prescription_date = max(prescription_date, stock_move_date)
                 with Transaction().set_context(

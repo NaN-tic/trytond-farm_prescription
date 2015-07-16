@@ -1,3 +1,4 @@
+* Add domain to don't allow to select expired lots
 * Compatibility with stock_lot_expiry: don't allow to use expired lots
 * Diferentiate prescription type (medical or feed)
 
