@@ -355,33 +355,6 @@
             <field name="name">stock_move_form</field>
         </record>
 
-        <!-- reports -->
-        <record model="ir.action.report" id="act_report_prescription">
-            <field name="name">Feed Prescription</field>
-            <field name="model">farm.prescription</field>
-            <field name="report_name">farm.prescription.report</field>
-            <field name="report">farm_prescription/prescription.jrxml</field>
-            <field name="extension">pdf</field>
-        </record>
-
-        <record model="ir.action.report" id="act_report_medical_prescription">
-            <field name="name">Medical Prescription</field>
-            <field name="model">farm.prescription</field>
-            <field name="report_name">farm.prescription.medical.report</field>
-            <field name="report">farm_prescription/medical_prescription.jrxml</field>
-            <field name="extension">pdf</field>
-        </record>
-        <record model="ir.action.wizard" id="wizard_print_prescription">
-            <field name="name">Prescription</field>
-            <field name="wiz_name">farm.prescription.print</field>
-            <field name="model">farm.prescription</field>
-        </record>
-        <record model="ir.action.keyword" id="act_print_prescription_keyword">
-            <field name="keyword">form_print</field>
-            <field name="model">farm.prescription,-1</field>
-            <field name="action" ref="wizard_print_prescription"/>
-        </record>
-
         <!-- sequences -->
         <record model="ir.sequence.type" id="sequence_type_prescription">
             <field name="name">Prescription</field>

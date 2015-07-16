@@ -21,10 +21,3 @@ def register():
         Move,
         MedicationEvent,
         module='farm_prescription', type_='model')
-    Pool.register(
-        PrescriptionReport,
-        MedicalPrescriptionReport,
-        module='farm_prescription', type_='report')
-    Pool.register(
-        PrintPrescription,
-        module='farm_prescription', type_='wizard')

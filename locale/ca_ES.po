@@ -166,14 +166,6 @@ msgctxt "field:farm.prescription,reference:"
 msgid "Reference"
 msgstr "Referència"
 
-msgctxt "field:farm.prescription,report_company:"
-msgid "Company"
-msgstr "Empresa"
-
-msgctxt "field:farm.prescription,report_copies:"
-msgid "Report Copies"
-msgstr "Copies de l'informe"
-
 msgctxt "field:farm.prescription,specie:"
 msgid "Specie"
 msgstr "Especie"
@@ -538,170 +530,6 @@ msgctxt "help:farm.specie,prescription_sequence:"
 msgid "Sequence used for prescriptions."
 msgstr "Seqüencia utilitzada per les receptes."
 
-msgctxt "jasper:farm.prescription.medical.report:"
-msgid "As explained on prospect"
-msgstr "Segons prospecte"
-
-msgctxt "jasper:farm.prescription.medical.report:"
-msgid "COPY FOR THE DISPENSER CENTER"
-msgstr "CÒPIA PEL CENTRE DISPENSADOR"
-
-msgctxt "jasper:farm.prescription.medical.report:"
-msgid "COPY FOR THE OWNER"
-msgstr "CÒPIA PEL PROPIETARI"
-
-msgctxt "jasper:farm.prescription.medical.report:"
-msgid "COPY FOR THE VETERINIAN"
-msgstr "COPY PER AL VETERINARI"
-
-msgctxt "jasper:farm.prescription.medical.report:"
-msgid "City"
-msgstr "Ciutat"
-
-msgctxt "jasper:farm.prescription.medical.report:"
-msgid "Collegiate number"
-msgstr "Número de col·legiat"
-
-msgctxt "jasper:farm.prescription.medical.report:"
-msgid "Date"
-msgstr "Data"
-
-msgctxt "jasper:farm.prescription.medical.report:"
-msgid "Dps"
-msgstr "Dps"
-
-msgctxt "jasper:farm.prescription.medical.report:"
-msgid "Expires at"
-msgstr "Caduca a"
-
-msgctxt "jasper:farm.prescription.medical.report:"
-msgid "Notes and use instructions"
-msgstr "Notes i instruccions d'ús"
-
-msgctxt "jasper:farm.prescription.medical.report:"
-msgid "Number of animals"
-msgstr "Número d'animals"
-
-msgctxt "jasper:farm.prescription.medical.report:"
-msgid "Owner"
-msgstr "Propietari"
-
-msgctxt "jasper:farm.prescription.medical.report:"
-msgid "RECIPT"
-msgstr "RECEPTA"
-
-msgctxt "jasper:farm.prescription.medical.report:"
-msgid "Register Number"
-msgstr "Número de registre"
-
-msgctxt "jasper:farm.prescription.medical.report:"
-msgid "Signature"
-msgstr "Signatura"
-
-msgctxt "jasper:farm.prescription.medical.report:"
-msgid "Specie"
-msgstr "Espècie"
-
-msgctxt "jasper:farm.prescription.medical.report:"
-msgid "Street"
-msgstr "Carrer"
-
-msgctxt "jasper:farm.prescription.medical.report:"
-msgid "Veterinarian"
-msgstr "Veterinari"
-
-msgctxt "jasper:farm.prescription.medical.report:"
-msgid "Waiting period"
-msgstr "Plaç d'espera"
-
-msgctxt "jasper:farm.prescription.medical.report:"
-msgid "days"
-msgstr "dies"
-
-msgctxt "jasper:farm.prescription.report:"
-msgid "Afection"
-msgstr "Afecció a tractar"
-
-msgctxt "jasper:farm.prescription.report:"
-msgid "Collegiate number"
-msgstr "Número de col·legiat"
-
-msgctxt "jasper:farm.prescription.report:"
-msgid "DOSIFICATION"
-msgstr "DOSIFICACIÓ"
-
-msgctxt "jasper:farm.prescription.report:"
-msgid "Delivery date"
-msgstr "Data d'enviament"
-
-msgctxt "jasper:farm.prescription.report:"
-msgid "Denomination of autorized medicated mixtures"
-msgstr "Denominació de les barreges medicamentoses autoritzades"
-
-msgctxt "jasper:farm.prescription.report:"
-msgid "Especial notes for farmer"
-msgstr "Recomanacions especials per al granger"
-
-msgctxt "jasper:farm.prescription.report:"
-msgid "Expiry period"
-msgstr "Plaç conservació"
-
-msgctxt "jasper:farm.prescription.report:"
-msgid "Number and identification of the animals"
-msgstr "Número i identificació dels animals"
-
-msgctxt "jasper:farm.prescription.report:"
-msgid ""
-"Proportion of treated feed, in the daily ration, frequence y duration of "
-"treatment"
-msgstr ""
-"Proporció d'aliment medicamentós o en la ració diària, o freqüència i "
-"duració del tractament"
-
-msgctxt "jasper:farm.prescription.report:"
-msgid "Quantity of treated feed"
-msgstr "Quantitat d'aliment medicamentòs"
-
-msgctxt "jasper:farm.prescription.report:"
-msgid "RECIPT"
-msgstr "RECEPTA"
-
-msgctxt "jasper:farm.prescription.report:"
-msgid "Supplier Signature"
-msgstr "Signatura del proveïdor"
-
-msgctxt "jasper:farm.prescription.report:"
-msgid "Surname, name and address of manufacturer or supplier"
-msgstr "Cognoms, nom i direcció del fabricant o proveïdor"
-
-msgctxt "jasper:farm.prescription.report:"
-msgid "Surname, name and address of the owner of the animals"
-msgstr "Cognoms, nom i direcció del propietari dels animals"
-
-msgctxt "jasper:farm.prescription.report:"
-msgid "Surname, name and address of veterinarian"
-msgstr "Cognoms, nom i direcció del veterinari"
-
-msgctxt "jasper:farm.prescription.report:"
-msgid "THIS RECIPT CAN ONLY BE USED ONE TIME"
-msgstr "AQUESTA RECEPTA NOMÉS ES POT UTILITZAR UNA VEGADA"
-
-msgctxt "jasper:farm.prescription.report:"
-msgid "Veterinarian Signature"
-msgstr "Signatura veterinari"
-
-msgctxt "jasper:farm.prescription.report:"
-msgid ""
-"Waiting period before sacrifice or selling to market the products that come "
-"from the treated animals"
-msgstr ""
-"Plaç d'espera del sacrifici o de la posta en venta dels productes procedents"
-" dels animals tractats"
-
-msgctxt "jasper:farm.prescription.report:"
-msgid "days"
-msgstr "dies"
-
 msgctxt "model:farm.prescription,name:"
 msgid "Prescrption"
 msgstr "Recepta"
@@ -746,21 +574,9 @@ msgctxt "model:ir.action,name:act_prescription_line"
 msgid "Prescription Line"
 msgstr "Línia recepta"
 
-msgctxt "model:ir.action,name:act_report_medical_prescription"
-msgid "Medical Prescription"
-msgstr "Recepta mèdica"
-
-msgctxt "model:ir.action,name:act_report_prescription"
-msgid "Feed Prescription"
-msgstr "Receptes de pinso"
-
 msgctxt "model:ir.action,name:act_template_line"
 msgid "Prescription Template Line"
 msgstr "Línia de plantilla de recepta"
-
-msgctxt "model:ir.action,name:wizard_print_prescription"
-msgid "Prescription"
-msgstr "Recepta"
 
 msgctxt "model:ir.action.act_window.domain,name:act_feed_prescription_all"
 msgid "All"

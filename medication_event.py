@@ -3,8 +3,6 @@
 from trytond.model import fields
 from trytond.pool import Pool, PoolMeta
 from trytond.pyson import If, Eval
-from trytond.transaction import Transaction
-from trytond.modules.jasper_reports.jasper import JasperReport
 
 from trytond.modules.farm.events.abstract_event import (
     _STATES_WRITE_DRAFT_VALIDATED, _DEPENDS_WRITE_DRAFT_VALIDATED)
@@ -15,7 +13,6 @@ __metaclass__ = PoolMeta
 
 class MedicationEvent:
     __name__ = 'farm.medication.event'
-
     prescription = fields.Many2One('farm.prescription', 'Prescription',
         select=True, domain=[
             ('state', '=', 'done'),

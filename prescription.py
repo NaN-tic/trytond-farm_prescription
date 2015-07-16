@@ -7,14 +7,11 @@ from trytond.model import ModelView, ModelSQL, Workflow, fields
 from trytond.pool import Pool, PoolMeta
 from trytond.transaction import Transaction
 from trytond.pyson import Bool, Date, Equal, Eval, If, Or
-from trytond.wizard import Wizard, StateAction, StateTransition
-from trytond.modules.jasper_reports.jasper import JasperReport
 
 __all__ = ['Party', 'ProductTemplate', 'Product', 'Move',
     'Template', 'TemplateLine',
     'Prescription', 'PrescriptionLine',
-    'PrescriptionAnimal', 'PrescriptionAnimalGroup',
-    'PrescriptionReport', 'MedicalPrescriptionReport', 'PrintPrescription']
+    'PrescriptionAnimal', 'PrescriptionAnimalGroup']
 __metaclass__ = PoolMeta
 
 _STATES = {
@@ -354,11 +351,6 @@ class Prescription(Workflow, ModelSQL, ModelView, PrescriptionMixin):
         ], 'State', readonly=True, required=True, select=True)
     origin = fields.Reference('Origin', selection='get_origin',
         states=_STATES, depends=_DEPENDS)
-    report_company = fields.Function(fields.Many2One('company.company',
-            'Company'),
-        'get_report_company')
-    report_copies = fields.Function(fields.Integer('Report Copies'),
-        'get_report_copies')
 
     @classmethod
     def __setup__(cls):
@@ -455,14 +447,6 @@ class Prescription(Workflow, ModelSQL, ModelView, PrescriptionMixin):
 
     def get_specie_description(self, name):
         return self.specie.rec_name
-
-    @classmethod
-    def get_report_company(cls, prescriptions, name):
-        company = Transaction().context.get('company')
-        return {}.fromkeys([p.id for p in prescriptions], company)
-
-    def get_report_copies(self, name):
-        return Transaction().context.get('report_copies', 3)
 
     @classmethod
     def _get_origin(cls):
@@ -720,33 +704,3 @@ class Move:
             if self.prescription.state == 'draft':
                 self.raise_user_error('unconfirmed_prescription',
                     (self.prescription.rec_name, self.rec_name))
-
-
-class PrescriptionReport(JasperReport):
-    'Prescription'
-    __name__ = 'farm.prescription.report'
-
-
-class MedicalPrescriptionReport(JasperReport):
-    'Medical Prescription Report'
-    __name__ = 'farm.prescription.medical.report'
-
-
-class PrintPrescription(Wizard):
-    'Print Prescription'
-    __name__ = 'farm.prescription.print'
-
-    start = StateTransition()
-    feed = StateAction('farm_prescription.act_report_prescription')
-    medical = StateAction('farm_prescription.act_report_medical_prescription')
-
-    def transition_start(self):
-        pool = Pool()
-        Prescription = pool.get('farm.prescription')
-        return Prescription(Transaction().context.get('active_id')).type
-
-    def do_feed(self, action):
-        return action, {'ids': Transaction().context.get('active_ids')}
-
-    def do_medical(self, action):
-        return action, {'ids': Transaction().context.get('active_ids')}
