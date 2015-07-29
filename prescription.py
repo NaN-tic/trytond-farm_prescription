@@ -349,8 +349,9 @@ class Prescription(Workflow, ModelSQL, ModelView, PrescriptionMixin):
     lines = fields.One2Many('farm.prescription.line', 'prescription', 'Lines',
         states={
             'invisible': Eval('type') == 'medical',
-            'required': (Eval('type') != 'medical') &
-            (Eval('state') != 'draft'),
+            'readonly': Eval('state') != 'draft',
+            'required': ((Eval('type') != 'medical')
+                & (Eval('state') != 'draft')),
             },
         depends=['type', 'state'])
     state = fields.Selection([
