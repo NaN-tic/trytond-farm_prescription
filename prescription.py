@@ -302,6 +302,14 @@ class Prescription(Workflow, ModelSQL, ModelView, PrescriptionMixin):
             'required': Eval('state') == 'done',
             'readonly': Eval('state') == 'done',
             }, depends=_DEPENDS + ['product'])
+    number_of_animals = fields.Integer('Number of animals',
+        states={
+            'readonly': Eval('state') != 'draft',
+            'required': ((Eval('state') != 'draft')
+                & ~Bool(Eval('animals'))
+                & ~Bool(Eval('animal_groups'))),
+            },
+        depends=['state', 'animals', 'animal_groups'])
     animals = fields.Many2Many('farm.prescription-animal', 'prescription',
         'animal', 'Animals', domain=[
             ('specie', '=', Eval('specie')),
@@ -310,10 +318,13 @@ class Prescription(Workflow, ModelSQL, ModelView, PrescriptionMixin):
                 ()),
             ],
         states={
-            'required': ((Eval('state') != 'draft') &
-                ~(Bool(Eval('animal_groups'))) & (Eval('type') != 'medical')),
             'readonly': Eval('state') != 'draft',
-            }, depends=_DEPENDS + ['specie', 'farm', 'animal_groups'])
+            'required': ((Eval('state') != 'draft')
+                & ~Bool(Eval('number_of_animals'))
+                & ~Bool(Eval('animal_groups'))),
+            },
+        depends=['specie', 'farm', 'state', 'number_of_animals',
+            'animal_groups'])
     animal_groups = fields.Many2Many('farm.prescription-animal.group',
         'prescription', 'group', 'Animal Groups', domain=[
             ('specie', '=', Eval('specie')),
@@ -322,17 +333,15 @@ class Prescription(Workflow, ModelSQL, ModelView, PrescriptionMixin):
                 ()),
             ],
         states={
-            'required': ((Eval('state') != 'draft') & ~(Bool(Eval('animals')))
-                & (Eval('type') != 'medical')),
             'readonly': Eval('state') != 'draft',
-            }, depends=_DEPENDS + ['specie', 'farm', 'animals'])
+            'required': ((Eval('state') != 'draft')
+                & ~Bool(Eval('number_of_animals'))
+                & ~Bool(Eval('animals'))),
+            },
+        depends=['specie', 'farm', 'state', 'number_of_animals',
+            'animals'])
     animal_lots = fields.Function(fields.Many2Many('stock.lot', None, None,
         'Animals Lots'), 'get_animal_lots')
-    number_of_animals = fields.Integer('Number of animals',
-        states={
-            'readonly': Eval('state') != 'draft',
-            },
-        depends=['state'])
     animals_description = fields.Function(fields.Char('Animals Description'),
         'get_animals_description')
     specie_description = fields.Function(fields.Char('Specie Description'),
