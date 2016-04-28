@@ -700,6 +700,12 @@ class Move:
             move.check_prescription_required()
         super(Move, cls).assign(moves)
 
+    @classmethod
+    def do(cls, moves):
+        for move in moves:
+            move.check_prescription_required()
+        super(Move, cls).do(moves)
+
     def check_prescription_required(self):
         pool = Pool()
         FeedEvent = pool.get('farm.feed.event')
