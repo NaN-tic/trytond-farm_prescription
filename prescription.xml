@@ -313,15 +313,14 @@
         <!-- party.party -->
         <record model="ir.ui.view" id="party_view_form">
             <field name="model">party.party</field>
-            <field name="type">form</field>
+            <field name="type" eval="None"/>
             <field name="inherit" ref="party.party_view_form"/>
             <field name="name">party_form</field>
         </record>
 
         <record model="ir.ui.view" id="party_view_list">
             <field name="model">party.party</field>
-            <field name="type">form</field>
-            <field name="type">tree</field>
+            <field name="type" eval="None"/>
             <field name="inherit" ref="party.party_view_tree"/>
             <field name="name">party_list</field>
         </record>
@@ -329,7 +328,7 @@
         <!-- product.template -->
         <record model="ir.ui.view" id="product_template_view_form">
             <field name="model">product.template</field>
-            <field name="type">form</field>
+            <field name="type" eval="None"/>
             <field name="inherit" ref="product.template_view_form"/>
             <field name="name">product_template_form</field>
         </record>
@@ -350,7 +349,7 @@
         <!-- stock.move -->
         <record model="ir.ui.view" id="stock_move_view_form">
             <field name="model">stock.move</field>
-            <field name="type">form</field>
+            <field name="type" eval="None"/>
             <field name="inherit" ref="stock.move_view_form"/>
             <field name="name">stock_move_form</field>
         </record>
