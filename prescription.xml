@@ -34,7 +34,9 @@
         <record model="ir.action.act_window" id="act_medical_template">
             <field name="name">Prescription Template</field>
             <field name="res_model">farm.prescription.template</field>
-            <field name="domain">[('type', '=', 'medical')]</field>
+            <field name="domain"
+                eval="[('type', '=', 'medical')]"
+                pyson="1"/>
             <field name="context">{'type': 'medical'}</field>
         </record>
         <record model="ir.action.act_window.view"
@@ -53,7 +55,9 @@
         <record model="ir.action.act_window" id="act_feed_template">
             <field name="name">Prescription Template</field>
             <field name="res_model">farm.prescription.template</field>
-            <field name="domain">[('type', '=', 'feed')]</field>
+            <field name="domain"
+                eval="[('type', '=', 'feed')]"
+                pyson="1"/>
             <field name="context">{'type': 'feed'}</field>
         </record>
         <record model="ir.action.act_window.view"
@@ -155,7 +159,9 @@
         <record model="ir.action.act_window" id="act_medical_prescription">
             <field name="name">Medical Prescription</field>
             <field name="res_model">farm.prescription</field>
-            <field name="domain">[('type', '=', 'medical')]</field>
+            <field name="domain"
+                eval="[('type', '=', 'medical')]"
+                pyson="1"/>
             <field name="context">{'type': 'medical'}</field>
         </record>
         <record model="ir.action.act_window.view"
@@ -174,14 +180,18 @@
                 id="act_medical_prescription_draft">
             <field name="name">Draft</field>
             <field name="sequence" eval="10"/>
-            <field name="domain">[('state', '=', 'draft')]</field>
+            <field name="domain"
+                eval="[('state', '=', 'draft')]"
+                pyson="1"/>
             <field name="act_window" ref="act_medical_prescription"/>
         </record>
         <record model="ir.action.act_window.domain"
                 id="act_medical_prescription_confirmed">
             <field name="name">Confirmed</field>
             <field name="sequence" eval="20"/>
-            <field name="domain">[('state', '=', 'confirmed')]</field>
+            <field name="domain"
+                eval="[('state', '=', 'confirmed')]"
+                pyson="1"/>
             <field name="act_window" ref="act_medical_prescription"/>
         </record>
         <record model="ir.action.act_window.domain"
@@ -193,7 +203,9 @@
         <record model="ir.action.act_window" id="act_feed_prescription">
             <field name="name">Feed Prescription</field>
             <field name="res_model">farm.prescription</field>
-            <field name="domain">[('type', '=', 'feed')]</field>
+            <field name="domain"
+                eval="[('type', '=', 'feed')]"
+                pyson="1"/>
             <field name="context">{'type': 'feed'}</field>
         </record>
         <record model="ir.action.act_window.view"
@@ -212,14 +224,18 @@
                 id="act_feed_prescription_draft">
             <field name="name">Draft</field>
             <field name="sequence" eval="10"/>
-            <field name="domain">[('state', '=', 'draft')]</field>
+            <field name="domain"
+                eval="[('state', '=', 'draft')]"
+                pyson="1"/>
             <field name="act_window" ref="act_feed_prescription"/>
         </record>
         <record model="ir.action.act_window.domain"
                 id="act_feed_prescription_confirmed">
             <field name="name">Confirmed</field>
             <field name="sequence" eval="20"/>
-            <field name="domain">[('state', '=', 'confirmed')]</field>
+            <field name="domain"
+                eval="[('state', '=', 'confirmed')]"
+                pyson="1"/>
             <field name="act_window" ref="act_feed_prescription"/>
         </record>
         <record model="ir.action.act_window.domain"
