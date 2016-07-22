@@ -37,7 +37,9 @@
             <field name="domain"
                 eval="[('type', '=', 'medical')]"
                 pyson="1"/>
-            <field name="context">{'type': 'medical'}</field>
+            <field name="context"
+                eval="{'type': 'medical'}"
+                pyson="1"/>
         </record>
         <record model="ir.action.act_window.view"
                 id="act_medical_template_view1">
@@ -58,7 +60,9 @@
             <field name="domain"
                 eval="[('type', '=', 'feed')]"
                 pyson="1"/>
-            <field name="context">{'type': 'feed'}</field>
+            <field name="context"
+                eval="{'type': 'feed'}"
+                pyson="1"/>
         </record>
         <record model="ir.action.act_window.view"
                 id="act_feed_template_view1">
@@ -162,7 +166,9 @@
             <field name="domain"
                 eval="[('type', '=', 'medical')]"
                 pyson="1"/>
-            <field name="context">{'type': 'medical'}</field>
+            <field name="context"
+                eval="{'type': 'medical'}"
+                pyson="1"/>
         </record>
         <record model="ir.action.act_window.view"
                 id="act_medical_prescription_view1">
@@ -206,7 +212,9 @@
             <field name="domain"
                 eval="[('type', '=', 'feed')]"
                 pyson="1"/>
-            <field name="context">{'type': 'feed'}</field>
+            <field name="context"
+                eval="{'type': 'feed'}"
+                pyson="1"/>
         </record>
         <record model="ir.action.act_window.view"
                 id="act_feed_prescription_view1">
