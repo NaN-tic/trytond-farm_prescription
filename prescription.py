@@ -180,16 +180,11 @@ class PrescriptionLineMixin:
 
     @fields.depends('product', 'unit', 'unit_digits')
     def on_change_product(self):
-        if not self.product:
-            return {}
-        res = {}
-        category = self.product.default_uom.category
-        if not self.unit or self.unit not in category.uoms:
-            res['unit'] = self.product.default_uom.id
-            self.unit = self.product.default_uom
-            res['unit.rec_name'] = self.product.default_uom.rec_name
-            res['unit_digits'] = self.product.default_uom.digits
-        return res
+        if self.product:
+            category = self.product.default_uom.category
+            if not self.unit or self.unit not in category.uoms:
+                self.unit = self.product.default_uom
+                self.unit_digits = self.product.default_uom.digits
 
     @fields.depends('product')
     def on_change_with_product_uom_category(self, name=None):

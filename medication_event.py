@@ -34,9 +34,9 @@ class MedicationEvent:
         Prescription = pool.get('farm.prescription')
 
         try:
-            res = super(MedicationEvent, self).on_change_feed_lot()
+            super(MedicationEvent, self).on_change_feed_lot()
         except AttributeError:
-            res = {}
+            pass
         if self.specie and self.farm and self.feed_lot:
             domain = [
                 ('specie', '=', self.specie.id),
@@ -46,16 +46,12 @@ class MedicationEvent:
                 ]
             prescriptions = Prescription.search(domain)
             if prescriptions:
-                res['prescription'] = prescriptions[0].id
-        return res
+                self.prescription = prescriptions[0]
 
     @fields.depends('feed_lot', 'prescription')
     def on_change_prescription(self):
-        changes = {}
         if self.prescription and self.prescription.lot and not self.feed_lot:
-            changes['feed_lot'] = self.prescription.lot.id
-            changes['feed_lot.rec_name'] = self.prescription.lot.rec_name
-        return changes
+            self.feed_lot = self.prescription.lot
 
     def _get_event_move(self):
         move = super(MedicationEvent, self)._get_event_move()
