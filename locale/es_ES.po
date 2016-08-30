@@ -1,4 +1,4 @@
-# 
+#
 msgid ""
 msgstr "Content-Type: text/plain; charset=utf-8\n"
 
@@ -351,6 +351,10 @@ msgstr "Líneas"
 msgctxt "field:farm.prescription.template,n_lines:"
 msgid "Num. of lines"
 msgstr "Núm. líneas"
+
+msgctxt "field:farm.prescription.template,name:"
+msgid "Name"
+msgstr "Nombre"
 
 msgctxt "field:farm.prescription.template,note:"
 msgid "Note"

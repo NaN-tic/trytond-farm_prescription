@@ -2,11 +2,13 @@
 # copyright notices and license terms.
 import datetime
 from itertools import chain
+from sql import Table
 
 from trytond.model import ModelView, ModelSQL, Workflow, fields
 from trytond.pool import Pool, PoolMeta
 from trytond.transaction import Transaction
 from trytond.pyson import Bool, Date, Equal, Eval, If, Or
+from trytond import backend
 
 __all__ = ['Party', 'ProductTemplate', 'Product', 'Move',
     'Template', 'TemplateLine',
@@ -206,7 +208,7 @@ class PrescriptionLineMixin:
 class Template(ModelSQL, ModelView, PrescriptionMixin):
     '''Prescription Template'''
     __name__ = 'farm.prescription.template'
-
+    name = fields.Char('Name', required=True, select=True)
     lines = fields.One2Many('farm.prescription.template.line', 'prescription',
         'Lines',
         states={
@@ -225,12 +227,41 @@ class Template(ModelSQL, ModelView, PrescriptionMixin):
                     'Please, create a new template.'),
                 })
 
-    def get_rec_name(self, name):
-        return self.product.rec_name
-
     @classmethod
-    def search_rec_name(cls, name, clause):
-        return [tuple(('product.rec_name',)) + tuple(clause[1:])]
+    def __register__(cls, module_name):
+        TableHandler = backend.get('TableHandler')
+        cursor = Transaction().cursor
+        table = TableHandler(cursor, cls, module_name)
+        sql_table = cls.__table__()
+        product = Table('product_product')
+        template = Table('product_template')
+
+        # Upgrade from 3.4: copy name from product rec_name
+        upgrade_name = False
+        if not table.column_exist('name'):
+            upgrade_name = True
+
+        super(Template, cls).__register__(module_name)
+
+        if upgrade_name:
+            # copy product name to prescription name
+            query = sql_table.join(product,
+                condition=(product.id == sql_table.product)).join(template,
+                    condition=(product.template == template.id)).select(
+                        product.id, template.name)
+            cursor.execute(*query)
+            for id_, name in cursor.fetchall():
+                cursor.execute(*sql_table.update(
+                    columns=[sql_table.name],
+                    values=[name],
+                    where=sql_table.product == id_))
+
+    @fields.depends('product', 'name')
+    def on_change_product(self):
+        changes = {}
+        if self.product and not self.name:
+            changes['name'] = self.product.rec_name
+        return changes
 
     @classmethod
     def write(cls, *args):
