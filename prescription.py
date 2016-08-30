@@ -259,7 +259,7 @@ class TemplateLine(ModelSQL, ModelView, PrescriptionLineMixin):
 
 
 class Prescription(Workflow, ModelSQL, ModelView, PrescriptionMixin):
-    'Prescrption'
+    'Prescription'
     __name__ = 'farm.prescription'
     _rec_name = 'reference'
 

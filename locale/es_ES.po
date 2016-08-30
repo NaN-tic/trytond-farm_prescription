@@ -529,7 +529,7 @@ msgid "Sequence used for prescriptions."
 msgstr "Secuencia que se utiliza en las recetas."
 
 msgctxt "model:farm.prescription,name:"
-msgid "Prescrption"
+msgid "Prescription"
 msgstr "Receta"
 
 msgctxt "model:farm.prescription-animal,name:"
