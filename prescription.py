@@ -32,7 +32,8 @@ class Party:
     veterinarian = fields.Boolean('Veterinarian')
     collegiate_number = fields.Char('Collegiate Number', states={
             'required': Eval('veterinarian', False),
-            })
+            'invisible': ~Eval('veterinarian', False),
+        }, depends=['veterinarian'])
 
 
 class ProductTemplate:
