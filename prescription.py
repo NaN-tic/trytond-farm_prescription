@@ -271,7 +271,6 @@ class Prescription(Workflow, ModelSQL, ModelView, PrescriptionMixin):
     template = fields.Many2One('farm.prescription.template', 'Template',
         domain=[
             ('specie', '=', Eval('specie')),
-            ('product', '=', Eval('product')),
             ],
         states=_STATES, depends=_DEPENDS + ['specie', 'product'])
     reference = fields.Char('Reference', select=True, states=_STATES_REQUIRED,
@@ -379,6 +378,10 @@ class Prescription(Workflow, ModelSQL, ModelView, PrescriptionMixin):
             'readonly': Or(Eval('n_lines', 0) > 1, Eval('state') != 'draft'),
             }
         cls.waiting_period.depends = ['n_lines', 'state']
+        cls.product.states = {
+            'readonly': Bool(Eval('template', False)),
+            }
+        cls.product.depends = ['template']
 
         if hasattr(Lot, 'expiry_date'):
             cls.lot.domain.append(
@@ -432,6 +435,14 @@ class Prescription(Workflow, ModelSQL, ModelView, PrescriptionMixin):
     def get_rec_name(self, name):
         return u'%s - %s (%s)' % (self.reference,
             self.product.rec_name, str(self.date))
+
+    @fields.depends('template')
+    def on_change_template(self):
+        changes = {}
+        if self.template:
+            changes['product'] = self.template.product.id
+            changes['product.rec_name'] = self.template.product.rec_name
+        return changes
 
     @fields.depends('animals', 'animals_groups')
     def on_change_with_number_of_animals(self):
