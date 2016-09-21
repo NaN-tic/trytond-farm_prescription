@@ -3,10 +3,11 @@
      copyright notices and license terms. -->
 <form string="Prescription Template">
     <label name="name"/>
-    <field name="name"/>
+    <field name="name" colspan="3"/>
+    <newline/>
     <label name="product"/>
     <field name="product"/>
-    <group id="quantity_unit" colspan="2" col="4">
+    <group id="quantity_unit" colspan="2" col="4" xfill="0" xexpand="0">
         <label name="quantity"/>
         <field name="quantity"/>
         <label name="unit"/>
