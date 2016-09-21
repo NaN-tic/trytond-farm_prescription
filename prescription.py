@@ -319,7 +319,9 @@ class Prescription(Workflow, ModelSQL, ModelView, PrescriptionMixin):
             'restrict_by_specie_animal_type': True,
         })
     delivery_date = fields.Date('Delivery date', required=True, domain=[
-            ('delivery_date', '>=', Eval('date', Date())),
+            ['OR',
+                ('delivery_date', '=', None),
+                ('delivery_date', '>=', Eval('date', Date()))],
             ],
         states=_STATES, depends=_DEPENDS+['date'])
     veterinarian = fields.Many2One('party.party', 'Veterinarian', domain=[
@@ -414,6 +416,7 @@ class Prescription(Workflow, ModelSQL, ModelView, PrescriptionMixin):
             'readonly': Bool(Eval('template', False)),
             }
         cls.product.depends = ['template']
+        cls.unit.on_change_with.add('template')
 
         if hasattr(Lot, 'expiry_date'):
             cls.lot.domain.append(
