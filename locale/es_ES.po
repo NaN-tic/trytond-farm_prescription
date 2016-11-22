@@ -476,6 +476,10 @@ msgctxt "field:product.template,prescription_required:"
 msgid "Prescription required"
 msgstr "Requiere receta"
 
+msgctxt "field:stock.location,prescription_required:"
+msgid "Prescription required"
+msgstr "Requiere receta"
+
 msgctxt "field:stock.move,prescription:"
 msgid "Prescription"
 msgstr "Receta"

@@ -10,10 +10,9 @@ from trytond.transaction import Transaction
 from trytond.pyson import Bool, Date, Equal, Eval, If, Or
 from trytond import backend
 
-__all__ = ['Party', 'ProductTemplate', 'Product', 'Move',
-    'Template', 'TemplateLine',
-    'Prescription', 'PrescriptionLine',
-    'PrescriptionAnimal', 'PrescriptionAnimalGroup']
+__all__ = ['Party', 'ProductTemplate', 'Product', 'Move', 'Template',
+    'TemplateLine', 'Prescription', 'PrescriptionLine', 'PrescriptionAnimal',
+    'PrescriptionAnimalGroup', 'Location']
 __metaclass__ = PoolMeta
 
 _STATES = {
@@ -751,7 +750,8 @@ class Move:
         FeedEvent = pool.get('farm.feed.event')
         ShipmentIn = pool.get('stock.shipment.in')
 
-        if (not self.prescription and self.product.prescription_required
+        if self.to_location.prescription_required and (
+                not self.prescription and self.product.prescription_required
                 and not isinstance(self.shipment, ShipmentIn)
                 and not isinstance(self.origin, FeedEvent)):
             # Purchases don't require prescription because are made to stock
@@ -760,3 +760,13 @@ class Move:
             if self.prescription.state == 'draft':
                 self.raise_user_error('unconfirmed_prescription',
                     (self.prescription.rec_name, self.rec_name))
+
+
+class Location:
+    __name__ = 'stock.location'
+
+    prescription_required = fields.Boolean('Prescription required')
+
+    @staticmethod
+    def default_prescription_required():
+        return True
