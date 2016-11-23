@@ -8,6 +8,7 @@ from .medication_event import *
 
 def register():
     Pool.register(
+        CreateInternalShipmentStart,
         Location,
         Move,
         MedicationEvent,
@@ -22,3 +23,6 @@ def register():
         Template,
         TemplateLine,
         module='farm_prescription', type_='model')
+    Pool.register(
+        CreateInternalShipment,
+        module='farm_prescription', type_='wizard')
