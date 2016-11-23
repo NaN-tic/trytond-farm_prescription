@@ -434,5 +434,21 @@
             <field name="inherit" ref="stock.location_view_list"/>
             <field name="name">location_list</field>
         </record>
+
+        <record model="ir.action.wizard" id="act_create_internal_shipment">
+            <field name="name">Create Internal Shipment</field>
+            <field name="wiz_name">farm.prescription.internal.shipment</field>
+        </record>
+        <record model="ir.action.keyword" id="act_crete_internal_shipment_keyword">
+            <field name="keyword">form_action</field>
+            <field name="model">farm.prescription,-1</field>
+            <field name="action" ref="act_create_internal_shipment"/>
+        </record>
+
+        <record model="ir.ui.view" id="create_internal_shipment_start_view">
+            <field name="model">farm.prescription.internal.shipment.start</field>
+            <field name="type">form</field>
+            <field name="name">create_internal_shipment_start</field>
+        </record>
     </data>
 </tryton>
