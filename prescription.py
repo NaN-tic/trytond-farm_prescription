@@ -7,12 +7,14 @@ from sql import Table
 from trytond.model import ModelView, ModelSQL, Workflow, fields
 from trytond.pool import Pool, PoolMeta
 from trytond.transaction import Transaction
+from trytond.wizard import Wizard, StateView, StateAction, Button
 from trytond.pyson import Bool, Date, Equal, Eval, If, Or
 from trytond import backend
 
 __all__ = ['Party', 'ProductTemplate', 'Product', 'Move', 'Template',
     'TemplateLine', 'Prescription', 'PrescriptionLine', 'PrescriptionAnimal',
-    'PrescriptionAnimalGroup', 'Location']
+    'PrescriptionAnimalGroup', 'Location', 'CreateInternalShipmentStart',
+    'CreateInternalShipment']
 __metaclass__ = PoolMeta
 
 _STATES = {
@@ -776,3 +778,95 @@ class Location:
     @staticmethod
     def default_prescription_required():
         return True
+
+
+class CreateInternalShipmentStart(ModelView):
+    'Create Internal Shipment Start'
+    __name__ = "farm.prescription.internal.shipment.start"
+
+    from_location = fields.Many2One('stock.location', 'From Location',
+        domain=[
+            ('warehouse', '=', Eval('farm')),
+            ('type', '=', 'storage'),
+            ('silo', '=', False),
+            ], required=True)
+
+
+class CreateInternalShipment(Wizard):
+    'Create Integer Shipment'
+    __name__ = "farm.prescription.internal.shipment"
+
+    start = StateView('farm.prescription.internal.shipment.start',
+        'farm_prescription.create_internal_shipment_start_view', [
+            Button('Cancel', 'end', 'tryton-cancel'),
+            Button('Create', 'create_', 'tryton-ok', default=True),
+            ])
+    create_ = StateAction('stock.act_shipment_internal_form')
+
+    @classmethod
+    def __setup__(cls):
+        super(CreateInternalShipment, cls).__setup__()
+        cls._error_messages.update({
+                'prescription_used': (
+                    'The prescription %s is used in internal shipment %s.'),
+                })
+
+    def default_start(self, fields):
+        pool = Pool()
+        Move = pool.get('stock.move')
+
+        prescriptions = Prescription.browse(
+            Transaction().context['active_ids'])
+
+        for prescription in prescriptions:
+            move = Move.search([
+                    ('prescription', '=', prescription)])
+            if move:
+                self.raise_user_error('prescription_used', (
+                        prescription.reference, move[0].shipment and \
+                        move[0].shipment.code or move[0].id))
+        return {
+            'from_location': None,
+            }
+
+    def do_create_(self, action):
+        pool = Pool()
+        Prescription = Pool().get('farm.prescription')
+        Shipment = pool.get('stock.shipment.internal')
+        Move = pool.get('stock.move')
+        Company = pool.get('company.company')
+
+        prescriptions = Prescription.browse(
+            Transaction().context['active_ids'])
+
+        company = Company.search([
+                ('id', '=', Transaction().context.get('company'))])
+        company = company and company[0]
+        shipments_vals = []
+        for prescription in prescriptions:
+            shipment_vals = {}
+            shipment_vals['from_location'] = self.start.from_location.id
+            shipment_vals['to_location'] = (
+                prescription.farm.storage_location.id)
+            shipment_vals['company'] = company.id
+
+            move = {}
+            move['product'] = prescription.product.id
+            move['company'] = company.id
+            move['lot'] = prescription.lot.id
+            move['quantity']= prescription.quantity
+            move['unit_price'] = prescription.product.list_price
+            move['currency'] =company.currency.id
+            move['uom'] = prescription.unit.id
+            move['from_location'] = shipment_vals['from_location']
+            move['to_location'] = shipment_vals['to_location']
+            move['prescription'] = prescription.id
+            shipment_vals['moves'] = [['create', [move]]]
+
+            shipments_vals.append(shipment_vals)
+
+        shipments = Shipment.create(shipments_vals)
+
+        data = {}
+        data['res_id'] = [s.id for s in shipments]
+        return action, data
