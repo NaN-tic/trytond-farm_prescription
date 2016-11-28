@@ -8,20 +8,20 @@ from .medication_event import *
 
 def register():
     Pool.register(
+        Template,
+        TemplateLine,
+        Prescription,
+        PrescriptionLine,
+        PrescriptionAnimal,
+        PrescriptionAnimalGroup,
         CreateInternalShipmentStart,
         Location,
         Move,
         MedicationEvent,
         Party,
-        Prescription,
-        PrescriptionLine,
-        PrescriptionAnimal,
-        PrescriptionAnimalGroup,
         Product,
         ProductTemplate,
         Specie,
-        Template,
-        TemplateLine,
         module='farm_prescription', type_='model')
     Pool.register(
         CreateInternalShipment,
