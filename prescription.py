@@ -784,12 +784,19 @@ class CreateInternalShipmentStart(ModelView):
     'Create Internal Shipment Start'
     __name__ = "farm.prescription.internal.shipment.start"
 
+    farm = fields.Many2One('stock.location', 'Farm',
+        states={
+            'invisible': True,
+        },
+        domain=[
+            ('type', '=', 'warehouse'),
+        ])
     from_location = fields.Many2One('stock.location', 'From Location',
         domain=[
             ('warehouse', '=', Eval('farm')),
             ('type', '=', 'storage'),
             ('silo', '=', False),
-            ], required=True)
+            ], depends=['farm'], required=True)
 
 
 class CreateInternalShipment(Wizard):
@@ -819,6 +826,7 @@ class CreateInternalShipment(Wizard):
             Transaction().context['active_ids'])
 
         for prescription in prescriptions:
+            farm = prescription.farm
             move = Move.search([
                     ('prescription', '=', prescription)])
             if move:
@@ -827,6 +835,7 @@ class CreateInternalShipment(Wizard):
                         move[0].shipment.code or move[0].id))
         return {
             'from_location': None,
+            'farm': farm.id,
             }
 
     def do_create_(self, action):
@@ -853,7 +862,7 @@ class CreateInternalShipment(Wizard):
             move = {}
             move['product'] = prescription.product.id
             move['company'] = company.id
-            move['lot'] = prescription.lot.id
+            move['lot'] = prescription.lot and prescription.lot.id or None
             move['quantity']= prescription.quantity
             move['unit_price'] = prescription.product.list_price
             move['currency'] =company.currency.id
