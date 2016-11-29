@@ -63,6 +63,11 @@ Create inner location::
 	>>> inner_farm.type = "storage"
 	>>> inner_farm.save()
 
+Check location has 'requires prescription' checked::
+
+    >>> inner_farm.prescription_required == True
+    True
+
 Create production location::
 
 	>>> production_farm = Location()
@@ -182,8 +187,8 @@ Create medicine product::
 	>>> product_template = ProductTemplate()
 	>>> product_template.name = "Template product test"
 	>>> product_template.type = 'goods'
-	>>> product_template.prescription_required = True
 	>>> product_template.unique_variant = True
+    >>> product_template.prescription_required = True
 	>>> product_template.cost_price = Decimal('00.00')
 	>>> product_template.list_price = Decimal('00.00')
 	>>> uom, = ProductUOM.find([('name', '=', 'Unit')])
@@ -199,7 +204,7 @@ Create prescription template::
 	>>> product.save()
 	>>> prescription_template = PrescriptionTemplate()
 	>>> prescription_template.product = product
-	>>> prescription_template.quantity = Decimal('1.0')
+	>>> prescription_template.quantity = Decimal('01.00')
 	>>> #prescription_template.specie = pigs_specie
 	>>> prescription_template.save()
 
@@ -247,5 +252,93 @@ Check internal shipment::
     True
     >>> internal_moves.moves[0].product == product
     True
+    >>> internal_moves.moves[0].prescription == prescription
+    True
+
+Create no prescription locations::
+
+    >>> medicine_storage = Location()
+    >>> medicine_storage.name = "Medicine Storage"
+    >>> medicine_storage.code = "MS"
+    >>> medicine_storage.type = "storage"
+    >>> medicine_storage.prescription_required = False
+    >>> medicine_storage.parent = inner_farm
+    >>> medicine_storage.save()
+
+
+Create movement with prescription product to no prescription location::
+
+    >>> Move =  Model.get('stock.move')
+    >>> no_prescription_move = Move()
+    >>> no_prescription_move.from_location = inner_farm
+    >>> no_prescription_move.to_location = medicine_storage
+    >>> no_prescription_move.quantity = Decimal('01.00')
+    >>> no_prescription_move.product = product
+    >>> no_prescription_move.save()
+
+
+Create internal shipment::
+
+    >>> no_prescription_shipment = ShipmentInternal()
+    >>> no_prescription_shipment.from_location = inner_farm
+    >>> no_prescription_shipment.to_location = medicine_storage
+    >>> no_prescription_shipment.moves.append(no_prescription_move)
+    >>> no_prescription_shipment.save()
+    >>> no_prescription_shipment.click('wait')
+    >>> no_prescription_shipment.click('assign_try')
+    False
+    >>> no_prescription_shipment.state
+    u'waiting'
+
+ Create movement with no prescription::
+
+    >>> product_no_prescription, = ProductTemplate.duplicate([product_template], {'name': 'No prescription product','prescription_required': False})
+    >>> product2, = Product.find([('name', '=', product_no_prescription.name)], limit=1)
+    >>> move = Move()
+    >>> move.from_location = inner_farm
+    >>> move.to_location = medicine_storage
+    >>> move.quantity = Decimal('01.00')
+    >>> move.product = product2
+    >>> move.save()
+
+Create Lot::
+
+    >>> Lot = Model.get('stock.lot')
+    >>> lot = Lot()
+    >>> lot.number = '1234'
+    >>> lot.product = product2
+    >>> lot.save()
+
+Create inventory::
+
+    >>> StockInventory = Model.get('stock.inventory')
+    >>> stock_inventory = StockInventory()
+    >>> stock_inventory.location = inner_farm
+    >>> stock_inventory.lost_found = lost_n_found
+    >>> line = stock_inventory.lines.new()
+    >>> line.product = product2
+    >>> line.quantity = Decimal('10.00')
+    >>> stock_inventory.lot = lot
+    >>> stock_inventory.save()
+    >>> stock_inventory.click('confirm')
+
+Create internal shipment::
+
+    >>> shipment = ShipmentInternal()
+    >>> shipment.from_location = inner_farm
+    >>> shipment.to_location = medicine_storage
+    >>> shipment.moves.append(move)
+    >>> shipment.save()
+    >>> shipment.click('wait')
+    >>> shipment.click('assign_try')
+    True
+    >>> shipment.click('done')
+    >>> shipment.reload()
+    >>> shipment.state
+    u'done'
+    >>> shipments = ShipmentInternal.find([])
+    >>> len(shipments)
+    3
+
 
 
