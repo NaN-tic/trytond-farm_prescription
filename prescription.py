@@ -310,6 +310,7 @@ class Prescription(Workflow, ModelSQL, ModelView, PrescriptionMixin):
     farm = fields.Many2One('stock.location', 'Farm', required=True,
         states=_STATES, depends=_DEPENDS, domain=[
             ('type', '=', 'warehouse'),
+            ('id', 'in', Eval('context', {}).get('farms', [])),
         ],
         context={
             'restrict_by_specie_animal_type': True,
