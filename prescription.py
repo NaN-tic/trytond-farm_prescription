@@ -788,7 +788,6 @@ class CreateInternalShipmentStart(ModelView):
         ])
     from_location = fields.Many2One('stock.location', 'From Location',
         domain=[
-            ('warehouse', '=', Eval('farm')),
             ('type', '=', 'storage'),
             ('silo', '=', False),
             ], depends=['farm'], required=True)
