@@ -164,7 +164,7 @@ Create species::
     ...     removed_location=lost_n_found,
     ...     foster_location=lost_n_found,
     ...     lost_found_location=lost_n_found,
-    ...     feed_lost_found_location=lost_n_found)    
+    ...     feed_lost_found_location=lost_n_found)
     >>> pigs_specie.save()
     >>> pigs_breed = SpecieBreed(
     ...     specie=pigs_specie,
@@ -212,6 +212,23 @@ Create vet::
 
 	>>> vet = Party(name="Veterinary")
 	>>> vet.save()
+
+Create account farm user::
+
+    >>> farm_user = User()
+    >>> farm_user.name = 'Farm User'
+    >>> farm_user.login = 'farm_user'
+    >>> farm_user.farms.append(Location(warehouse.id))
+    >>> Group = Model.get('res.group')
+    >>> groups = Group.find([
+    ...         ('name', 'in', ['Stock Administration', 'Stock',
+    ...             'Product Administration']),
+    ...         ])
+    >>> farm_user.groups.extend(groups)
+    >>> farm_user.save()
+    >>> config.user = farm_user.id
+
+
 
 Create prescription::
 

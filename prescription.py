@@ -94,6 +94,9 @@ class PrescriptionMixin:
         'on_change_with_unit_digits')
     quantity = fields.Float('Quantity', digits=(16, Eval('unit_digits', 2)),
         required=True, depends=['unit_digits'])
+    drug_quantity = fields.Function(fields.Float('Quantity',
+            digits=(16, Eval('unit_digits', 2)), depends=['unit_digits']),
+        'get_drug_quantity')
     afection = fields.Char('Afection')
     dosage = fields.Char('Dosage')
     waiting_period = fields.Integer('Waiting Period', states={
@@ -147,9 +150,17 @@ class PrescriptionMixin:
     def on_change_with_n_lines(self, name=None):
         return len(self.lines) if self.lines else 0
 
+    def get_drug_quantity(self, name):
+        Uom = Pool().get('product.uom')
+        quantity = 0
+        for line in self.lines:
+            quantity += Uom.compute_qty(line.unit, line.quantity, self.unit)
+        return quantity
+
     def get_factor_change_quantity_unit(self, new_quantity, new_uom):
         Uom = Pool().get('product.uom')
-
+        if not new_quantity:
+            new_quantity = 0
         if new_uom != self.unit:
             new_quantity = Uom.compute_qty(new_uom, new_quantity,
                 self.unit)
@@ -733,9 +744,11 @@ class Move:
                         'origin': self.origin.rec_name,
                         })
         elif self.prescription:
+            quantity = Uom.compute_qty(self.prescription.unit,
+                self.prescription.quantity + self.prescription.drug_quantity,
+                self.uom)
             if (self.product != self.prescription.product or
-                    self.quantity != Uom.compute_qty(self.prescription.unit,
-                        self.prescription.quantity, self.uom)):
+                    self.quantity != quantity):
                 self.raise_user_error(
                     'prescription_invalid_product_quantity', {
                         'move': self.rec_name,
