@@ -1,0 +1,41 @@
+<?xml version="1.0"?>
+<tryton>
+    <data group="1">
+        <record model="ir.message" id="msg_template_related_to_product_or_prescription">
+            <field name="text">You can not change the Feed Product of Prescription Template "%(template)s" because there are products or prescriptions already related to this template.\nPlease, create a new template.</field>
+        </record>
+        <record model="ir.message" id="msg_lines_will_be_replaced">
+            <field name="text">Current values of prescription "%(prescription)s" will be replaced.</field>
+        </record>
+        <record model="ir.message" id="msg_lot_required_done">
+            <field name="text">Lot is required to set done the prescription "%(prescription)s".</field>
+        </record>
+        <record model="ir.message" id="msg_lot_expired">
+            <field name="text">The lot "%(lot)s" used in prescription "%(prescription)s" has expired.</field>
+        </record>
+        <record model="ir.message" id="msg_veterinarian_required_confirmed">
+            <field name="text">Veterinarian is requried to confirm the prescription "%(prescription)s".</field>
+        </record>
+        <record model="ir.message" id="msg_lines_required_confirmed">
+            <field name="text">The prescription "%(prescription)s" must have at least one line in order to be confirmed.</field>
+        </record>
+        <record model="ir.message" id="msg_from_prescription_line_invalid_prescription">
+            <field name="text">The Stock Move "%(move)s" has the Prescription Line "%(origin)s" as origin, but it isn't related to a Prescription or it isn't the origin's prescription.</field>
+        </record>
+        <record model="ir.message" id="msg_from_prescription_line_invalid_product_quantity">
+            <field name="text">The Stock Move "%(move)s" has the Prescription Line "%(origin)s" as origin, but the product and/or quantity are not the same.</field>
+        </record>
+        <record model="ir.message" id="msg_prescription_invalid_product_quantity">
+            <field name="text">The Stock Move "%(move)s" is related to Prescription "%(prescription)s", but the product and/or quantity are not the same.</field>
+        </record>
+        <record model="ir.message" id="msg_need_prescription">
+            <field name="text">Move "%(move)s" needs a confirmed prescription.</field>
+        </record>
+        <record model="ir.message" id="msg_unconfirmed_prescription">
+            <field name="text">Prescription "%(prescription)s" of move "%(move)s" must be confirmed before assigning the move.</field>
+        </record>
+        <record model="ir.message" id="msg_prescription_used">
+            <field name="text">The prescription "%(prescription)s" is used in internal shipment "%(shipment)s".</field>
+        </record>
+    </data>
+</tryton>

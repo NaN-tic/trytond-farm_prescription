@@ -10,12 +10,13 @@ from trytond.transaction import Transaction
 from trytond.wizard import Wizard, StateView, StateAction, Button
 from trytond.pyson import Bool, Date, Equal, Eval, If, Or
 from trytond import backend
+from trytond.exceptions import UserError, UserWarning
+from trytond.i18n import gettext
 
 __all__ = ['Party', 'ProductTemplate', 'Product', 'Move', 'Template',
     'TemplateLine', 'Prescription', 'PrescriptionLine', 'PrescriptionAnimal',
     'PrescriptionAnimalGroup', 'Location', 'CreateInternalShipmentStart',
     'CreateInternalShipment']
-__metaclass__ = PoolMeta
 
 _STATES = {
     'readonly': Eval('state') != 'draft',
@@ -27,7 +28,7 @@ _STATES_REQUIRED = {
 _DEPENDS = ['state']
 
 
-class Party:
+class Party(metaclass=PoolMeta):
     __name__ = 'party.party'
 
     veterinarian = fields.Boolean('Veterinarian')
@@ -37,13 +38,13 @@ class Party:
         }, depends=['veterinarian'])
 
 
-class ProductTemplate:
+class ProductTemplate(metaclass=PoolMeta):
     __name__ = 'product.template'
 
     prescription_required = fields.Boolean('Prescription required')
 
 
-class Product:
+class Product(metaclass=PoolMeta):
     __name__ = 'product.product'
 
     prescription_required = fields.Function(fields.Boolean(
@@ -225,20 +226,9 @@ class Template(ModelSQL, ModelView, PrescriptionMixin):
         depends=['type'])
 
     @classmethod
-    def __setup__(cls):
-        super(Template, cls).__setup__()
-        cls._error_messages.update({
-                'template_related_to_product_or_prescription': (
-                    'You can not change the Feed Product of Prescription '
-                    'Template "%s" because there are products or '
-                    'rescriptions already related to this template.\n'
-                    'Please, create a new template.'),
-                })
-
-    @classmethod
     def __register__(cls, module_name):
         TableHandler = backend.get('TableHandler')
-        cursor = Transaction().connection.cursor
+        cursor = Transaction().connection.cursor()
         table = TableHandler(cls, module_name)
         sql_table = cls.__table__()
         product = Table('product_product')
@@ -266,10 +256,8 @@ class Template(ModelSQL, ModelView, PrescriptionMixin):
 
     @fields.depends('product', 'name')
     def on_change_product(self):
-        changes = {}
         if self.product and not self.name:
-            changes['name'] = self.product.rec_name
-        return changes
+            self.name = self.product.rec_name
 
     @classmethod
     def write(cls, *args):
@@ -288,9 +276,9 @@ class Template(ModelSQL, ModelView, PrescriptionMixin):
                             ('template', '=', template.id),
                             ])
                     if n_template_products or n_template_prescriptions:
-                        cls.raise_user_error(
-                            'template_related_to_product_or_prescription',
-                            (template.rec_name,))
+                        raise UserError(gettext('farm.prescription.msg_'
+                                'template_related_to_product_or_prescription',
+                                template=template.rec_name))
         super(Template, cls).write(*args)
 
 
@@ -426,7 +414,7 @@ class Prescription(Workflow, ModelSQL, ModelView, PrescriptionMixin):
         cls.product.depends = ['template']
         cls.unit.on_change_with.add('template')
 
-        if hasattr(Lot, 'expiry_date'):
+        if hasattr(Lot, 'expiration_date'):
             cls.lot.domain.append(
                 If(Eval('state') != 'done',
                     ('expired', '=', False),
@@ -438,18 +426,6 @@ class Prescription(Workflow, ModelSQL, ModelView, PrescriptionMixin):
             cls.lot.context['stock_move_date'] = Eval('delivery_date', Date())
             cls.lot.depends += ['delivery_date']
 
-        cls._error_messages.update({
-                'lines_will_be_replaced': (
-                    'Current values of prescription "%s" will be replaced.'),
-                'lot_required_done': ('Lot is required to set done the '
-                    'prescription "%s".'),
-                'lot_expired': ('The lot "%(lot)s" used in prescription '
-                    '"%(prescription)s" has expired.'),
-                'veterinarian_required_confirmed': ('Veterinarian is requried '
-                    'to confirm the prescription "%s".'),
-                'lines_required_confirmed': ('The prescription "%s" must have '
-                    'at least one line in order to be confirmed.'),
-                 })
         cls._transitions |= set((
                 ('draft', 'confirmed'),
                 ('confirmed', 'done'),
@@ -476,20 +452,18 @@ class Prescription(Workflow, ModelSQL, ModelView, PrescriptionMixin):
         return 'draft'
 
     def get_rec_name(self, name):
-        return u'%s - %s (%s)' % (self.reference,
+        return '%s - %s (%s)' % (self.reference,
             self.product.rec_name, str(self.date))
 
     @fields.depends('template')
     def on_change_template(self):
-        changes = {}
         if self.template:
             self.product = self.template.product
-        return changes
 
-    @fields.depends('animals', 'animals_groups')
+    @fields.depends('animals', 'animal_groups')
     def on_change_with_number_of_animals(self):
-        animals = len(self.animals)
-        for group in self.animal_groups:
+        animals = len(self.animals or [])
+        for group in (self.animal_groups or []):
             animals += group.quantity
         return animals
 
@@ -532,11 +506,13 @@ class Prescription(Workflow, ModelSQL, ModelView, PrescriptionMixin):
     def confirm(cls, prescriptions):
         for prescription in prescriptions:
             if not prescription.veterinarian:
-                cls.raise_user_error('veterinarian_required_confirmed',
-                    prescription.rec_name)
+                raise UserError(gettext('farm_prescription.'
+                        'msg_veterinarian_required_confirmed',
+                        prescription=prescription.rec_name))
             if prescription.type != 'medical' and not prescription.lines:
-                cls.raise_user_error('lines_required_confirmed',
-                    prescription.rec_name)
+                raise UserError(gettext(
+                        'farm_prescription.msg_lines_required_confirmed',
+                        prescription=prescription.rec_name))
 
     @classmethod
     @ModelView.button
@@ -548,19 +524,20 @@ class Prescription(Workflow, ModelSQL, ModelView, PrescriptionMixin):
         stock_move_date = Transaction().context.get('stock_move_date')
         for prescription in prescriptions:
             if not prescription.lot:
-                cls.raise_user_error('lot_required_done',
-                    prescription.rec_name)
-            if hasattr(prescription.lot, 'expiry_date'):
+                raise UserError(gettext('farm_prescription.'
+                        'msg_lot_required_done',
+                        prescription=prescription.rec_name))
+            if hasattr(prescription.lot, 'expiration_date'):
                 prescription_date = prescription.delivery_date
                 if stock_move_date:
                     prescription_date = max(prescription_date, stock_move_date)
                 with Transaction().set_context(
                         stock_move_date=prescription_date):
                     if Lot(prescription.lot.id).expired:
-                        cls.raise_user_error('lot_expired', {
-                                'lot': prescription.lot.rec_name,
-                                'prescription': prescription.rec_name,
-                                })
+                        raise UserError(gettext('msg_lot_expired',
+                                lot=prescription.lot.rec_name,
+                                prescription=prescription.rec_name,
+                                ))
 
     @classmethod
     @ModelView.button
@@ -568,10 +545,9 @@ class Prescription(Workflow, ModelSQL, ModelView, PrescriptionMixin):
         for prescription in prescriptions:
             if not prescription.template:
                 continue
-
-            cls.raise_user_warning('replace_lines', 'lines_will_be_replaced',
-                prescription.rec_name)
-
+            raise UserWarning(gettext('replace_lines',
+                    'farm_prescription.msg_lines_will_be_replaced',
+                    prescription=prescription.rec_name))
             prescription.set_template_vals()
             prescription.save()
 
@@ -588,7 +564,7 @@ class Prescription(Workflow, ModelSQL, ModelView, PrescriptionMixin):
         self.afection = self.template.afection
         self.dosage = self.template.dosage
         self.waiting_period = self.template.waiting_period
-        self.expiry_period = self.template.expiry_period
+        self.expiration_period = self.template.expiration_time
 
         rate = self.get_factor_change_quantity_unit(self.template.quantity,
             self.template.unit)
@@ -672,32 +648,9 @@ class PrescriptionLine(ModelSQL, ModelView, PrescriptionLineMixin):
         self.quantity = Uom.round(quantity, self.unit.rounding)
 
 
-class Move:
+class Move(metaclass=PoolMeta):
     __name__ = 'stock.move'
-
     prescription = fields.Many2One('farm.prescription', 'Prescription')
-
-    @classmethod
-    def __setup__(cls):
-        super(Move, cls).__setup__()
-        cls._error_messages.update({
-                'from_prescription_line_invalid_prescription': (
-                    'The Stock Move "%(move)s" has the Prescription Line '
-                    '"%(origin)s" as origin, but it isn\'t related to a '
-                    'Prescription or it isn\'t the origin\'s prescription.'),
-                'from_prescription_line_invalid_product_quantity': (
-                    'The Stock Move "%(move)s" has the Prescription Line '
-                    '"%(origin)s" as origin, but the product and/or quantity '
-                    'are not the same.'),
-                'prescription_invalid_product_quantity': (
-                    'The Stock Move "%(move)s" is related to Prescription '
-                    '"%(prescription)s", but the product and/or quantity are '
-                    'not the same.'),
-                'need_prescription': ('Move "%s" needs a confirmed '
-                    'prescription'),
-                'unconfirmed_prescription': ('Prescription "%s" of move "%s" '
-                    'must be confirmed before assigning the move'),
-                })
 
     @classmethod
     def _get_origin(cls):
@@ -724,30 +677,30 @@ class Move:
         if self.origin and isinstance(self.origin, PrescriptionLine):
             if (not self.prescription or
                     self.origin.prescription != self.prescription):
-                self.raise_user_error(
-                    'from_prescription_line_invalid_prescription', {
-                        'move': self.rec_name,
-                        'origin': self.origin.rec_name,
-                        })
+                raise UserError(gettext('farm_prescription.'
+                        'msg_from_prescription_line_invalid_prescription',
+                        move=self.rec_name,
+                        origin=self.origin.rec_name,
+                        ))
             if (self.product != self.origin.product or
                     self.quantity != Uom.compute_qty(self.origin.unit,
                         self.origin.quantity, self.uom)):
-                self.raise_user_error(
-                    'from_prescription_line_invalid_product_quantity', {
-                        'move': self.rec_name,
-                        'origin': self.origin.rec_name,
-                        })
+                raise UserError(gettext('farm_prescription.'
+                        'msg_from_prescription_line_invalid_product_quantity',
+                        move=self.rec_name,
+                        origin=self.origin.rec_name,
+                        ))
         elif self.prescription:
             quantity = Uom.compute_qty(self.prescription.unit,
                 self.prescription.quantity + self.prescription.drug_quantity,
                 self.uom)
             if (self.product != self.prescription.product or
                     self.quantity != quantity):
-                self.raise_user_error(
-                    'prescription_invalid_product_quantity', {
-                        'move': self.rec_name,
-                        'prescription': self.prescription.rec_name,
-                        })
+                raise UserError(gettext('farm_prescription.'
+                    'msg_prescription_invalid_product_quantity',
+                        move=self.rec_name,
+                        prescription=self.prescription.rec_name,
+                        ))
 
     @classmethod
     def assign(cls, moves):
@@ -771,14 +724,17 @@ class Move:
                 and not isinstance(self.shipment, ShipmentIn)
                 and not isinstance(self.origin, FeedEvent)):
             # Purchases don't require prescription because are made to stock
-            self.raise_user_error('need_prescription', self.rec_name)
+            raise UserError(gettext('farm_prescription.msg_need_prescription',
+                    move=self.rec_name))
         if self.prescription:
             if self.prescription.state == 'draft':
-                self.raise_user_error('unconfirmed_prescription',
-                    (self.prescription.rec_name, self.rec_name))
+                raise UserError(gettext('farm_prescription.'
+                        'msg_unconfirmed_prescription',
+                        prescription=self.prescription.rec_name,
+                        move=self.rec_name))
 
 
-class Location:
+class Location(metaclass=PoolMeta):
     __name__ = 'stock.location'
 
     prescription_required = fields.Boolean('Prescription required')
@@ -817,14 +773,6 @@ class CreateInternalShipment(Wizard):
             ])
     create_ = StateAction('stock.act_shipment_internal_form')
 
-    @classmethod
-    def __setup__(cls):
-        super(CreateInternalShipment, cls).__setup__()
-        cls._error_messages.update({
-                'prescription_used': (
-                    'The prescription %s is used in internal shipment %s.'),
-                })
-
     def default_start(self, fields):
         pool = Pool()
         Move = pool.get('stock.move')
@@ -837,9 +785,11 @@ class CreateInternalShipment(Wizard):
             move = Move.search([
                     ('prescription', '=', prescription)])
             if move:
-                self.raise_user_error('prescription_used', (
-                        prescription.reference, move[0].shipment and \
-                        move[0].shipment.code or move[0].id))
+                raise UserError(gettext('farm_prescription.'
+                        'msg_prescription_used',
+                        prescription=prescription.reference,
+                        shipment=(move[0].shipment and move[0].shipment.code
+                            or move[0].id)))
         return {
             'from_location': None,
             'farm': farm.id,
@@ -849,7 +799,6 @@ class CreateInternalShipment(Wizard):
         pool = Pool()
         Prescription = Pool().get('farm.prescription')
         Shipment = pool.get('stock.shipment.internal')
-        Move = pool.get('stock.move')
         Company = pool.get('company.company')
 
         prescriptions = Prescription.browse(

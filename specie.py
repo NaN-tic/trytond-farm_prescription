@@ -5,12 +5,11 @@ from trytond.pool import Pool, PoolMeta
 from trytond.pyson import Bool, Eval, Not
 
 __all__ = ['Specie']
-__metaclass__ = PoolMeta
 
 MODULE_NAME = "farm_prescription"
 
 
-class Specie:
+class Specie(metaclass=PoolMeta):
     __name__ = 'farm.specie'
 
     prescription_enabled = fields.Boolean('Prescriptions Enabled',

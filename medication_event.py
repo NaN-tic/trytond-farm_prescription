@@ -8,10 +8,9 @@ from trytond.modules.farm.events.abstract_event import (
     _STATES_WRITE_DRAFT_VALIDATED, _DEPENDS_WRITE_DRAFT_VALIDATED)
 
 __all__ = ['MedicationEvent']
-__metaclass__ = PoolMeta
 
 
-class MedicationEvent:
+class MedicationEvent(metaclass=PoolMeta):
     __name__ = 'farm.medication.event'
     prescription = fields.Many2One('farm.prescription', 'Prescription',
         select=True, domain=[

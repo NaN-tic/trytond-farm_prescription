@@ -161,45 +161,32 @@
         <record model="ir.action.act_window" id="act_medical_prescription">
             <field name="name">Medical Prescription</field>
             <field name="res_model">farm.prescription</field>
-            <field name="domain"
-                eval="[('type', '=', 'medical')]"
-                pyson="1"/>
-            <field name="context"
-                eval="{'type': 'medical'}"
-                pyson="1"/>
+            <field name="domain" eval="[('type', '=', 'medical')]" pyson="1"/>
+            <field name="context" eval="{'type': 'medical'}" pyson="1"/>
         </record>
-        <record model="ir.action.act_window.view"
-                id="act_medical_prescription_view1">
+        <record model="ir.action.act_window.view" id="act_medical_prescription_view1">
             <field name="sequence" eval="10"/>
             <field name="view" ref="prescription_view_list"/>
             <field name="act_window" ref="act_medical_prescription"/>
         </record>
-        <record model="ir.action.act_window.view"
-                id="act_medical_prescription_view2">
+        <record model="ir.action.act_window.view" id="act_medical_prescription_view2">
             <field name="sequence" eval="20"/>
             <field name="view" ref="prescription_view_form"/>
             <field name="act_window" ref="act_medical_prescription"/>
         </record>
-        <record model="ir.action.act_window.domain"
-                id="act_medical_prescription_draft">
+        <record model="ir.action.act_window.domain" id="act_medical_prescription_draft">
             <field name="name">Draft</field>
             <field name="sequence" eval="10"/>
-            <field name="domain"
-                eval="[('state', '=', 'draft')]"
-                pyson="1"/>
+            <field name="domain" eval="[('state', '=', 'draft')]" pyson="1"/>
             <field name="act_window" ref="act_medical_prescription"/>
         </record>
-        <record model="ir.action.act_window.domain"
-                id="act_medical_prescription_confirmed">
+        <record model="ir.action.act_window.domain" id="act_medical_prescription_confirmed">
             <field name="name">Confirmed</field>
             <field name="sequence" eval="20"/>
-            <field name="domain"
-                eval="[('state', '=', 'confirmed')]"
-                pyson="1"/>
+            <field name="domain" eval="[('state', '=', 'confirmed')]" pyson="1"/>
             <field name="act_window" ref="act_medical_prescription"/>
         </record>
-        <record model="ir.action.act_window.domain"
-                id="act_medical_prescription_all">
+        <record model="ir.action.act_window.domain" id="act_medical_prescription_all">
             <field name="name">All</field>
             <field name="sequence" eval="9999"/>
             <field name="act_window" ref="act_medical_prescription"/>
@@ -207,62 +194,46 @@
         <record model="ir.action.act_window" id="act_feed_prescription">
             <field name="name">Feed Prescription</field>
             <field name="res_model">farm.prescription</field>
-            <field name="domain"
-                eval="[('type', '=', 'feed')]"
-                pyson="1"/>
-            <field name="context"
-                eval="{'type': 'feed'}"
-                pyson="1"/>
+            <field name="domain" eval="[('type', '=', 'feed')]" pyson="1"/>
+            <field name="context" eval="{'type': 'feed'}" pyson="1"/>
         </record>
-        <record model="ir.action.act_window.view"
-                id="act_feed_prescription_view1">
+        <record model="ir.action.act_window.view" id="act_feed_prescription_view1">
             <field name="sequence" eval="10"/>
             <field name="view" ref="prescription_view_list"/>
             <field name="act_window" ref="act_feed_prescription"/>
         </record>
-        <record model="ir.action.act_window.view"
-                id="act_feed_prescription_view2">
+        <record model="ir.action.act_window.view" id="act_feed_prescription_view2">
             <field name="sequence" eval="20"/>
             <field name="view" ref="prescription_view_form"/>
             <field name="act_window" ref="act_feed_prescription"/>
         </record>
-        <record model="ir.action.act_window.domain"
-                id="act_feed_prescription_draft">
+        <record model="ir.action.act_window.domain" id="act_feed_prescription_draft">
             <field name="name">Draft</field>
             <field name="sequence" eval="10"/>
-            <field name="domain"
-                eval="[('state', '=', 'draft')]"
-                pyson="1"/>
+            <field name="domain" eval="[('state', '=', 'draft')]" pyson="1"/>
             <field name="act_window" ref="act_feed_prescription"/>
         </record>
-        <record model="ir.action.act_window.domain"
-                id="act_feed_prescription_confirmed">
+        <record model="ir.action.act_window.domain" id="act_feed_prescription_confirmed">
             <field name="name">Confirmed</field>
             <field name="sequence" eval="20"/>
-            <field name="domain"
-                eval="[('state', '=', 'confirmed')]"
-                pyson="1"/>
+            <field name="domain" eval="[('state', '=', 'confirmed')]" pyson="1"/>
             <field name="act_window" ref="act_feed_prescription"/>
         </record>
-        <record model="ir.action.act_window.domain"
-                id="act_feed_prescription_all">
+        <record model="ir.action.act_window.domain" id="act_feed_prescription_all">
             <field name="name">All</field>
             <field name="sequence" eval="9999"/>
             <field name="act_window" ref="act_feed_prescription"/>
         </record>
 
         <record model="ir.model.access" id="access_prescription">
-            <field name="model"
-                search="[('model', '=', 'farm.prescription')]"/>
+            <field name="model" search="[('model', '=', 'farm.prescription')]"/>
             <field name="perm_read" eval="True"/>
             <field name="perm_write" eval="False"/>
             <field name="perm_create" eval="False"/>
             <field name="perm_delete" eval="False"/>
         </record>
-        <record model="ir.model.access"
-            id="access_prescription_group_prescription">
-            <field name="model"
-                search="[('model', '=', 'farm.prescription')]"/>
+        <record model="ir.model.access" id="access_prescription_group_prescription">
+            <field name="model" search="[('model', '=', 'farm.prescription')]"/>
             <field name="group" ref="group_prescription"/>
             <field name="perm_read" eval="True"/>
             <field name="perm_write" eval="True"/>
@@ -272,12 +243,28 @@
 
         <record model="ir.model.button" id="prescription_confirm_button">
             <field name="name">confirm</field>
-            <field name="model"
-                search="[('model', '=', 'farm.prescription')]"/>
+            <field name="model" search="[('model', '=', 'farm.prescription')]"/>
         </record>
-        <record model="ir.model.button-res.group"
-                id="prescription_confirm_button_group_veterinarian">
+        <record model="ir.model.button-res.group" id="prescription_confirm_button_group_veterinarian">
             <field name="button" ref="prescription_confirm_button"/>
+            <field name="group" ref="group_veterinarian"/>
+        </record>
+
+        <record model="ir.model.button" id="prescription_set_template_button">
+            <field name="name">set_template</field>
+            <field name="model" search="[('model', '=', 'farm.prescription')]"/>
+        </record>
+        <record model="ir.model.button-res.group" id="prescription_set_template_button_group_veterinarian">
+            <field name="button" ref="prescription_set_template_button"/>
+            <field name="group" ref="group_veterinarian"/>
+        </record>
+
+        <record model="ir.model.button" id="prescription_done_button">
+            <field name="name">done</field>
+            <field name="model" search="[('model', '=', 'farm.prescription')]"/>
+        </record>
+        <record model="ir.model.button-res.group" id="prescription_done_button_group_veterinarian">
+            <field name="button" ref="prescription_done_button"/>
             <field name="group" ref="group_veterinarian"/>
         </record>
 
@@ -333,14 +320,12 @@
         <!-- party.party -->
         <record model="ir.ui.view" id="party_view_form">
             <field name="model">party.party</field>
-            <field name="type" eval="None"/>
             <field name="inherit" ref="party.party_view_form"/>
             <field name="name">party_form</field>
         </record>
 
         <record model="ir.ui.view" id="party_view_list">
             <field name="model">party.party</field>
-            <field name="type" eval="None"/>
             <field name="inherit" ref="party.party_view_tree"/>
             <field name="name">party_list</field>
         </record>
@@ -348,7 +333,6 @@
         <!-- product.template -->
         <record model="ir.ui.view" id="product_template_view_form">
             <field name="model">product.template</field>
-            <field name="type" eval="None"/>
             <field name="inherit" ref="product.template_view_form"/>
             <field name="name">product_template_form</field>
         </record>
@@ -424,13 +408,11 @@
 
         <record model="ir.ui.view" id="location_view_form">
             <field name="model">stock.location</field>
-            <field name="type">form</field>
             <field name="inherit" ref="stock.location_view_form"/>
             <field name="name">location_form</field>
         </record>
         <record model="ir.ui.view" id="location_view_list">
             <field name="model">stock.location</field>
-            <field name="type">tree</field>
             <field name="inherit" ref="stock.location_view_list"/>
             <field name="name">location_list</field>
         </record>

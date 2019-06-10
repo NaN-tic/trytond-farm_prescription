@@ -9,59 +9,28 @@ Imports::
     >>> from decimal import Decimal
     >>> from operator import attrgetter
     >>> from proteus import config, Model, Wizard
+    >>> from trytond.tests.tools import activate_modules
+    >>> from trytond.modules.company.tests.tools import create_company, \
+    ...     get_company
     >>> today = datetime.date.today()
 
-Create config::
+Activate module::
 
-    >>> config = config.set_trytond()
-    >>> config.pool.test = True
-
-Install Prescriptions::
-
-	>>> Module = Model.get('ir.module.module')
-    >>> module, = Module.find([('name', '=', 'farm_prescription')])
-    >>> Module.install ([module.id], config.context)
-    >>> Wizard('ir.module.module.install_upgrade').execute('upgrade')
+    >>> config = activate_modules('farm_prescription')
 
 Create company::
 
-	>>> Currency = Model.get('currency.currency')
-    >>> CurrencyRate = Model.get('currency.currency.rate')
-    >>> Company = Model.get('company.company')
-    >>> Party = Model.get('party.party')
-    >>> company_config = Wizard('company.company.config')
-    >>> company_config.execute('company')
-    >>> company = company_config.form
-    >>> party = Party(name='Dunder Mifflin')
-    >>> party.save()
-    >>> company.party = party
-    >>> currencies = Currency.find([('code', '=', 'USD')])
-    >>> if not currencies:
-    ...     currency = Currency(name='U.S. Dollar', symbol='$', code='USD',
-    ...         rounding=Decimal('0.01'), mon_grouping='[3, 3, 0]',
-    ...         mon_decimal_point='.', mon_thousands_sep=',')
-    ...     currency.save()
-    ...     CurrencyRate(date=today + relativedelta(month=1, day=1),
-    ...         rate=Decimal('1.0'), currency=currency).save()
-    ... else:
-    ...     currency, = currencies
-    >>> company.currency = currency
-    >>> company_config.execute('add')
-    >>> company, = Company.find()
-
-Reload the context::
-
-    >>> User = Model.get('res.user')
-    >>> config._context = User.get_preferences(True, config.context)
+    >>> _ = create_company()
+    >>> company = get_company()
 
 Create inner location::
 
-	>>> Location = Model.get('stock.location')
-	>>> inner_farm = Location()
-	>>> inner_farm.name = "Test Farm/Inner Farm"
-	>>> inner_farm.code = "TFARMI"
-	>>> inner_farm.type = "storage"
-	>>> inner_farm.save()
+    >>> Location = Model.get('stock.location')
+    >>> inner_farm = Location()
+    >>> inner_farm.name = "Test Farm/Inner Farm"
+    >>> inner_farm.code = "TFARMI"
+    >>> inner_farm.type = "storage"
+    >>> inner_farm.save()
 
 Check location has 'requires prescription' checked::
 
@@ -70,30 +39,30 @@ Check location has 'requires prescription' checked::
 
 Create production location::
 
-	>>> production_farm = Location()
-	>>> production_farm.name = "Test Farm/Production Farm"
-	>>> production_farm.code = "TFARMP"
-	>>> production_farm.type = "production"
-	>>> production_farm.save()
+    >>> production_farm = Location()
+    >>> production_farm.name = "Test Farm/Production Farm"
+    >>> production_farm.code = "TFARMP"
+    >>> production_farm.type = "production"
+    >>> production_farm.save()
 
 Create lost and found::
 
-	>>> lost_n_found = Location()
-	>>> lost_n_found.name = "Test Lost and Found"
-	>>> lost_n_found.code = "TLNF"
-	>>> lost_n_found.type = "lost_found"
-	>>> lost_n_found.save() 
+    >>> lost_n_found = Location()
+    >>> lost_n_found.name = "Test Lost and Found"
+    >>> lost_n_found.code = "TLNF"
+    >>> lost_n_found.type = "lost_found"
+    >>> lost_n_found.save()
 
 Create farm::
 
-	>>> farm = Location()
-	>>> farm.name = "Test Farm"
-	>>> farm.code = "TFARM"
-	>>> farm.input_location = inner_farm
-	>>> farm.output_location = inner_farm
-	>>> farm.storage_location = inner_farm
-	>>> farm.production_location = production_farm
-	>>> farm.save()
+    >>> farm = Location()
+    >>> farm.name = "Test Farm"
+    >>> farm.code = "TFARM"
+    >>> farm.input_location = inner_farm
+    >>> farm.output_location = inner_farm
+    >>> farm.storage_location = inner_farm
+    >>> farm.production_location = production_farm
+    >>> farm.save()
 
 Create products::
 
@@ -147,7 +116,7 @@ Create sequence::
 
 Create species::
 
-	>>> Specie = Model.get('farm.specie')
+    >>> Specie = Model.get('farm.specie')
     >>> SpecieBreed = Model.get('farm.specie.breed')
     >>> SpecieFarmLine = Model.get('farm.specie.farm_line')
     >>> warehouse, = Location.find([('type', '=', 'warehouse')])
@@ -159,8 +128,8 @@ Create species::
     ...     individual_product=individual_product,
     ...     group_enabled=True,
     ...     group_product=group_product,
-    ...		prescription_enabled=True,
-    ...		prescription_sequence=prescription_sequence,
+    ...        prescription_enabled=True,
+    ...        prescription_sequence=prescription_sequence,
     ...     removed_location=lost_n_found,
     ...     foster_location=lost_n_found,
     ...     lost_found_location=lost_n_found,
@@ -182,39 +151,41 @@ Create species::
 
 Create medicine product::
 
-	>>> ProductTemplate = Model.get('product.template')
-	>>> ProductUOM = Model.get('product.uom')
-	>>> product_template = ProductTemplate()
-	>>> product_template.name = "Template product test"
-	>>> product_template.type = 'goods'
-	>>> product_template.unique_variant = True
+    >>> ProductTemplate = Model.get('product.template')
+    >>> ProductUOM = Model.get('product.uom')
+    >>> product_template = ProductTemplate()
+    >>> product_template.name = "Template product test"
+    >>> product_template.type = 'goods'
+    >>> product_template.unique_variant = True
     >>> product_template.prescription_required = True
-	>>> product_template.cost_price = Decimal('00.00')
-	>>> product_template.list_price = Decimal('00.00')
-	>>> uom, = ProductUOM.find([('name', '=', 'Unit')])
-	>>> product_template.default_uom = uom
-	>>> product_template.save()
+    >>> product_template.cost_price = Decimal('00.00')
+    >>> product_template.list_price = Decimal('00.00')
+    >>> uom, = ProductUOM.find([('name', '=', 'Unit')])
+    >>> product_template.default_uom = uom
+    >>> product_template.save()
 
 Create prescription template::
 
-	>>> PrescriptionTemplate = Model.get('farm.prescription.template')
-	>>> Product = Model.get('product.product')
-	>>> product, = Product.find([('name', '=', 'Template product test')])
-	>>> product.prescription_required = True
-	>>> product.save()
-	>>> prescription_template = PrescriptionTemplate()
-	>>> prescription_template.product = product
-	>>> prescription_template.quantity = Decimal('01.00')
-	>>> #prescription_template.specie = pigs_specie
-	>>> prescription_template.save()
+    >>> PrescriptionTemplate = Model.get('farm.prescription.template')
+    >>> Product = Model.get('product.product')
+    >>> product, = Product.find([('name', '=', 'Template product test')])
+    >>> product.prescription_required = True
+    >>> product.save()
+    >>> prescription_template = PrescriptionTemplate()
+    >>> prescription_template.product = product
+    >>> prescription_template.quantity = Decimal('01.00')
+    >>> #prescription_template.specie = pigs_specie
+    >>> prescription_template.save()
 
 Create vet::
 
-	>>> vet = Party(name="Veterinary")
-	>>> vet.save()
+    >>> Party = Model.get('party.party')
+    >>> vet = Party(name="Veterinary")
+    >>> vet.save()
 
 Create account farm user::
 
+    >>> User = Model.get('res.user')
     >>> farm_user = User()
     >>> farm_user.name = 'Farm User'
     >>> farm_user.login = 'farm_user'
@@ -222,37 +193,34 @@ Create account farm user::
     >>> Group = Model.get('res.group')
     >>> groups = Group.find([
     ...         ('name', 'in', ['Stock Administration', 'Stock',
-    ...             'Product Administration']),
+    ...             'Product Administration', 'Farm / Prescriptions', 'Farm']),
     ...         ])
     >>> farm_user.groups.extend(groups)
     >>> farm_user.save()
     >>> config.user = farm_user.id
 
-
-
 Create prescription::
 
-	>>> Prescription = Model.get('farm.prescription')
-	>>> prescription = Prescription()
-	>>> prescription.reference = "Test prescription"
-	>>> prescription.farm = warehouse
+    >>> Prescription = Model.get('farm.prescription')
+    >>> prescription = Prescription()
+    >>> prescription.reference = "Test prescription"
+    >>> prescription.farm = warehouse
     >>> prescription.quantity = Decimal('01.00')
     >>> prescription.delivery_date = today
-	>>> prescription.template = prescription_template
-	>>> prescription_template.product = product
-	>>> prescription_template.quantity = Decimal('01.00')
-	>>> prescription_template.delivery_date = today
-	>>> prescription_template.number_of_animals = 1
-	>>> prescription_template.save()
+    >>> prescription.template = prescription_template
+    >>> prescription_template.product = product
+    >>> prescription_template.quantity = Decimal('01.00')
+    >>> prescription_template.delivery_date = today
+    >>> prescription_template.number_of_animals = 1
+    >>> prescription_template.save()
     >>> prescription.save()
 
 Create internal shipment::
 
-
-	>>> create_internal_shipment = Wizard('farm.prescription.internal.shipment', models=[prescription])
+    >>> create_internal_shipment = Wizard('farm.prescription.internal.shipment', models=[prescription])
     >>> invoice_wizard = create_internal_shipment.form
     >>> invoice_wizard.from_location = inner_farm
-	>>> create_internal_shipment.execute('create_')
+    >>> create_internal_shipment.execute('create_')
 
 Check internal shipment::
 
@@ -305,7 +273,7 @@ Create internal shipment::
     >>> no_prescription_shipment.click('assign_try')
     False
     >>> no_prescription_shipment.state
-    u'waiting'
+    'waiting'
 
  Create movement with no prescription::
 
@@ -352,7 +320,7 @@ Create internal shipment::
     >>> shipment.click('done')
     >>> shipment.reload()
     >>> shipment.state
-    u'done'
+    'done'
     >>> shipments = ShipmentInternal.find([])
     >>> len(shipments)
     3
