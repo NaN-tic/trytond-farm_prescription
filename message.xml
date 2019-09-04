@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <tryton>
-    <data group="1">
+    <data grouped="1">
         <record model="ir.message" id="msg_template_related_to_product_or_prescription">
             <field name="text">You can not change the Feed Product of Prescription Template "%(template)s" because there are products or prescriptions already related to this template.\nPlease, create a new template.</field>
         </record>
