@@ -21,7 +21,7 @@
         <label name="unit"/>
         <field name="unit"/>
     </group>
-    <button name="set_template" string="Set Template" icon="tryton-list-add"
+    <button name="set_template" string="Set Template" icon="tryton-add"
         colspan="2"/>
     <label name="veterinarian"/>
     <field name="veterinarian"/>
@@ -53,7 +53,7 @@
     <group id="buttons" colspan="4">
         <label name="state"/>
         <field name="state"/>
-        <button name="confirm" string="Confirm" icon="tryton-go-next"/>
-        <button name="done" string="Done" icon="tryton-go-next"/>
+        <button name="confirm" string="Confirm" icon="tryton-forward"/>
+        <button name="done" string="Done" icon="tryton-forward"/>
     </group>
 </form>
