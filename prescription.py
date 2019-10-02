@@ -434,12 +434,15 @@ class Prescription(Workflow, ModelSQL, ModelView, PrescriptionMixin):
                 'set_template': {
                     'invisible': Eval('state') != 'draft',
                     'readonly': ~Bool(Eval('template', False)),
+                    'icon': 'tryton-add',
                     },
                 'confirm': {
                     'invisible': Eval('state') != 'draft',
+                    'icon': 'tryton-forward',
                     },
                 'done': {
                     'invisible': Eval('state') != 'confirmed',
+                    'icon': 'tryton-forward'
                     },
                  })
 

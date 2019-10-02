@@ -243,6 +243,7 @@
 
         <record model="ir.model.button" id="prescription_confirm_button">
             <field name="name">confirm</field>
+            <field name="string">Confirm</field>
             <field name="model" search="[('model', '=', 'farm.prescription')]"/>
         </record>
         <record model="ir.model.button-res.group" id="prescription_confirm_button_group_veterinarian">
@@ -252,6 +253,7 @@
 
         <record model="ir.model.button" id="prescription_set_template_button">
             <field name="name">set_template</field>
+            <field name="string">Set Template</field>
             <field name="model" search="[('model', '=', 'farm.prescription')]"/>
         </record>
         <record model="ir.model.button-res.group" id="prescription_set_template_button_group_veterinarian">
@@ -261,6 +263,7 @@
 
         <record model="ir.model.button" id="prescription_done_button">
             <field name="name">done</field>
+            <field name="string">Done</field>
             <field name="model" search="[('model', '=', 'farm.prescription')]"/>
         </record>
         <record model="ir.model.button-res.group" id="prescription_done_button_group_veterinarian">
