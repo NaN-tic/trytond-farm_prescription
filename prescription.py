@@ -542,6 +542,8 @@ class Prescription(Workflow, ModelSQL, ModelView, PrescriptionMixin):
     @classmethod
     @ModelView.button
     def set_template(cls, prescriptions):
+        Warning = Pool().get('res.user.warning')
+
         for prescription in prescriptions:
             if not prescription.template:
                 continue
