@@ -61,7 +61,7 @@ class Product(metaclass=PoolMeta):
             },
         depends=['id', 'prescription_required'])
 
-    @fields.depends('template')
+    @fields.depends('_parent_template.prescription_required' , 'template')
     def on_change_with_prescription_required(self, name=None):
         if self.template:
             return self.template.prescription_required
