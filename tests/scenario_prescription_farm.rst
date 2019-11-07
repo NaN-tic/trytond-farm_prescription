@@ -156,7 +156,6 @@ Create medicine product::
     >>> product_template = ProductTemplate()
     >>> product_template.name = "Template product test"
     >>> product_template.type = 'goods'
-    >>> product_template.unique_variant = True
     >>> product_template.prescription_required = True
     >>> product_template.cost_price = Decimal('00.00')
     >>> product_template.list_price = Decimal('00.00')
@@ -210,8 +209,6 @@ Create prescription::
     >>> prescription.template = prescription_template
     >>> prescription_template.product = product
     >>> prescription_template.quantity = Decimal('01.00')
-    >>> prescription_template.delivery_date = today
-    >>> prescription_template.number_of_animals = 1
     >>> prescription_template.save()
     >>> prescription.save()
 
@@ -303,7 +300,6 @@ Create inventory::
     >>> line = stock_inventory.lines.new()
     >>> line.product = product2
     >>> line.quantity = Decimal('10.00')
-    >>> stock_inventory.lot = lot
     >>> stock_inventory.save()
     >>> stock_inventory.click('confirm')
 
@@ -324,6 +320,3 @@ Create internal shipment::
     >>> shipments = ShipmentInternal.find([])
     >>> len(shipments)
     3
-
-
-
