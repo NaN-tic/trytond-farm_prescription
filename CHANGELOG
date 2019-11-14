@@ -1,3 +1,4 @@
+Version 5.5.0 - 2019-11-14
 Version 5.4.0 - 2019-11-14
 * Add domain to don't allow to select expired lots
 * Compatibility with stock_lot_expiry: don't allow to use expired lots
