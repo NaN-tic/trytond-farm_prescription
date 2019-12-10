@@ -227,9 +227,8 @@ class Template(ModelSQL, ModelView, PrescriptionMixin):
 
     @classmethod
     def __register__(cls, module_name):
-        TableHandler = backend.get('TableHandler')
         cursor = Transaction().connection.cursor()
-        table = TableHandler(cls, module_name)
+        table = backend.TableHandler(cls, module_name)
         sql_table = cls.__table__()
         product = Table('product_product')
         template = Table('product_template')
