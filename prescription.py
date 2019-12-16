@@ -553,8 +553,7 @@ class Prescription(Workflow, ModelSQL, ModelView, PrescriptionMixin):
             key = 'task_msg_lines_will_be_replaced.%d' % prescription.id
 
             if Warning.check(key):
-                raise UserWarning(gettext('replace_lines',
-                        'farm_prescription.msg_lines_will_be_replaced',
+                raise UserWarning(key, gettext('farm_prescription.msg_lines_will_be_replaced',
                         prescription=prescription.rec_name))
             prescription.set_template_vals()
             prescription.save()
