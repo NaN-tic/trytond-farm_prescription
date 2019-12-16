@@ -642,17 +642,13 @@ class PrescriptionLine(ModelSQL, ModelView, PrescriptionLineMixin):
         required=True, ondelete='CASCADE')
 
     def compute_quantity(self, factor):
-        pool = Pool()
-        Uom = pool.get('product.uom')
-        return Uom.round(self.quantity * factor, self.unit.rounding)
+        return self.unit.round(self.quantity * factor)
 
     def set_template_line_vals(self, template, rate):
-        pool = Pool()
-        Uom = pool.get('product.uom')
         self.product = template.product
         self.unit = template.unit
-        quantity = ((template.quantity / rate) if rate else template.quantity)
-        self.quantity = Uom.round(quantity, self.unit.rounding)
+        quantity = (template.quantity / rate) if rate else template.quantity
+        self.quantity = self.unit.round(quantity)
 
 
 class Move(metaclass=PoolMeta):
