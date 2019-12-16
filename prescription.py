@@ -571,7 +571,7 @@ class Prescription(Workflow, ModelSQL, ModelView, PrescriptionMixin):
         self.afection = self.template.afection
         self.dosage = self.template.dosage
         self.waiting_period = self.template.waiting_period
-        self.expiration_period = self.template.expiration_time
+        self.expiry_period = self.template.expiry_period
 
         rate = self.get_factor_change_quantity_unit(self.template.quantity,
             self.template.unit)
