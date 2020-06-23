@@ -230,7 +230,7 @@ Check internal shipment::
     True
     >>> len(internal_moves.moves)
     1
-    >>> internal_moves.moves[0].rec_name == '1.0u Template product test'
+    >>> internal_moves.moves[0].quantity == 1.0
     True
     >>> internal_moves.moves[0].product == product
     True
