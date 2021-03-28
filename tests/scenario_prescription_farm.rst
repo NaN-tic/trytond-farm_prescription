@@ -9,7 +9,7 @@ Imports::
     >>> from decimal import Decimal
     >>> from operator import attrgetter
     >>> from proteus import config, Model, Wizard
-    >>> from trytond.tests.tools import activate_modules
+    >>> from trytond.tests.tools import activate_modules, set_user
     >>> from trytond.modules.company.tests.tools import create_company, \
     ...     get_company
     >>> today = datetime.date.today()
@@ -203,7 +203,7 @@ Create account farm user::
     ...         ])
     >>> farm_user.groups.extend(groups)
     >>> farm_user.save()
-    >>> config.user = farm_user.id
+    >>> set_user(farm_user)
 
 Create prescription::
 
