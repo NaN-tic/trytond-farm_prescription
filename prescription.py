@@ -13,11 +13,6 @@ from trytond import backend
 from trytond.exceptions import UserError, UserWarning
 from trytond.i18n import gettext
 
-__all__ = ['Party', 'ProductTemplate', 'Product', 'Move', 'Template',
-    'TemplateLine', 'Prescription', 'PrescriptionLine', 'PrescriptionAnimal',
-    'PrescriptionAnimalGroup', 'Location', 'CreateInternalShipmentStart',
-    'CreateInternalShipment']
-
 _STATES = {
     'readonly': Eval('state') != 'draft',
     }
@@ -586,19 +581,18 @@ class Prescription(Workflow, ModelSQL, ModelView, PrescriptionMixin):
     @classmethod
     def create(cls, vlist):
         pool = Pool()
-        Sequence = pool.get('ir.sequence.strict')
         Specie = pool.get('farm.specie')
 
         context_specie_id = Transaction().context.get('specie')
-        default_sequence_id = (context_specie_id
-            and Specie(context_specie_id).prescription_sequence.id)
+        default_sequence = (context_specie_id
+            and Specie(context_specie_id).prescription_sequence)
         for value in vlist:
             if value.get('reference'):
                 continue
-            sequence_id = default_sequence_id
+            sequence = default_sequence
             if value.get('specie'):
-                sequence_id = Specie(value['specie']).prescription_sequence.id
-            value['reference'] = Sequence.get_id(sequence_id)
+                sequence = Specie(value['specie']).prescription_sequence
+            value['reference'] = sequence.get()
         return super(Prescription, cls).create(vlist)
 
     @classmethod

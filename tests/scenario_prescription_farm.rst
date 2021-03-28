@@ -93,25 +93,32 @@ Create sequence::
 
     >>> Sequence = Model.get('ir.sequence')
     >>> SequenceStrict = Model.get('ir.sequence.strict')
+    >>> SequenceType = Model.get('ir.sequence.type')
+    >>> order_sequence_type, = SequenceType.find([('name', '=', 'Event Order')])
     >>> event_order_sequence = Sequence(
     ...     name='Event Order Pig Warehouse 1',
-    ...     code='farm.event.order',
+    ...     sequence_type=order_sequence_type,
     ...     padding=4)
     >>> event_order_sequence.save()
+    >>> animal_sequence_type, = SequenceType.find([('name', '=', 'Animal')])
     >>> individual_sequence = Sequence(
     ...     name='Individual Pig Warehouse 1',
-    ...     code='farm.animal',
+    ...     sequence_type=animal_sequence_type,
     ...     padding=4)
     >>> individual_sequence.save()
+    >>> animal_group_sequence_type, = SequenceType.find([
+    ...         ('name', '=', 'Animal Group')])
     >>> group_sequence = Sequence(
     ...     name='Groups Pig Warehouse 1',
-    ...     code='farm.animal.group',
+    ...     sequence_type=animal_group_sequence_type,
     ...     padding=4)
     >>> group_sequence.save()
     >>> party_sequence, = Sequence.find([('name', '=', 'Party')])
+    >>> prescription_sequence_type, = SequenceType.find([
+    ...         ('name', '=', 'Prescription')])
     >>> prescription_sequence = SequenceStrict()
     >>> prescription_sequence.name = "Prescription Sequence"
-    >>> prescription_sequence.code = 'farm.prescription'
+    >>> prescription_sequence.sequence_type = prescription_sequence_type
     >>> prescription_sequence.save()
 
 Create species::

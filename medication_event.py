@@ -3,11 +3,8 @@
 from trytond.model import fields
 from trytond.pool import Pool, PoolMeta
 from trytond.pyson import If, Bool, Eval
-
 from trytond.modules.farm.events.abstract_event import (
     _STATES_WRITE_DRAFT_VALIDATED, _DEPENDS_WRITE_DRAFT_VALIDATED)
-
-__all__ = ['MedicationEvent']
 
 
 class MedicationEvent(metaclass=PoolMeta):

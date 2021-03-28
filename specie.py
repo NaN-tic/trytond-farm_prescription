@@ -2,9 +2,7 @@
 #this repository contains the full copyright notices and license terms.
 from trytond.model import fields
 from trytond.pool import Pool, PoolMeta
-from trytond.pyson import Bool, Eval, Not
-
-__all__ = ['Specie']
+from trytond.pyson import Bool, Eval, Not, Id
 
 MODULE_NAME = "farm_prescription"
 
@@ -16,7 +14,8 @@ class Specie(metaclass=PoolMeta):
         help="This specie uses prescriptions.")
     prescription_sequence = fields.Many2One('ir.sequence.strict',
         'Prescription Reference Sequence', domain=[
-            ('code', '=', 'farm.prescription'),
+            ('sequence_type', '=', Id('farm_prescription',
+                    'sequence_type_prescription')),
         ], states={
             'readonly': Not(Bool(Eval('prescription_enabled'))),
             'required': Bool(Eval('prescription_enabled')),

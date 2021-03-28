@@ -364,7 +364,6 @@
         <!-- sequences -->
         <record model="ir.sequence.type" id="sequence_type_prescription">
             <field name="name">Prescription</field>
-            <field name="code">farm.prescription</field>
         </record>
         <record model="ir.sequence.type-res.group"
             id="sequence_type_prescription_group_prescription">

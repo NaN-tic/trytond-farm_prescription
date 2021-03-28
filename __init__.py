@@ -5,11 +5,6 @@ from . import prescription
 from . import medication_event
 from . import specie
 
-
-__all__ = ['Party', 'ProductTemplate', 'Product', 'Move', 'Template',
-    'TemplateLine', 'Prescription', 'PrescriptionLine', 'PrescriptionAnimal',
-    'PrescriptionAnimalGroup', 'Location', 'CreateInternalShipmentStart',
-    'CreateInternalShipment']
 def register():
     Pool.register(
         prescription.Template,
