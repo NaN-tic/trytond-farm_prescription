@@ -26,6 +26,8 @@ Create company::
 Create inner location::
 
     >>> Location = Model.get('stock.location')
+    >>> warehouse_loc, = Location.find([('code', '=', 'WH')])
+    >>> lost_found_loc, = Location.find([('type', '=', 'lost_found')])
     >>> inner_farm = Location()
     >>> inner_farm.name = "Test Farm/Inner Farm"
     >>> inner_farm.code = "TFARMI"
@@ -45,14 +47,6 @@ Create production location::
     >>> production_farm.type = "production"
     >>> production_farm.save()
 
-Create lost and found::
-
-    >>> lost_n_found = Location()
-    >>> lost_n_found.name = "Test Lost and Found"
-    >>> lost_n_found.code = "TLNF"
-    >>> lost_n_found.type = "lost_found"
-    >>> lost_n_found.save()
-
 Create farm::
 
     >>> farm = Location()
@@ -61,7 +55,10 @@ Create farm::
     >>> farm.input_location = inner_farm
     >>> farm.output_location = inner_farm
     >>> farm.storage_location = inner_farm
+    >>> farm.storage_location = inner_farm
+    >>> farm.lost_found_location = lost_found_loc
     >>> farm.production_location = production_farm
+    >>> farm.type = 'warehouse'
     >>> farm.save()
 
 Create products::
@@ -126,7 +123,6 @@ Create species::
     >>> Specie = Model.get('farm.specie')
     >>> SpecieBreed = Model.get('farm.specie.breed')
     >>> SpecieFarmLine = Model.get('farm.specie.farm_line')
-    >>> warehouse, = Location.find([('type', '=', 'warehouse')])
     >>> pigs_specie = Specie(
     ...     name='Pigs',
     ...     male_enabled=False,
@@ -137,10 +133,10 @@ Create species::
     ...     group_product=group_product,
     ...        prescription_enabled=True,
     ...        prescription_sequence=prescription_sequence,
-    ...     removed_location=lost_n_found,
-    ...     foster_location=lost_n_found,
-    ...     lost_found_location=lost_n_found,
-    ...     feed_lost_found_location=lost_n_found)
+    ...     removed_location=lost_found_loc,
+    ...     foster_location=lost_found_loc,
+    ...     lost_found_location=lost_found_loc,
+    ...     feed_lost_found_location=lost_found_loc)
     >>> pigs_specie.save()
     >>> pigs_breed = SpecieBreed(
     ...     specie=pigs_specie,
@@ -149,7 +145,7 @@ Create species::
     >>> pigs_farm_line = SpecieFarmLine(
     ...     specie=pigs_specie,
     ...     event_order_sequence=event_order_sequence,
-    ...     farm=warehouse,
+    ...     farm=warehouse_loc,
     ...     has_individual=True,
     ...     individual_sequence=individual_sequence,
     ...     has_group=True,
@@ -195,7 +191,7 @@ Create account farm user::
     >>> farm_user = User()
     >>> farm_user.name = 'Farm User'
     >>> farm_user.login = 'farm_user'
-    >>> farm_user.farms.append(Location(warehouse.id))
+    >>> farm_user.farms.append(Location(warehouse_loc.id))
     >>> Group = Model.get('res.group')
     >>> groups = Group.find([
     ...         ('name', 'in', ['Stock Administration', 'Stock',
@@ -210,7 +206,7 @@ Create prescription::
     >>> Prescription = Model.get('farm.prescription')
     >>> prescription = Prescription()
     >>> prescription.reference = "Test prescription"
-    >>> prescription.farm = warehouse
+    >>> prescription.farm = warehouse_loc
     >>> prescription.quantity = Decimal('01.00')
     >>> prescription.delivery_date = today
     >>> prescription.template = prescription_template
@@ -254,7 +250,6 @@ Create no prescription locations::
     >>> medicine_storage.parent = inner_farm
     >>> medicine_storage.save()
 
-
 Create movement with prescription product to no prescription location::
 
     >>> Move =  Model.get('stock.move')
@@ -264,7 +259,6 @@ Create movement with prescription product to no prescription location::
     >>> no_prescription_move.quantity = Decimal('01.00')
     >>> no_prescription_move.product = product
     >>> no_prescription_move.save()
-
 
 Create internal shipment::
 
@@ -303,7 +297,6 @@ Create inventory::
     >>> StockInventory = Model.get('stock.inventory')
     >>> stock_inventory = StockInventory()
     >>> stock_inventory.location = inner_farm
-    >>> stock_inventory.lost_found = lost_n_found
     >>> line = stock_inventory.lines.new()
     >>> line.product = product2
     >>> line.quantity = Decimal('10.00')
