@@ -411,14 +411,14 @@ class Prescription(Workflow, ModelSQL, ModelView, PrescriptionMixin):
         if hasattr(Lot, 'expiration_date'):
             cls.lot.domain.append(
                 If(Eval('state') != 'done',
-                    ('expired', '=', False),
+                    ('expiration_date', '>=', Eval('date', Date())),
                     ()))
             # TODO: use next context when issue4879 whas resolved
             # cls.lot.context['stock_move_date'] = max(
             #     Eval('context', {}).get('stock_move_date', Date()),
             #     Eval('delivery_date', Date()))
             cls.lot.context['stock_move_date'] = Eval('delivery_date', Date())
-            cls.lot.depends += ['delivery_date']
+            cls.lot.depends += ['delivery_date', 'date']
 
         cls._transitions |= set((
                 ('draft', 'confirmed'),
