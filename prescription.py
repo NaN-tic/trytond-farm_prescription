@@ -71,6 +71,7 @@ class PrescriptionMixin:
     '''
     Mixin class with the shared fields and methods by Prescription and Template
     '''
+    __slots__ = ()
     specie = fields.Many2One('farm.specie', 'Specie', domain=[
             ('prescription_enabled', '=', True),
             ], required=True, readonly=True, select=True)
@@ -171,6 +172,7 @@ class PrescriptionLineMixin:
     Mixin class with the shared fields and methods by Prescription Line and
     Template Line
     '''
+    __slots__ = ()
     product = fields.Many2One('product.product', 'Product', domain=[
             ('prescription_required', '=', True),
             ], required=True)
