@@ -3,6 +3,7 @@
      copyright notices and license terms. -->
 <data>
     <xpath expr="/form/notebook" position="before">
+        <newline/>
         <label name="veterinarian"/>
         <field name="veterinarian"/>
         <label name="collegiate_number"/>
