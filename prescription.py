@@ -396,7 +396,7 @@ class Prescription(Workflow, ModelSQL, ModelView, PrescriptionMixin):
         for fname in ('product', 'quantity', 'dosage', 'expiry_period'):
             field = getattr(cls, fname)
             field.states = _STATES
-            field.depends += _DEPENDS
+            field.depends += set(_DEPENDS)
         cls.afection.states = _STATES_REQUIRED
         cls.afection.depends = _DEPENDS
         cls.waiting_period.states = {
@@ -420,7 +420,7 @@ class Prescription(Workflow, ModelSQL, ModelView, PrescriptionMixin):
             #     Eval('context', {}).get('stock_move_date', Date()),
             #     Eval('delivery_date', Date()))
             cls.lot.context['stock_move_date'] = Eval('delivery_date', Date())
-            cls.lot.depends += ['delivery_date', 'date']
+            cls.lot.depends |= {'delivery_date', 'date'}
 
         cls._transitions |= set((
                 ('draft', 'confirmed'),
