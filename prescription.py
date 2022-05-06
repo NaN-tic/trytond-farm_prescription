@@ -396,7 +396,7 @@ class Prescription(Workflow, ModelSQL, ModelView, PrescriptionMixin):
         for fname in ('product', 'quantity', 'dosage', 'expiry_period'):
             field = getattr(cls, fname)
             field.states = _STATES
-            field.depends += set(_DEPENDS)
+            field.depends.update(set(_DEPENDS))
         cls.afection.states = _STATES_REQUIRED
         cls.afection.depends = _DEPENDS
         cls.waiting_period.states = {
