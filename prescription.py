@@ -74,11 +74,11 @@ class PrescriptionMixin:
     __slots__ = ()
     specie = fields.Many2One('farm.specie', 'Specie', domain=[
             ('prescription_enabled', '=', True),
-            ], required=True, readonly=True, select=True)
+            ], required=True, readonly=True)
     type = fields.Selection([
             ('feed', 'Feed'),
             ('medical', 'Medical'),
-            ], 'Type', required=True, readonly=True, select=True)
+            ], 'Type', required=True, readonly=True)
     product = fields.Many2One('product.product', 'Product', domain=[
             ('prescription_required', '=', True),
             ], required=True,
@@ -214,7 +214,7 @@ class PrescriptionLineMixin:
 class Template(ModelSQL, ModelView, PrescriptionMixin):
     '''Prescription Template'''
     __name__ = 'farm.prescription.template'
-    name = fields.Char('Name', required=True, select=True)
+    name = fields.Char('Name', required=True)
     lines = fields.One2Many('farm.prescription.template.line', 'prescription',
         'Lines',
         states={
@@ -296,7 +296,7 @@ class Prescription(Workflow, ModelSQL, ModelView, PrescriptionMixin):
             ('specie', '=', Eval('specie')),
             ],
         states=_STATES, depends=_DEPENDS + ['specie', 'product'])
-    reference = fields.Char('Reference', select=True, states=_STATES_REQUIRED,
+    reference = fields.Char('Reference', states=_STATES_REQUIRED,
         depends=_DEPENDS,
         help='If there is a real prescription; put its reference here. '
         'Otherwise, leave it blank and it will be computed automatically with '
@@ -383,7 +383,7 @@ class Prescription(Workflow, ModelSQL, ModelView, PrescriptionMixin):
         ('draft', 'Draft'),
         ('confirmed', 'Confirmed'),
         ('done', 'Done'),
-        ], 'State', readonly=True, required=True, select=True)
+        ], 'State', readonly=True, required=True)
     origin = fields.Reference('Origin', selection='get_origin',
         states=_STATES, depends=_DEPENDS)
 
@@ -615,8 +615,8 @@ class PrescriptionAnimal(ModelSQL):
     __name__ = 'farm.prescription-animal'
 
     prescription = fields.Many2One('farm.prescription', 'Prescription',
-        select=True, required=True, ondelete='CASCADE')
-    animal = fields.Many2One('farm.animal', 'Animal', select=True,
+        required=True, ondelete='CASCADE')
+    animal = fields.Many2One('farm.animal', 'Animal',
         required=True, ondelete='CASCADE')
 
 
@@ -625,8 +625,8 @@ class PrescriptionAnimalGroup(ModelSQL):
     __name__ = 'farm.prescription-animal.group'
 
     prescription = fields.Many2One('farm.prescription', 'Prescription',
-        select=True, required=True, ondelete='CASCADE')
-    group = fields.Many2One('farm.animal.group', 'Animal Group', select=True,
+        required=True, ondelete='CASCADE')
+    group = fields.Many2One('farm.animal.group', 'Animal Group',
         required=True, ondelete='CASCADE')
 
 
