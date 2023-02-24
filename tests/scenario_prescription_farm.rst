@@ -269,7 +269,6 @@ Create internal shipment::
     >>> no_prescription_shipment.save()
     >>> no_prescription_shipment.click('wait')
     >>> no_prescription_shipment.click('assign_try')
-    False
     >>> no_prescription_shipment.state
     'waiting'
 
@@ -312,7 +311,6 @@ Create internal shipment::
     >>> shipment.save()
     >>> shipment.click('wait')
     >>> shipment.click('assign_try')
-    True
     >>> shipment.click('done')
     >>> shipment.reload()
     >>> shipment.state
