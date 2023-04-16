@@ -12,7 +12,6 @@ Imports::
     >>> from trytond.tests.tools import activate_modules, set_user
     >>> from trytond.modules.company.tests.tools import create_company, \
     ...     get_company
-    >>> today = datetime.date.today()
 
 Activate module::
 
@@ -203,6 +202,7 @@ Create account farm user::
 
 Create prescription::
 
+    >>> today = datetime.date.today()
     >>> Prescription = Model.get('farm.prescription')
     >>> prescription = Prescription()
     >>> prescription.reference = "Test prescription"
