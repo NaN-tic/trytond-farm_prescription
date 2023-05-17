@@ -408,7 +408,6 @@ class Prescription(Workflow, ModelSQL, ModelView, PrescriptionMixin):
             'readonly': Bool(Eval('template', False)),
             }
         cls.product.depends = ['template']
-        cls.unit.on_change_with.add('template')
 
         if hasattr(Lot, 'expiration_date'):
             cls.lot.domain.append(
@@ -458,6 +457,10 @@ class Prescription(Workflow, ModelSQL, ModelView, PrescriptionMixin):
     def on_change_template(self):
         if self.template:
             self.product = self.template.product
+
+    @fields.depends('template')
+    def on_change_with_unit(self, name=None):
+        return super().on_change_with_unit(name)
 
     @fields.depends('animals', 'animal_groups')
     def on_change_with_number_of_animals(self):
