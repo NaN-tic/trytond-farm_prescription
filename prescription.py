@@ -686,7 +686,7 @@ class Move(metaclass=PoolMeta):
                         ))
             if (self.product != self.origin.product or
                     self.quantity != Uom.compute_qty(self.origin.unit,
-                        self.origin.quantity, self.uom)):
+                        self.origin.quantity, self.unit)):
                 raise UserError(gettext('farm_prescription.'
                         'msg_from_prescription_line_invalid_product_quantity',
                         move=self.rec_name,
@@ -695,7 +695,7 @@ class Move(metaclass=PoolMeta):
         elif self.prescription:
             quantity = Uom.compute_qty(self.prescription.unit,
                 self.prescription.quantity + self.prescription.drug_quantity,
-                self.uom)
+                self.unit)
             if (self.product != self.prescription.product or
                     self.quantity != quantity):
                 raise UserError(gettext('farm_prescription.'
@@ -824,7 +824,7 @@ class CreateInternalShipment(Wizard):
             move['quantity']= prescription.quantity
             move['unit_price'] = prescription.product.list_price
             move['currency'] =company.currency.id
-            move['uom'] = prescription.unit.id
+            move['unit'] = prescription.unit.id
             move['from_location'] = shipment_vals['from_location']
             move['to_location'] = shipment_vals['to_location']
             move['prescription'] = prescription.id
