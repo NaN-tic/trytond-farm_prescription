@@ -588,6 +588,7 @@ class Prescription(Workflow, ModelSQL, ModelView, PrescriptionMixin):
         pool = Pool()
         Specie = pool.get('farm.specie')
 
+        vlist = [x.copy() for x in vlist]
         context_specie_id = Transaction().context.get('specie')
         default_sequence = (context_specie_id
             and Specie(context_specie_id).prescription_sequence)
