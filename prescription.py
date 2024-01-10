@@ -30,7 +30,7 @@ class Party(metaclass=PoolMeta):
     collegiate_number = fields.Char('Collegiate Number', states={
             'required': Eval('veterinarian', False),
             'invisible': ~Eval('veterinarian', False),
-        }, depends=['veterinarian'])
+        })
 
 
 class ProductTemplate(metaclass=PoolMeta):
@@ -295,15 +295,14 @@ class Prescription(Workflow, ModelSQL, ModelView, PrescriptionMixin):
         domain=[
             ('specie', '=', Eval('specie')),
             ],
-        states=_STATES, depends=_DEPENDS + ['specie', 'product'])
+        states=_STATES)
     reference = fields.Char('Reference', states=_STATES_REQUIRED,
-        depends=_DEPENDS,
         help='If there is a real prescription; put its reference here. '
         'Otherwise, leave it blank and it will be computed automatically with '
         'the configured sequence.')
-    date = fields.Date('Date', required=True, states=_STATES, depends=_DEPENDS)
+    date = fields.Date('Date', required=True, states=_STATES)
     farm = fields.Many2One('stock.location', 'Farm', required=True,
-        states=_STATES, depends=_DEPENDS, domain=[
+        states=_STATES, domain=[
             ('type', '=', 'warehouse'),
             ('id', 'in', Eval('context', {}).get('farms', [])),
         ],
@@ -315,18 +314,18 @@ class Prescription(Workflow, ModelSQL, ModelView, PrescriptionMixin):
                 ('delivery_date', '=', None),
                 ('delivery_date', '>=', Eval('date', Date()))],
             ],
-        states=_STATES, depends=_DEPENDS+['date'])
+        states=_STATES)
     veterinarian = fields.Many2One('party.party', 'Veterinarian', domain=[
             ('veterinarian', '=', True),
             ],
-        states=_STATES_REQUIRED, depends=_DEPENDS)
+        states=_STATES_REQUIRED)
     lot = fields.Many2One('stock.lot', 'Lot', domain=[
             ('product', '=', Eval('product')),
             ],
         states={
             'required': Eval('state') == 'done',
             'readonly': Eval('state') == 'done',
-            }, depends=_DEPENDS + ['product'])
+            })
     number_of_animals = fields.Integer('Number of animals',
         states={
             'readonly': Eval('state') != 'draft',
@@ -385,7 +384,7 @@ class Prescription(Workflow, ModelSQL, ModelView, PrescriptionMixin):
         ('done', 'Done'),
         ], 'State', readonly=True, required=True)
     origin = fields.Reference('Origin', selection='get_origin',
-        states=_STATES, depends=_DEPENDS)
+        states=_STATES)
 
     @classmethod
     def __setup__(cls):
@@ -762,7 +761,7 @@ class CreateInternalShipmentStart(ModelView):
         domain=[
             ('type', '=', 'storage'),
             ('silo', '=', False),
-            ], depends=['farm'], required=True)
+            ], required=True)
 
 
 class CreateInternalShipment(Wizard):
