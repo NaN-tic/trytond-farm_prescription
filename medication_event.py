@@ -4,7 +4,7 @@ from trytond.model import fields
 from trytond.pool import Pool, PoolMeta
 from trytond.pyson import If, Bool, Eval
 from trytond.modules.farm.events.abstract_event import (
-    _STATES_WRITE_DRAFT_VALIDATED, _DEPENDS_WRITE_DRAFT_VALIDATED)
+    _STATES_WRITE_DRAFT_VALIDATED)
 
 
 class MedicationEvent(metaclass=PoolMeta):
@@ -18,10 +18,7 @@ class MedicationEvent(metaclass=PoolMeta):
             If(Bool(Eval('feed_lot')),
                 ('lot', '=', Eval('feed_lot', 0)),
                 ()),
-            ], states=_STATES_WRITE_DRAFT_VALIDATED,
-        depends=_DEPENDS_WRITE_DRAFT_VALIDATED + ['specie', 'farm',
-            'feed_product', 'feed_lot', 'animal_type', 'animal',
-            'animal_group'])
+            ], states=_STATES_WRITE_DRAFT_VALIDATED)
 
     @fields.depends('specie', 'farm', 'feed_lot', 'animal_type', 'animal',
         'animal_group')

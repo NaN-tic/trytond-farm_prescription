@@ -53,8 +53,7 @@ class Product(metaclass=PoolMeta):
             ],
         states={
             'invisible': ~Eval('prescription_required', False),
-            },
-        depends=['id', 'prescription_required'])
+            })
 
     @fields.depends('_parent_template.prescription_required' , 'template')
     def on_change_with_prescription_required(self, name=None):
@@ -98,7 +97,7 @@ class PrescriptionMixin:
     dosage = fields.Char('Dosage')
     waiting_period = fields.Integer('Waiting Period', states={
             'readonly': Eval('n_lines', 0) > 1,
-            }, depends=['n_lines'],
+            },
         help='The number of days that must pass since the produced feed is '
         'given to animals and they are slaughtered.')
     expiry_period = fields.Integer('Expiry Period')
@@ -184,8 +183,7 @@ class PrescriptionLineMixin:
             If(Bool(Eval('product_uom_category')),
                 ('category', '=', Eval('product_uom_category')),
                 ()),
-            ],
-        depends=['product_uom_category'])
+            ])
     unit_digits = fields.Function(fields.Integer('Unit Digits'),
         'on_change_with_unit_digits')
     quantity = fields.Float('Quantity', digits=(16, Eval('unit_digits', 2)),
@@ -219,8 +217,7 @@ class Template(ModelSQL, ModelView, PrescriptionMixin):
         'Lines',
         states={
             'invisible': Eval('type') == 'medical',
-            },
-        depends=['type'])
+            })
 
     @classmethod
     def __register__(cls, module_name):
@@ -332,8 +329,7 @@ class Prescription(Workflow, ModelSQL, ModelView, PrescriptionMixin):
             'required': ((Eval('state') != 'draft')
                 & ~Bool(Eval('animals'))
                 & ~Bool(Eval('animal_groups'))),
-            },
-        depends=['state', 'animals', 'animal_groups'])
+            })
     animals = fields.Many2Many('farm.prescription-animal', 'prescription',
         'animal', 'Animals', domain=[
             ('specie', '=', Eval('specie')),
@@ -346,9 +342,7 @@ class Prescription(Workflow, ModelSQL, ModelView, PrescriptionMixin):
             'required': ((Eval('state') != 'draft')
                 & ~Bool(Eval('number_of_animals'))
                 & ~Bool(Eval('animal_groups'))),
-            },
-        depends=['specie', 'farm', 'state', 'number_of_animals',
-            'animal_groups'])
+            })
     animal_groups = fields.Many2Many('farm.prescription-animal.group',
         'prescription', 'group', 'Animal Groups', domain=[
             ('specie', '=', Eval('specie')),
@@ -361,9 +355,7 @@ class Prescription(Workflow, ModelSQL, ModelView, PrescriptionMixin):
             'required': ((Eval('state') != 'draft')
                 & ~Bool(Eval('number_of_animals'))
                 & ~Bool(Eval('animals'))),
-            },
-        depends=['specie', 'farm', 'state', 'number_of_animals',
-            'animals'])
+            })
     animal_lots = fields.Function(fields.Many2Many('stock.lot', None, None,
         'Animals Lots'), 'get_animal_lots')
     animals_description = fields.Function(fields.Char('Animals Description'),
@@ -376,8 +368,7 @@ class Prescription(Workflow, ModelSQL, ModelView, PrescriptionMixin):
             'readonly': Eval('state') != 'draft',
             'required': ((Eval('type') != 'medical')
                 & (Eval('state') != 'draft')),
-            },
-        depends=['type', 'state'])
+            })
     state = fields.Selection([
         ('draft', 'Draft'),
         ('confirmed', 'Confirmed'),
