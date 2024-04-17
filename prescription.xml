@@ -78,8 +78,7 @@
         </record>
 
         <record model="ir.model.access" id="access_template_farm">
-            <field name="model"
-                search="[('model', '=', 'farm.prescription.template')]"/>
+            <field name="model">farm.prescription.template</field>
             <field name="perm_read" eval="True"/>
             <field name="perm_write" eval="False"/>
             <field name="perm_create" eval="False"/>
@@ -87,8 +86,7 @@
         </record>
         <record model="ir.model.access"
             id="access_template_group_prescription">
-            <field name="model"
-                search="[('model', '=', 'farm.prescription.template')]"/>
+            <field name="model">farm.prescription.template</field>
             <field name="group" ref="group_prescription"/>
             <field name="perm_read" eval="True"/>
             <field name="perm_write" eval="True"/>
@@ -127,8 +125,7 @@
         </record>
 
         <record model="ir.model.access" id="access_template_line">
-            <field name="model"
-                search="[('model', '=', 'farm.prescription.template.line')]"/>
+            <field name="model">farm.prescription.template.line</field>
             <field name="perm_read" eval="True"/>
             <field name="perm_write" eval="False"/>
             <field name="perm_create" eval="False"/>
@@ -136,8 +133,7 @@
         </record>
         <record model="ir.model.access"
             id="access_template_line_group_prescription">
-            <field name="model"
-                search="[('model', '=', 'farm.prescription.template.line')]"/>
+            <field name="model">farm.prescription.template.line</field>
             <field name="group" ref="group_prescription"/>
             <field name="perm_read" eval="True"/>
             <field name="perm_write" eval="True"/>
@@ -226,14 +222,14 @@
         </record>
 
         <record model="ir.model.access" id="access_prescription">
-            <field name="model" search="[('model', '=', 'farm.prescription')]"/>
+            <field name="model">farm.prescription</field>
             <field name="perm_read" eval="True"/>
             <field name="perm_write" eval="False"/>
             <field name="perm_create" eval="False"/>
             <field name="perm_delete" eval="False"/>
         </record>
         <record model="ir.model.access" id="access_prescription_group_prescription">
-            <field name="model" search="[('model', '=', 'farm.prescription')]"/>
+            <field name="model">farm.prescription</field>
             <field name="group" ref="group_prescription"/>
             <field name="perm_read" eval="True"/>
             <field name="perm_write" eval="True"/>
@@ -244,7 +240,7 @@
         <record model="ir.model.button" id="prescription_confirm_button">
             <field name="name">confirm</field>
             <field name="string">Confirm</field>
-            <field name="model" search="[('model', '=', 'farm.prescription')]"/>
+            <field name="model">farm.prescription</field>
         </record>
         <record model="ir.model.button-res.group" id="prescription_confirm_button_group_veterinarian">
             <field name="button" ref="prescription_confirm_button"/>
@@ -254,7 +250,7 @@
         <record model="ir.model.button" id="prescription_set_template_button">
             <field name="name">set_template</field>
             <field name="string">Set Template</field>
-            <field name="model" search="[('model', '=', 'farm.prescription')]"/>
+            <field name="model">farm.prescription</field>
         </record>
         <record model="ir.model.button-res.group" id="prescription_set_template_button_group_veterinarian">
             <field name="button" ref="prescription_set_template_button"/>
@@ -264,7 +260,7 @@
         <record model="ir.model.button" id="prescription_done_button">
             <field name="name">done</field>
             <field name="string">Done</field>
-            <field name="model" search="[('model', '=', 'farm.prescription')]"/>
+            <field name="model">farm.prescription</field>
         </record>
         <record model="ir.model.button-res.group" id="prescription_done_button_group_veterinarian">
             <field name="button" ref="prescription_done_button"/>
@@ -302,8 +298,7 @@
         </record>
 
         <record model="ir.model.access" id="access_prescription_line">
-            <field name="model"
-                search="[('model', '=', 'farm.prescription.line')]"/>
+            <field name="model">farm.prescription.line</field>
             <field name="perm_read" eval="True"/>
             <field name="perm_write" eval="False"/>
             <field name="perm_create" eval="False"/>
@@ -311,8 +306,7 @@
         </record>
         <record model="ir.model.access"
             id="access_prescription_line_group_prescription">
-            <field name="model"
-                search="[('model', '=', 'farm.prescription.line')]"/>
+            <field name="model">farm.prescription.line</field>
             <field name="group" ref="group_prescription"/>
             <field name="perm_read" eval="True"/>
             <field name="perm_write" eval="True"/>
