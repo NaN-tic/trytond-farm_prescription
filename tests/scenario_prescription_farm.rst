@@ -311,7 +311,7 @@ Create internal shipment::
     >>> shipment.save()
     >>> shipment.click('wait')
     >>> shipment.click('assign_try')
-    >>> shipment.click('done')
+    >>> shipment.click('do')
     >>> shipment.reload()
     >>> shipment.state
     'done'
