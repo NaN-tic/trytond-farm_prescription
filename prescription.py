@@ -813,8 +813,6 @@ class CreateInternalShipment(Wizard):
             move['company'] = company.id
             move['lot'] = prescription.lot and prescription.lot.id or None
             move['quantity']= prescription.quantity
-            move['unit_price'] = prescription.product.list_price
-            move['currency'] =company.currency.id
             move['unit'] = prescription.unit.id
             move['from_location'] = shipment_vals['from_location']
             move['to_location'] = shipment_vals['to_location']
