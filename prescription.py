@@ -488,9 +488,9 @@ class Prescription(Workflow, ModelSQL, ModelView, PrescriptionMixin):
         Model = pool.get('ir.model')
         models = cls._get_origin()
         models = Model.search([
-                ('model', 'in', models),
+                ('name', 'in', models),
                 ])
-        return [('', '')] + [(m.model, m.name) for m in models]
+        return [('', '')] + [(m.name, m.string) for m in models]
 
     @classmethod
     @ModelView.button
