@@ -11,6 +11,7 @@ from trytond.wizard import Wizard, StateView, StateAction, Button
 from trytond.pyson import Bool, Date, Equal, Eval, If, Or
 from trytond import backend
 from trytond.exceptions import UserError, UserWarning
+from trytond.model.exceptions import ValidationError
 from trytond.i18n import gettext
 
 _STATES = {
@@ -670,7 +671,7 @@ class Move(metaclass=PoolMeta):
         if self.origin and isinstance(self.origin, PrescriptionLine):
             if (not self.prescription or
                     self.origin.prescription != self.prescription):
-                raise UserError(gettext('farm_prescription.'
+                raise ValidationError(gettext('farm_prescription.'
                         'msg_from_prescription_line_invalid_prescription',
                         move=self.rec_name,
                         origin=self.origin.rec_name,
@@ -678,7 +679,7 @@ class Move(metaclass=PoolMeta):
             if (self.product != self.origin.product or
                     self.quantity != Uom.compute_qty(self.origin.unit,
                         self.origin.quantity, self.unit)):
-                raise UserError(gettext('farm_prescription.'
+                raise ValidationError(gettext('farm_prescription.'
                         'msg_from_prescription_line_invalid_product_quantity',
                         move=self.rec_name,
                         origin=self.origin.rec_name,
@@ -689,7 +690,7 @@ class Move(metaclass=PoolMeta):
                 self.unit)
             if (self.product != self.prescription.product or
                     self.quantity != quantity):
-                raise UserError(gettext('farm_prescription.'
+                raise ValidationError(gettext('farm_prescription.'
                     'msg_prescription_invalid_product_quantity',
                         move=self.rec_name,
                         prescription=self.prescription.rec_name,
@@ -717,11 +718,11 @@ class Move(metaclass=PoolMeta):
                 and not isinstance(self.shipment, ShipmentIn)
                 and not isinstance(self.origin, FeedEvent)):
             # Purchases don't require prescription because are made to stock
-            raise UserError(gettext('farm_prescription.msg_need_prescription',
+            raise ValidationError(gettext('farm_prescription.msg_need_prescription',
                     move=self.rec_name))
         if self.prescription:
             if self.prescription.state == 'draft':
-                raise UserError(gettext('farm_prescription.'
+                raise ValidationError(gettext('farm_prescription.'
                         'msg_unconfirmed_prescription',
                         prescription=self.prescription.rec_name,
                         move=self.rec_name))
