@@ -770,6 +770,7 @@ class CreateInternalShipment(Wizard):
     def default_start(self, fields):
         pool = Pool()
         Move = pool.get('stock.move')
+        Prescription = pool.get('farm.prescription')
 
         prescriptions = Prescription.browse(
             Transaction().context['active_ids'])
