@@ -9,7 +9,6 @@ from trytond.pool import Pool, PoolMeta
 from trytond.transaction import Transaction
 from trytond.wizard import Wizard, StateView, StateAction, Button
 from trytond.pyson import Bool, Date, Equal, Eval, If, Or
-from trytond import backend
 from trytond.exceptions import UserError, UserWarning
 from trytond.model.exceptions import ValidationError
 from trytond.i18n import gettext
@@ -223,7 +222,7 @@ class Template(ModelSQL, ModelView, PrescriptionMixin):
     @classmethod
     def __register__(cls, module_name):
         cursor = Transaction().connection.cursor()
-        table = backend.TableHandler(cls, module_name)
+        table = cls.__table_handler__(module_name)
         sql_table = cls.__table__()
         product = Table('product_product')
         template = Table('product_template')
