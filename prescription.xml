@@ -5,17 +5,9 @@
         <record model="res.group" id="group_prescription">
             <field name="name">Farm / Prescriptions</field>
         </record>
-        <record model="res.user-res.group" id="user_admin_group_prescriptions">
-            <field name="user" ref="res.user_admin"/>
-            <field name="group" ref="group_prescription"/>
-        </record>
 
         <record model="res.group" id="group_veterinarian">
             <field name="name">Farm / Veterinarian</field>
-        </record>
-        <record model="res.user-res.group" id="user_admin_group_veterinarian">
-            <field name="user" ref="res.user_admin"/>
-            <field name="group" ref="group_veterinarian"/>
         </record>
 
         <!-- farm.prescription.template -->
